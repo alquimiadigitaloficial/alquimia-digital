@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Alquimia Digital | Administração</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* LOGIN */
+
+    #loginPage {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: #0f172a;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 400px;
+      background: #1e293b;
+      padding: 35px;
+      border-radius: 18px;
+      border: 1px solid #334155;
+      box-shadow: 0 20px 60px rgba(0,0,0,.4);
+    }
+
+    .login-logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .login-logo h1 {
+      color: #60a5fa;
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .login-logo p {
+      color: #94a3b8;
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px;
+      background: #0f172a;
+      color: white;
+      border: 1px solid #475569;
+      border-radius: 9px;
+      outline: none;
+      font-size: 15px;
+    }
+
+    .form-group input:focus {
+      border-color: #3b82f6;
+    }
+
+    .login-button {
+      width: 100%;
+      padding: 14px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 9px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .login-button:hover {
+      background: #1d4ed8;
+    }
+
+    #loginMessage {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    /* DASHBOARD */
+
+    .topbar {
+      height: 70px;
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand h1 {
+      color: #60a5fa;
+      font-size: 21px;
+    }
+
+    .badge {
+      background: #1e3a8a;
+      color: #93c5fd;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: bold;
+    }
+
+    .top-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .button {
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .refresh {
+      background: #2563eb;
+    }
+
+    .logout {
+      background: #991b1b;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1400px;
+      margin: auto;
+      padding: 30px;
+    }
+
+    .welcome {
+      margin-bottom: 25px;
+    }
+
+    .welcome h2 {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .welcome p {
+      color: #94a3b8;
+    }
+
+    /* CARDS */
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 15px;
+      padding: 22px;
+    }
+
+    .card-title {
+      color: #94a3b8;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .card-value {
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .blue {
+      color: #60a5fa;
+    }
+
+    .yellow {
+      color: #facc15;
+    }
+
+    .green {
+      color: #4ade80;
+    }
+
+    .purple {
+      color: #c084fc;
+    }
+
+    /* PEDIDOS */
+
+    .orders-box {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+
+    .orders-header {
+      padding: 20px;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .orders-header h3 {
+      font-size: 19px;
+    }
+
+    .orders-count {
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 850px;
+    }
+
+    th {
+      background: #0f172a;
+      color: #94a3b8;
+      text-align: left;
+      padding: 15px;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    td {
+      padding: 15px;
+      border-top: 1px solid #334155;
+      font-size: 14px;
+    }
+
+    tr:hover {
+      background: #253247;
+    }
+
+    .customer-name {
+      font-weight: bold;
+      color: white;
+    }
+
+    .customer-email {
+      color: #94a3b8;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .pending {
+      background: rgba(234,179,8,.15);
+      color: #facc15;
+    }
+
+    .paid {
+      background: rgba(34,197,94,.15);
+      color: #4ade80;
+    }
+
+    .cancelled {
+      background: rgba(239,68,68,.15);
+      color: #f87171;
+    }
+
+    .other {
+      background: rgba(148,163,184,.15);
+      color: #cbd5e1;
+    }
+
+    .loading,
+    .empty,
+    .error {
+      text-align: center;
+      padding: 45px;
+      color: #94a3b8;
+    }
+
+    .error {
+      color: #f87171;
+    }
+
+    /* RESPONSIVO */
+
+    @media (max-width: 900px) {
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .topbar {
+        padding: 0 15px;
+      }
+
+      .brand h1 {
+        font-size: 16px;
+      }
+
+      .badge {
+        display: none;
+      }
+
+      .top-buttons .button {
+        padding: 8px 10px;
+        font-size: 12px;
+      }
+
+      .container {
+        padding: 20px 15px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .welcome h2 {
+        font-size: 23px;
+      }
+
+      .login-box {
+        padding: 25px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LOGIN -->
+
+  <div id="loginPage">
+
+    <div class="login-box">
+
+      <div class="login-logo">
+        <h1>Alquimia Digital</h1>
+        <p>Painel Administrativo</p>
+      </div>
+
+      <form id="loginForm">
+
+        <div class="form-group">
+          <label for="email">E-mail</label>
+
+          <input
+            type="email"
+            id="email"
+            placeholder="Digite o seu e-mail"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="password">Palavra-passe</label>
+
+          <input
+            type="password"
+            id="password"
+            placeholder="Digite a sua palavra-passe"
+            required
+          >
+        </div>
+
+        <button
+          type="submit"
+          class="login-button"
+        >
+          Entrar
+        </button>
+
+        <div id="loginMessage"></div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+  <!-- DASHBOARD -->
+
+  <div id="dashboard" class="hidden">
+
+    <header class="topbar">
+
+      <div class="brand">
+
+        <h1>Alquimia Digital</h1>
+
+        <span class="badge">
+          ADMIN
+        </span>
+
+      </div>
+
+      <div class="top-buttons">
+
+        <button
+          class="button refresh"
+          id="refreshButton"
+        >
+          Atualizar
+        </button>
+
+        <button
+          class="button logout"
+          id="logoutButton"
+        >
+          Sair
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <main class="container">
+
+      <div class="welcome">
+
+        <h2>Dashboard</h2>
+
+        <p>
+          Gerencie as vendas e acompanhe os pedidos do seu site.
+        </p>
+
+      </div>
+
+
+      <!-- ESTATÍSTICAS -->
+
+      <div class="cards">
+
+        <div class="card">
+
+          <div class="card-title">
+            Total de pedidos
+          </div>
+
+          <div
+            class="card-value blue"
+            id="totalOrders"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-title">
+            Pedidos pendentes
+          </div>
+
+          <div
+            class="card-value yellow"
+            id="pendingOrders"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-title">
+            Pedidos pagos
+          </div>
+
+          <div
+            class="card-value green"
+            id="paidOrders"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="card-title">
+            Receita total
+          </div>
+
+          <div
+            class="card-value purple"
+            id="totalRevenue"
+          >
+            0 MT
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- PEDIDOS -->
+
+      <section class="orders-box">
+
+        <div class="orders-header">
+
+          <h3>
+            Pedidos recentes
+          </h3>
+
+          <span
+            class="orders-count"
+            id="ordersCount"
+          >
+            0 pedidos
+          </span>
+
+        </div>
+
+        <div
+          class="table-wrapper"
+          id="ordersContainer"
+        >
+
+          <div class="loading">
+            A carregar pedidos...
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+
+  <script>
+
+    /* ==========================================
+       SUPABASE
+    ========================================== */
+
+    if (
+      !window.SUPABASE_URL ||
+      !window.SUPABASE_KEY
+    ) {
+
+      document.body.innerHTML = `
+        <div style="
+          min-height:100vh;
+          display:flex;
+          justify-content:center;
+          align-items:center;
+          background:#0f172a;
+          color:white;
+          font-family:Arial;
+          text-align:center;
+          padding:20px;
+        ">
+          <div>
+            <h2 style="color:#f87171;">
+              Erro de configuração
+            </h2>
+
+            <p style="color:#94a3b8;margin-top:10px;">
+              Verifique o arquivo config.js.
+            </p>
+          </div>
+        </div>
+      `;
+
+      throw new Error(
+        "SUPABASE_URL ou SUPABASE_KEY não encontrados."
+      );
+    }
+
+
+    const supabaseClient =
+      window.supabase.createClient(
+        window.SUPABASE_URL,
+        window.SUPABASE_KEY
+      );
+
+
+    /* ==========================================
+       ELEMENTOS
+    ========================================== */
+
+    const loginPage =
+      document.getElementById("loginPage");
+
+    const dashboard =
+      document.getElementById("dashboard");
+
+    const loginForm =
+      document.getElementById("loginForm");
+
+    const loginMessage =
+      document.getElementById("loginMessage");
+
+    const logoutButton =
+      document.getElementById("logoutButton");
+
+    const refreshButton =
+      document.getElementById("refreshButton");
+
+    const ordersContainer =
+      document.getElementById("ordersContainer");
+
+
+    /* ==========================================
+       FORMATAR MOEDA
+    ========================================== */
+
+    function formatPrice(value) {
+
+      return Number(value || 0)
+        .toLocaleString("pt-MZ", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        }) + " MT";
+
+    }
+
+
+    /* ==========================================
+       ESCAPAR HTML
+    ========================================== */
+
+    function escapeHTML(value) {
+
+      if (
+        value === null ||
+        value === undefined
+      ) {
+        return "";
+      }
+
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* ==========================================
+       DATA
+    ========================================== */
+
+    function formatDate(value) {
+
+      if (!value) {
+        return "-";
+      }
+
+      const date = new Date(value);
+
+      if (isNaN(date.getTime())) {
+        return "-";
+      }
+
+      return date.toLocaleString("pt-MZ", {
+        dateStyle: "short",
+        timeStyle: "short"
+      });
+
+    }
+
+
+    /* ==========================================
+       STATUS
+    ========================================== */
+
+    function statusClass(status) {
+
+      const value =
+        String(status || "").toLowerCase();
+
+      if (
+        value === "pending" ||
+        value === "pendente"
+      ) {
+        return "pending";
+      }
+
+      if (
+        value === "paid" ||
+        value === "pago"
+      ) {
+        return "paid";
+      }
+
+      if (
+        value === "cancelled" ||
+        value === "cancelado"
+      ) {
+        return "cancelled";
+      }
+
+      return "other";
+
+    }
+
+
+    function statusText(status) {
+
+      const value =
+        String(status || "").toLowerCase();
+
+      if (value === "pending") {
+        return "Pendente";
+      }
+
+      if (value === "paid") {
+        return "Pago";
+      }
+
+      if (value === "cancelled") {
+        return "Cancelado";
+      }
+
+      return status || "Sem status";
+
+    }
+
+
+    /* ==========================================
+       LOGIN
+    ========================================== */
+
+    loginForm.addEventListener(
+      "submit",
+      async function(event) {
+
+        event.preventDefault();
+
+        const email =
+          document.getElementById("email")
+            .value
+            .trim();
+
+        const password =
+          document.getElementById("password")
+            .value;
+
+
+        loginMessage.textContent =
+          "A entrar...";
+
+        loginMessage.style.color =
+          "#94a3b8";
+
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient.auth
+            .signInWithPassword({
+              email: email,
+              password: password
+            });
+
+
+        if (error) {
+
+          console.error(error);
+
+          loginMessage.textContent =
+            "E-mail ou palavra-passe incorretos.";
+
+          loginMessage.style.color =
+            "#f87171";
+
+          return;
+        }
+
+
+        if (data.session) {
+
+          showDashboard();
+
+        }
+
+      }
+    );
+
+
+    /* ==========================================
+       MOSTRAR DASHBOARD
+    ========================================== */
+
+    function showDashboard() {
+
+      loginPage.classList.add("hidden");
+
+      dashboard.classList.remove("hidden");
+
+      loadDashboard();
+
+    }
+
+
+    /* ==========================================
+       MOSTRAR LOGIN
+    ========================================== */
+
+    function showLogin() {
+
+      dashboard.classList.add("hidden");
+
+      loginPage.classList.remove("hidden");
+
+    }
+
+
+    /* ==========================================
+       CARREGAR DASHBOARD
+    ========================================== */
+
+    async function loadDashboard() {
+
+      ordersContainer.innerHTML = `
+        <div class="loading">
+          A carregar pedidos...
+        </div>
+      `;
+
+
+      const {
+        data: orders,
+        error
+      } =
+        await supabaseClient
+          .from("orders")
+          .select(`
+            id,
+            product,
+            customer_name,
+            customer_email,
+            quantity,
+            total,
+            status,
+            created_at
+          `)
+          .order(
+            "created_at",
+            {
+              ascending: false
+            }
+          );
+
+
+      if (error) {
+
+        console.error(error);
+
+        ordersContainer.innerHTML = `
+          <div class="error">
+            Erro ao carregar os pedidos.
+            <br><br>
+            ${escapeHTML(error.message)}
+          </div>
+        `;
+
+        return;
+      }
+
+
+      const orderList =
+        orders || [];
+
+
+      /* TOTAL */
+
+      document.getElementById(
+        "totalOrders"
+      ).textContent =
+        orderList.length;
+
+
+      /* PENDENTES */
+
+      const pending =
+        orderList.filter(order => {
+
+          const status =
+            String(order.status || "")
+              .toLowerCase();
+
+          return (
+            status === "pending" ||
+            status === "pendente"
+          );
+
+        }).length;
+
+
+      document.getElementById(
+        "pendingOrders"
+      ).textContent =
+        pending;
+
+
+      /* PAGOS */
+
+      const paid =
+        orderList.filter(order => {
+
+          const status =
+            String(order.status || "")
+              .toLowerCase();
+
+          return (
+            status === "paid" ||
+            status === "pago"
+          );
+
+        }).length;
+
+
+      document.getElementById(
+        "paidOrders"
+      ).textContent =
+        paid;
+
+
+      /* RECEITA */
+
+      const revenue =
+        orderList.reduce(
+          (total, order) => {
+
+            return total +
+              Number(order.total || 0);
+
+          },
+          0
+        );
+
+
+      document.getElementById(
+        "totalRevenue"
+      ).textContent =
+        formatPrice(revenue);
+
+
+      /* CONTADOR */
+
+      document.getElementById(
+        "ordersCount"
+      ).textContent =
+        `${orderList.length} ${
+          orderList.length === 1
+            ? "pedido"
+            : "pedidos"
+        }`;
+
+
+      /* SEM PEDIDOS */
+
+      if (orderList.length === 0) {
+
+        ordersContainer.innerHTML = `
+          <div class="empty">
+            Ainda não existem pedidos.
+          </div>
+        `;
+
+        return;
+      }
+
+
+      /* BUSCAR PRODUTOS */
+
+      const productIds =
+        [
+          ...new Set(
+            orderList
+              .map(order => order.product)
+              .filter(Boolean)
+          )
+        ];
+
+
+      let productsMap = {};
+
+
+      if (productIds.length > 0) {
+
+        const {
+          data: products
+        } =
+          await supabaseClient
+            .from("products")
+            .select("id,name")
+            .in("id", productIds);
+
+
+        if (products) {
+
+          products.forEach(product => {
+
+            productsMap[
+              product.id
+            ] = product.name;
+
+          });
+
+        }
+
+      }
+
+
+      /* TABELA */
+
+      let html = `
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>Cliente</th>
+              <th>Produto</th>
+              <th>Quantidade</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Data</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+      `;
+
+
+      orderList.forEach(order => {
+
+        const productName =
+          productsMap[order.product] ||
+          "Produto";
+
+
+        html += `
+
+          <tr>
+
+            <td>
+
+              <div class="customer-name">
+                ${escapeHTML(
+                  order.customer_name
+                )}
+              </div>
+
+              <div class="customer-email">
+                ${escapeHTML(
+                  order.customer_email
+                )}
+              </div>
+
+            </td>
+
+
+            <td>
+              ${escapeHTML(productName)}
+            </td>
+
+
+            <td>
+              ${Number(
+                order.quantity || 0
+              )}
+            </td>
+
+
+            <td>
+              <strong>
+                ${formatPrice(order.total)}
+              </strong>
+            </td>
+
+
+            <td>
+
+              <span class="status ${
+                statusClass(order.status)
+              }">
+
+                ${escapeHTML(
+                  statusText(order.status)
+                )}
+
+              </span>
+
+            </td>
+
+
+            <td>
+              ${formatDate(order.created_at)}
+            </td>
+
+          </tr>
+
+        `;
+
+      });
+
+
+      html += `
+
+          </tbody>
+
+        </table>
+
+      `;
+
+
+      ordersContainer.innerHTML =
+        html;
+
+    }
+
+
+    /* ==========================================
+       ATUALIZAR
+    ========================================== */
+
+    refreshButton.addEventListener(
+      "click",
+      function() {
+        loadDashboard();
+      }
+    );
+
+
+    /* ==========================================
+       SAIR
+    ========================================== */
+
+    logoutButton.addEventListener(
+      "click",
+      async function() {
+
+        await supabaseClient.auth.signOut();
+
+        showLogin();
+
+      }
+    );
+
+
+    /* ==========================================
+       SESSÃO
+    ========================================== */
+
+    async function checkSession() {
+
+      const {
+        data: {
+          session
+        }
+      } =
+        await supabaseClient.auth
+          .getSession();
+
+
+      if (session) {
+
+        showDashboard();
+
+      } else {
+
+        showLogin();
+
+      }
+
+    }
+
+
+    supabaseClient.auth.onAuthStateChange(
+      function(event, session) {
+
+        if (session) {
+
+          showDashboard();
+
+        } else {
+
+          showLogin();
+
+        }
+
+      }
+    );
+
+
+    /* ==========================================
+       INICIAR
+    ========================================== */
+
+    checkSession();
+
+  </script>
+
+</body>
+</html>
