@@ -4,1324 +4,703 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Alquimia Digital — Painel Administrativo</title>
+  <title>Alquimia Digital - Administração</title>
 
-  <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
 
   <style>
-
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --bg: #050b16;
-      --bg2: #0b1424;
-      --card: #101b2d;
-      --card2: #152238;
-      --border: rgba(148, 163, 184, .15);
-
-      --text: #f8fafc;
-      --muted: #94a3b8;
-
-      --blue: #2563eb;
-      --blue-hover: #1d4ed8;
-
-      --green: #22c55e;
-      --yellow: #f59e0b;
-      --red: #ef4444;
+      font-family: Arial, sans-serif;
     }
 
     body {
-      font-family: Arial, Helvetica, sans-serif;
-      background:
-        radial-gradient(
-          circle at 10% 0%,
-          rgba(37, 99, 235, .14),
-          transparent 30%
-        ),
-        var(--bg);
+      background: #f4f6f8;
+      color: #222;
+    }
 
-      color: var(--text);
+    .login-screen {
       min-height: 100vh;
-    }
-
-    button,
-    input,
-    textarea {
-      font-family: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    /* =====================================
-       LOGIN
-    ===================================== */
-
-    #loginScreen {
-      min-height: 100vh;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
       padding: 20px;
     }
 
-    .login-card {
-      width: min(430px, 100%);
-
-      background: var(--card);
-
-      border: 1px solid var(--border);
-
-      border-radius: 20px;
-
-      padding: 35px;
-
-      box-shadow:
-        0 30px 80px rgba(0,0,0,.35);
-    }
-
-    .login-logo {
-      width: 60px;
-      height: 60px;
-
-      display: grid;
-      place-items: center;
-
-      margin: 0 auto 18px;
-
-      border-radius: 17px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #2563eb,
-          #7c3aed
-        );
-
-      font-size: 27px;
-    }
-
-    .login-card h1 {
-      text-align: center;
-
-      margin-bottom: 8px;
-    }
-
-    .login-subtitle {
-      text-align: center;
-
-      color: var(--muted);
-
-      font-size: 14px;
-
-      margin-bottom: 28px;
-    }
-
-    .form-group {
-      margin-bottom: 18px;
-    }
-
-    .form-group label {
-      display: block;
-
-      color: #cbd5e1;
-
-      font-size: 14px;
-
-      margin-bottom: 8px;
-    }
-
-    input,
-    textarea {
+    .login-box {
       width: 100%;
+      max-width: 420px;
+      background: white;
+      padding: 35px;
+      border-radius: 16px;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.12);
+    }
 
-      background: #091321;
+    .login-box h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
 
+    .login-box p {
+      text-align: center;
+      color: #777;
+      margin-bottom: 25px;
+    }
+
+    .admin-container {
+      display: none;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #111827;
       color: white;
-
-      border: 1px solid #334155;
-
-      border-radius: 10px;
-
-      padding: 13px;
-
-      outline: none;
+      padding: 18px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
     }
 
-    textarea {
-      min-height: 100px;
-
-      resize: vertical;
+    header h1 {
+      font-size: 22px;
     }
 
-    input:focus,
-    textarea:focus {
-      border-color: #3b82f6;
-
-      box-shadow:
-        0 0 0 3px rgba(59,130,246,.1);
+    .header-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
-    .btn {
+    button,
+    .button-link {
       border: none;
-
-      border-radius: 10px;
-
-      padding: 12px 17px;
-
+      cursor: pointer;
+      padding: 11px 16px;
+      border-radius: 8px;
       font-weight: bold;
-
-      transition: .2s;
+      text-decoration: none;
+      display: inline-block;
     }
 
     .btn-primary {
-      background: var(--blue);
-
+      background: #111827;
       color: white;
     }
 
     .btn-primary:hover {
-      background: var(--blue-hover);
+      background: #000;
     }
 
-    .btn-secondary {
-      background: rgba(148,163,184,.08);
-
-      border: 1px solid var(--border);
-
+    .btn-green {
+      background: #16a34a;
       color: white;
     }
 
-    .btn-danger {
-      background: rgba(239,68,68,.12);
-
-      border: 1px solid rgba(239,68,68,.25);
-
-      color: #fca5a5;
+    .btn-blue {
+      background: #2563eb;
+      color: white;
     }
 
-    .btn-success {
-      background: rgba(34,197,94,.12);
-
-      border: 1px solid rgba(34,197,94,.25);
-
-      color: #86efac;
+    .btn-red {
+      background: #dc2626;
+      color: white;
     }
 
-    .btn:disabled {
-      opacity: .5;
-
-      cursor: not-allowed;
+    .btn-gray {
+      background: #e5e7eb;
+      color: #111827;
     }
 
-    .message {
-      display: none;
-
-      padding: 12px;
-
-      border-radius: 9px;
-
-      margin-top: 15px;
-
-      font-size: 14px;
-
-      line-height: 1.5;
-    }
-
-    .message.error {
-      display: block;
-
-      background: rgba(239,68,68,.08);
-
-      border: 1px solid rgba(239,68,68,.2);
-
-      color: #fca5a5;
-    }
-
-    .message.success {
-      display: block;
-
-      background: rgba(34,197,94,.08);
-
-      border: 1px solid rgba(34,197,94,.2);
-
-      color: #86efac;
-    }
-
-
-    /* =====================================
-       ADMIN
-    ===================================== */
-
-    #adminScreen {
-      display: none;
-    }
-
-    header {
-      position: sticky;
-
-      top: 0;
-
-      z-index: 100;
-
-      background: rgba(5,11,22,.9);
-
-      backdrop-filter: blur(15px);
-
-      border-bottom: 1px solid var(--border);
-    }
-
-    .header-inner {
-      width: min(1250px, calc(100% - 30px));
-
-      min-height: 70px;
-
+    main {
+      max-width: 1300px;
       margin: auto;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      gap: 15px;
+      padding: 25px;
     }
-
-    .brand {
-      display: flex;
-
-      align-items: center;
-
-      gap: 10px;
-
-      font-weight: bold;
-    }
-
-    .brand-icon {
-      width: 39px;
-      height: 39px;
-
-      display: grid;
-
-      place-items: center;
-
-      border-radius: 11px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #2563eb,
-          #7c3aed
-        );
-    }
-
-    .header-actions {
-      display: flex;
-
-      gap: 8px;
-
-      flex-wrap: wrap;
-    }
-
-    .admin-container {
-      width: min(1250px, calc(100% - 30px));
-
-      margin: auto;
-
-      padding: 35px 0 60px;
-    }
-
-    .welcome {
-      margin-bottom: 28px;
-    }
-
-    .welcome h1 {
-      font-size: 30px;
-
-      margin-bottom: 7px;
-    }
-
-    .welcome p {
-      color: var(--muted);
-
-      font-size: 14px;
-    }
-
-
-    /* =====================================
-       STATS
-    ===================================== */
 
     .stats {
       display: grid;
-
-      grid-template-columns:
-        repeat(4, 1fr);
-
-      gap: 16px;
-
-      margin-bottom: 30px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 25px;
     }
 
-    .stat-card {
-      background: var(--card);
-
-      border: 1px solid var(--border);
-
-      border-radius: 15px;
-
-      padding: 21px;
+    .stat {
+      background: white;
+      padding: 22px;
+      border-radius: 14px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.06);
     }
 
-    .stat-label {
-      color: var(--muted);
-
-      font-size: 13px;
-
+    .stat h3 {
+      font-size: 14px;
+      color: #777;
       margin-bottom: 10px;
     }
 
-    .stat-value {
-      font-size: 27px;
-
-      font-weight: bold;
+    .stat strong {
+      font-size: 28px;
     }
-
-    .stat-icon {
-      font-size: 20px;
-
-      margin-bottom: 12px;
-    }
-
-
-    /* =====================================
-       SECTIONS
-    ===================================== */
 
     .section {
-      background: var(--card);
-
-      border: 1px solid var(--border);
-
-      border-radius: 17px;
-
-      margin-bottom: 25px;
-
-      overflow: hidden;
-    }
-
-    .section-header {
-      padding: 21px;
-
-      border-bottom: 1px solid var(--border);
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      gap: 15px;
-
-      flex-wrap: wrap;
-    }
-
-    .section-header h2 {
-      font-size: 19px;
-    }
-
-    .section-header p {
-      color: var(--muted);
-
-      font-size: 13px;
-
-      margin-top: 5px;
-    }
-
-    .section-body {
-      padding: 21px;
-    }
-
-
-    /* =====================================
-       PRODUCT FORM
-    ===================================== */
-
-    #productFormContainer {
-      display: none;
-
-      background: var(--bg2);
-
-      border: 1px solid var(--border);
-
+      background: white;
       border-radius: 14px;
-
-      padding: 20px;
-
-      margin-bottom: 22px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.06);
     }
 
-    .form-title {
-      font-size: 18px;
-
-      margin-bottom: 18px;
+    .section h2 {
+      margin-bottom: 20px;
     }
 
     .form-grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(2, 1fr);
-
-      gap: 16px;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
     }
 
-    .full {
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group.full {
       grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-weight: bold;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    input[type="checkbox"] {
+      width: auto;
+    }
+
+    .file-box {
+      border: 2px dashed #cbd5e1;
+      border-radius: 12px;
+      padding: 20px;
+      background: #f8fafc;
+    }
+
+    .file-box small {
+      display: block;
+      color: #64748b;
+      margin-top: 8px;
+    }
+
+    .upload-status {
+      margin-top: 10px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .preview-file {
+      margin-top: 10px;
+      padding: 10px;
+      background: #ecfdf5;
+      border-radius: 8px;
+      color: #166534;
+      display: none;
     }
 
     .form-actions {
       display: flex;
-
       gap: 10px;
-
+      margin-top: 10px;
       flex-wrap: wrap;
-
-      margin-top: 5px;
     }
-
-
-    /* =====================================
-       PRODUCTS
-    ===================================== */
 
     .products-grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(3, 1fr);
-
-      gap: 17px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
     }
 
     .product-card {
-      background: var(--bg2);
-
-      border: 1px solid var(--border);
-
-      border-radius: 14px;
-
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
       overflow: hidden;
+      background: white;
     }
 
     .product-image {
-      height: 150px;
-
+      height: 170px;
+      background: #e5e7eb;
       display: flex;
-
       align-items: center;
-
       justify-content: center;
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(37,99,235,.3),
-          rgba(124,58,237,.3)
-        );
+      overflow: hidden;
     }
 
     .product-image img {
       width: 100%;
       height: 100%;
-
       object-fit: cover;
     }
 
-    .placeholder {
-      font-size: 40px;
+    .product-no-image {
+      color: #6b7280;
+      font-size: 14px;
     }
 
-    .product-info {
-      padding: 17px;
+    .product-content {
+      padding: 16px;
     }
 
-    .product-info h3 {
-      font-size: 17px;
-
+    .product-content h3 {
       margin-bottom: 8px;
     }
 
-    .product-description {
-      color: var(--muted);
-
-      font-size: 13px;
-
-      line-height: 1.5;
-
-      min-height: 57px;
-
-      margin-bottom: 12px;
+    .price {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 10px 0;
     }
 
-    .product-price {
-      color: #60a5fa;
-
-      font-size: 18px;
-
+    .status {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 12px;
       font-weight: bold;
-
       margin-bottom: 10px;
     }
 
-    .product-status {
-      display: inline-block;
-
-      padding: 5px 9px;
-
-      border-radius: 20px;
-
-      font-size: 11px;
-
-      margin-bottom: 14px;
+    .status.active {
+      background: #dcfce7;
+      color: #166534;
     }
 
-    .status-active {
-      background: rgba(34,197,94,.1);
-
-      color: #86efac;
+    .status.inactive {
+      background: #fee2e2;
+      color: #991b1b;
     }
 
-    .status-inactive {
-      background: rgba(239,68,68,.1);
-
-      color: #fca5a5;
+    .file-status {
+      font-size: 13px;
+      color: #2563eb;
+      margin: 8px 0;
     }
 
     .product-actions {
       display: flex;
-
-      gap: 7px;
-
+      gap: 8px;
       flex-wrap: wrap;
+      margin-top: 12px;
     }
 
-    .product-actions button {
-      font-size: 12px;
-
-      padding: 9px 11px;
-    }
-
-
-    /* =====================================
-       ORDERS
-    ===================================== */
-
-    .table-wrapper {
+    .orders-table {
       width: 100%;
+      border-collapse: collapse;
+      min-width: 850px;
+    }
 
+    .table-container {
       overflow-x: auto;
     }
 
-    table {
-      width: 100%;
-
-      border-collapse: collapse;
-
-      min-width: 800px;
-    }
-
-    th {
+    .orders-table th,
+    .orders-table td {
+      padding: 12px;
+      border-bottom: 1px solid #e5e7eb;
       text-align: left;
-
-      color: #94a3b8;
-
-      font-size: 12px;
-
-      font-weight: normal;
-
-      padding: 13px;
-
-      border-bottom: 1px solid var(--border);
     }
 
-    td {
-      padding: 14px 13px;
-
-      border-bottom: 1px solid var(--border);
-
-      font-size: 13px;
-
-      vertical-align: middle;
-    }
-
-    tr:last-child td {
-      border-bottom: none;
-    }
-
-    .customer-name {
-      font-weight: bold;
-
-      margin-bottom: 4px;
-    }
-
-    .customer-email {
-      color: var(--muted);
-
-      font-size: 11px;
+    .orders-table th {
+      background: #f8fafc;
     }
 
     .order-status {
-      display: inline-block;
-
-      padding: 6px 10px;
-
+      padding: 5px 9px;
       border-radius: 20px;
-
-      font-size: 11px;
-
+      font-size: 12px;
       font-weight: bold;
     }
 
-    .status-pending {
-      color: #fcd34d;
-
-      background: rgba(245,158,11,.1);
+    .pending {
+      background: #fef3c7;
+      color: #92400e;
     }
 
-    .status-paid {
-      color: #86efac;
-
-      background: rgba(34,197,94,.1);
+    .paid {
+      background: #dcfce7;
+      color: #166534;
     }
 
-    .status-cancelled {
-      color: #fca5a5;
-
-      background: rgba(239,68,68,.1);
+    .cancelled {
+      background: #fee2e2;
+      color: #991b1b;
     }
 
-    .status-other {
-      color: #cbd5e1;
-
-      background: rgba(148,163,184,.1);
+    .message {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 8px;
+      display: none;
     }
 
-    .empty {
-      padding: 40px;
+    .message.error {
+      display: block;
+      background: #fee2e2;
+      color: #991b1b;
+    }
 
-      text-align: center;
-
-      color: var(--muted);
+    .message.success {
+      display: block;
+      background: #dcfce7;
+      color: #166534;
     }
 
     .loading {
-      padding: 35px;
-
       text-align: center;
-
-      color: var(--muted);
+      padding: 30px;
+      color: #777;
     }
 
-
-    /* =====================================
-       FOOTER
-    ===================================== */
-
-    .admin-footer {
+    .empty {
       text-align: center;
-
-      color: var(--muted);
-
-      font-size: 12px;
-
-      padding-top: 15px;
+      padding: 30px;
+      color: #777;
     }
 
-
-    /* =====================================
-       RESPONSIVE
-    ===================================== */
-
-    @media (max-width: 1000px) {
-
+    @media (max-width: 900px) {
       .stats {
-        grid-template-columns:
-          repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr);
       }
 
       .products-grid {
-        grid-template-columns:
-          repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr);
       }
-
     }
 
-    @media (max-width: 650px) {
+    @media (max-width: 600px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
 
-      .stats,
-      .products-grid,
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+
       .form-grid {
         grid-template-columns: 1fr;
       }
 
-      .full {
-        grid-column: auto;
+      main {
+        padding: 15px;
       }
 
-      .header-inner {
-        align-items: flex-start;
-
-        padding: 12px 0;
+      .section {
+        padding: 18px;
       }
 
-      .welcome h1 {
-        font-size: 25px;
+      header {
+        padding: 15px;
       }
-
-      .section-header {
-        align-items: flex-start;
-      }
-
-      .login-card {
-        padding: 25px;
-      }
-
     }
-
   </style>
 </head>
 
-
 <body>
 
+  <!-- LOGIN -->
+  <div class="login-screen" id="loginScreen">
 
-  <!-- =====================================
-       LOGIN
-  ===================================== -->
+    <div class="login-box">
 
-  <div id="loginScreen">
+      <h1>Alquimia Digital</h1>
 
-    <div class="login-card">
-
-      <div class="login-logo">
-        ✦
-      </div>
-
-      <h1>
-        Alquimia Digital
-      </h1>
-
-      <p class="login-subtitle">
-        Painel Administrativo
-      </p>
-
+      <p>Painel de Administração</p>
 
       <form id="loginForm">
 
         <div class="form-group">
-
-          <label for="loginEmail">
-            E-mail
-          </label>
-
+          <label>Email</label>
           <input
             type="email"
             id="loginEmail"
-            placeholder="Digite o seu e-mail"
-            autocomplete="email"
+            placeholder="Digite o seu email"
             required
           >
-
         </div>
 
-
         <div class="form-group">
-
-          <label for="loginPassword">
-            Palavra-passe
-          </label>
-
+          <label>Palavra-passe</label>
           <input
             type="password"
             id="loginPassword"
             placeholder="Digite a sua palavra-passe"
-            autocomplete="current-password"
             required
           >
-
         </div>
-
 
         <button
           type="submit"
-          class="btn btn-primary"
-          id="loginButton"
+          class="btn-primary"
           style="width:100%;"
         >
           Entrar
         </button>
 
-
-        <div
-          id="loginMessage"
-          class="message"
-        ></div>
-
       </form>
+
+      <div id="loginMessage" class="message"></div>
 
     </div>
 
   </div>
 
 
-
-  <!-- =====================================
-       ADMIN
-  ===================================== -->
-
-  <div id="adminScreen">
-
-
-    <!-- HEADER -->
+  <!-- ADMIN -->
+  <div class="admin-container" id="adminContainer">
 
     <header>
 
-      <div class="header-inner">
+      <h1>⚗️ Alquimia Digital — Administração</h1>
 
-        <div class="brand">
+      <div class="header-buttons">
 
-          <div class="brand-icon">
-            ✦
-          </div>
+        <a
+          href="index.html"
+          target="_blank"
+          class="button-link btn-gray"
+        >
+          Ver site
+        </a>
 
-          <span>
-            Alquimia Digital
-          </span>
+        <button
+          class="btn-blue"
+          onclick="loadDashboard()"
+        >
+          Atualizar
+        </button>
 
-        </div>
-
-
-        <div class="header-actions">
-
-          <button
-            class="btn btn-secondary"
-            id="viewSiteButton"
-          >
-            Ver site
-          </button>
-
-
-          <button
-            class="btn btn-secondary"
-            id="refreshButton"
-          >
-            Atualizar
-          </button>
-
-
-          <button
-            class="btn btn-danger"
-            id="logoutButton"
-          >
-            Sair
-          </button>
-
-        </div>
+        <button
+          class="btn-red"
+          onclick="logout()"
+        >
+          Sair
+        </button>
 
       </div>
 
     </header>
 
 
+    <main>
 
-    <main class="admin-container">
-
-
-      <!-- WELCOME -->
-
-      <div class="welcome">
-
-        <h1>
-          Painel Administrativo
-        </h1>
-
-        <p>
-          Gerencie produtos, pedidos e vendas da Alquimia Digital.
-        </p>
-
-      </div>
-
-
-
-      <!-- =================================
-           ESTATÍSTICAS
-      ================================== -->
+      <!-- ESTATÍSTICAS -->
 
       <div class="stats">
 
-
-        <div class="stat-card">
-
-          <div class="stat-icon">
-            🛒
-          </div>
-
-          <div class="stat-label">
-            Total de pedidos
-          </div>
-
-          <div
-            class="stat-value"
-            id="totalOrders"
-          >
-            0
-          </div>
-
+        <div class="stat">
+          <h3>Total de pedidos</h3>
+          <strong id="totalOrders">0</strong>
         </div>
 
-
-        <div class="stat-card">
-
-          <div class="stat-icon">
-            ⏳
-          </div>
-
-          <div class="stat-label">
-            Pedidos pendentes
-          </div>
-
-          <div
-            class="stat-value"
-            id="pendingOrders"
-          >
-            0
-          </div>
-
+        <div class="stat">
+          <h3>Pedidos pendentes</h3>
+          <strong id="pendingOrders">0</strong>
         </div>
 
-
-        <div class="stat-card">
-
-          <div class="stat-icon">
-            ✅
-          </div>
-
-          <div class="stat-label">
-            Pedidos pagos
-          </div>
-
-          <div
-            class="stat-value"
-            id="paidOrders"
-          >
-            0
-          </div>
-
+        <div class="stat">
+          <h3>Pedidos pagos</h3>
+          <strong id="paidOrders">0</strong>
         </div>
 
-
-        <div class="stat-card">
-
-          <div class="stat-icon">
-            💰
-          </div>
-
-          <div class="stat-label">
-            Receita confirmada
-          </div>
-
-          <div
-            class="stat-value"
-            id="totalRevenue"
-          >
-            0 MT
-          </div>
-
+        <div class="stat">
+          <h3>Receita</h3>
+          <strong id="totalRevenue">0 MT</strong>
         </div>
-
 
       </div>
 
 
-
-      <!-- =================================
-           PRODUTOS
-      ================================== -->
+      <!-- PRODUTO -->
 
       <section class="section">
 
-        <div class="section-header">
+        <h2 id="formTitle">➕ Adicionar produto</h2>
 
-          <div>
+        <form id="productForm">
 
-            <h2>
-              📦 Produtos
-            </h2>
-
-            <p>
-              Adicione e gerencie os produtos disponíveis no site.
-            </p>
-
-          </div>
-
-
-          <button
-            class="btn btn-primary"
-            id="newProductButton"
+          <input
+            type="hidden"
+            id="productId"
           >
-            + Novo produto
-          </button>
 
-        </div>
+          <div class="form-grid">
 
+            <div class="form-group">
 
-        <div class="section-body">
+              <label>Nome do produto</label>
 
+              <input
+                type="text"
+                id="productName"
+                placeholder="Ex: Curso de Marketing Digital"
+                required
+              >
 
-          <!-- FORM -->
-
-          <div id="productFormContainer">
-
-            <div
-              class="form-title"
-              id="productFormTitle"
-            >
-              Novo produto
             </div>
 
 
-            <form id="productForm">
+            <div class="form-group">
 
+              <label>Preço (MT)</label>
 
               <input
-                type="hidden"
-                id="productId"
+                type="number"
+                id="productPrice"
+                min="0"
+                step="0.01"
+                placeholder="199"
+                required
               >
 
-
-              <div class="form-grid">
-
-
-                <div class="form-group">
-
-                  <label for="productName">
-                    Nome do produto *
-                  </label>
-
-                  <input
-                    type="text"
-                    id="productName"
-                    placeholder="Ex.: Curso de Marketing Digital"
-                    required
-                  >
-
-                </div>
+            </div>
 
 
-                <div class="form-group">
+            <div class="form-group full">
 
-                  <label for="productPrice">
-                    Preço em MT *
-                  </label>
+              <label>Descrição</label>
 
-                  <input
-                    type="number"
-                    id="productPrice"
-                    min="0"
-                    step="0.01"
-                    placeholder="199"
-                    required
-                  >
+              <textarea
+                id="productDescription"
+                placeholder="Descreva o produto..."
+                required
+              ></textarea>
 
-                </div>
+            </div>
 
 
-                <div class="form-group full">
+            <div class="form-group full">
 
-                  <label for="productDescription">
-                    Descrição *
-                  </label>
+              <label>URL da imagem</label>
 
-                  <textarea
-                    id="productDescription"
-                    placeholder="Descreva o produto..."
-                    required
-                  ></textarea>
+              <input
+                type="url"
+                id="productImage"
+                placeholder="https://..."
+              >
 
-                </div>
+            </div>
 
 
-                <div class="form-group">
+            <!-- FICHEIRO -->
 
-                  <label for="productImage">
-                    URL da imagem
-                  </label>
+            <div class="form-group full">
 
-                  <input
-                    type="url"
-                    id="productImage"
-                    placeholder="https://..."
-                  >
+              <label>📄 Ficheiro do produto</label>
 
-                </div>
+              <div class="file-box">
 
+                <input
+                  type="file"
+                  id="productFile"
+                  accept=".pdf,.zip,.doc,.docx,.ppt,.pptx,.xls,.xlsx"
+                >
 
-                <div class="form-group">
+                <small>
+                  Envie o PDF ou outro ficheiro digital que será entregue ao cliente.
+                  O tamanho máximo depende das configurações do Storage.
+                </small>
 
-                  <label for="productUrl">
-                    Link de entrega do produto
-                  </label>
+                <div
+                  id="currentFile"
+                  class="preview-file"
+                ></div>
 
-                  <input
-                    type="url"
-                    id="productUrl"
-                    placeholder="https://..."
-                  >
-
-                  <small
-                    style="
-                      display:block;
-                      color:#94a3b8;
-                      font-size:11px;
-                      margin-top:7px;
-                    "
-                  >
-                    Link para o PDF ou ficheiro que será entregue ao cliente.
-                  </small>
-
-                </div>
-
-
-                <div class="form-group full">
-
-                  <label
-                    style="
-                      display:flex;
-                      align-items:center;
-                      gap:9px;
-                      cursor:pointer;
-                    "
-                  >
-
-                    <input
-                      type="checkbox"
-                      id="productActive"
-                      checked
-                      style="
-                        width:auto;
-                      "
-                    >
-
-                    Produto ativo no site
-
-                  </label>
-
-                </div>
-
-
-                <div class="form-actions full">
-
-                  <button
-                    type="submit"
-                    class="btn btn-primary"
-                    id="saveProductButton"
-                  >
-                    Guardar produto
-                  </button>
-
-
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    id="cancelProductButton"
-                  >
-                    Cancelar
-                  </button>
-
-                </div>
-
+                <div
+                  id="uploadStatus"
+                  class="upload-status"
+                ></div>
 
               </div>
 
-
-              <div
-                id="productMessage"
-                class="message"
-              ></div>
-
-            </form>
-
-          </div>
+            </div>
 
 
+            <div class="form-group full">
 
-          <!-- PRODUCT LIST -->
+              <label>
 
-          <div
-            id="productsGrid"
-            class="products-grid"
-          >
+                <input
+                  type="checkbox"
+                  id="productActive"
+                  checked
+                >
 
-            <div
-              class="loading"
-              style="grid-column:1/-1;"
-            >
-              A carregar produtos...
+                Produto ativo
+
+              </label>
+
             </div>
 
           </div>
 
 
-        </div>
+          <div class="form-actions">
+
+            <button
+              type="submit"
+              class="btn-green"
+              id="saveProductButton"
+            >
+              💾 Guardar produto
+            </button>
+
+            <button
+              type="button"
+              class="btn-gray"
+              onclick="cancelEdit()"
+              id="cancelButton"
+              style="display:none;"
+            >
+              Cancelar edição
+            </button>
+
+          </div>
+
+          <div id="productMessage" class="message"></div>
+
+        </form>
 
       </section>
 
 
-
-      <!-- =================================
-           PEDIDOS
-      ================================== -->
+      <!-- PRODUTOS -->
 
       <section class="section">
 
-        <div class="section-header">
+        <h2>📦 Produtos</h2>
 
-          <div>
+        <div id="productsContainer" class="products-grid">
 
-            <h2>
-              🛒 Pedidos
-            </h2>
-
-            <p>
-              Pedidos realizados através do site.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <div class="section-body">
-
-          <div
-            class="table-wrapper"
-            id="ordersContainer"
-          >
-
-            <div class="loading">
-              A carregar pedidos...
-            </div>
-
+          <div class="loading">
+            A carregar produtos...
           </div>
 
         </div>
@@ -1329,1686 +708,925 @@
       </section>
 
 
+      <!-- PEDIDOS -->
 
-      <div class="admin-footer">
+      <section class="section">
 
-        Alquimia Digital — Painel Administrativo
+        <h2>🛒 Pedidos</h2>
 
-      </div>
+        <div class="table-container">
 
+          <table class="orders-table">
+
+            <thead>
+
+              <tr>
+
+                <th>Cliente</th>
+                <th>Email</th>
+                <th>Produto</th>
+                <th>Qtd.</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Referência</th>
+                <th>Data</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody id="ordersBody">
+
+              <tr>
+                <td colspan="8" class="loading">
+                  A carregar pedidos...
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
 
     </main>
 
   </div>
 
 
+<script>
 
-  <!-- =====================================
-       JAVASCRIPT
-  ===================================== -->
+  const supabaseClient = window.supabase.createClient(
+    window.SUPABASE_URL,
+    window.SUPABASE_KEY
+  );
 
-  <script>
 
-    /* =====================================
-       CONFIGURAÇÃO
-    ===================================== */
+  // =========================
+  // LOGIN
+  // =========================
 
-    const supabaseUrl =
-      window.SUPABASE_URL;
+  const loginForm = document.getElementById("loginForm");
 
-    const supabaseKey =
-      window.SUPABASE_KEY;
+  loginForm.addEventListener("submit", async function(event) {
 
+    event.preventDefault();
 
-    let supabaseClient = null;
+    const email =
+      document.getElementById("loginEmail").value.trim();
 
+    const password =
+      document.getElementById("loginPassword").value;
 
-    if (
-      supabaseUrl &&
-      supabaseKey
-    ) {
+    const message =
+      document.getElementById("loginMessage");
 
-      supabaseClient =
-        window.supabase.createClient(
-          supabaseUrl,
-          supabaseKey
-        );
+    message.className = "message";
+    message.textContent = "";
 
-    }
-
-
-    let currentUser = null;
-
-    let products = [];
-
-
-
-    /* =====================================
-       ELEMENTOS
-    ===================================== */
-
-    const loginScreen =
-      document.getElementById(
-        "loginScreen"
-      );
-
-    const adminScreen =
-      document.getElementById(
-        "adminScreen"
-      );
-
-    const loginForm =
-      document.getElementById(
-        "loginForm"
-      );
-
-    const loginButton =
-      document.getElementById(
-        "loginButton"
-      );
-
-    const loginMessage =
-      document.getElementById(
-        "loginMessage"
-      );
-
-    const logoutButton =
-      document.getElementById(
-        "logoutButton"
-      );
-
-    const refreshButton =
-      document.getElementById(
-        "refreshButton"
-      );
-
-    const viewSiteButton =
-      document.getElementById(
-        "viewSiteButton"
-      );
-
-    const newProductButton =
-      document.getElementById(
-        "newProductButton"
-      );
-
-    const cancelProductButton =
-      document.getElementById(
-        "cancelProductButton"
-      );
-
-    const productFormContainer =
-      document.getElementById(
-        "productFormContainer"
-      );
-
-    const productForm =
-      document.getElementById(
-        "productForm"
-      );
-
-    const productsGrid =
-      document.getElementById(
-        "productsGrid"
-      );
-
-    const ordersContainer =
-      document.getElementById(
-        "ordersContainer"
-      );
-
-
-
-    /* =====================================
-       FORMATAR PREÇO
-    ===================================== */
-
-    function formatPrice(value) {
-
-      return Number(
-        value || 0
-      ).toLocaleString(
-        "pt-MZ",
-        {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        }
-      ) + " MT";
-
-    }
-
-
-
-    /* =====================================
-       ESCAPAR HTML
-    ===================================== */
-
-    function escapeHTML(value) {
-
-      if (
-        value === null ||
-        value === undefined
-      ) {
-        return "";
-      }
-
-      return String(value)
-        .replace(
-          /&/g,
-          "&amp;"
-        )
-        .replace(
-          /</g,
-          "&lt;"
-        )
-        .replace(
-          />/g,
-          "&gt;"
-        )
-        .replace(
-          /"/g,
-          "&quot;"
-        )
-        .replace(
-          /'/g,
-          "&#039;"
-        );
-
-    }
-
-
-
-    /* =====================================
-       MENSAGENS
-    ===================================== */
-
-    function showLoginMessage(
-      text,
-      type
-    ) {
-
-      loginMessage.textContent =
-        text;
-
-      loginMessage.className =
-        "message " + type;
-
-    }
-
-
-    function showProductMessage(
-      text,
-      type
-    ) {
-
-      const message =
-        document.getElementById(
-          "productMessage"
-        );
-
-      message.textContent =
-        text;
-
-      message.className =
-        "message " + type;
-
-    }
-
-
-
-    /* =====================================
-       LOGIN
-    ===================================== */
-
-    loginForm.addEventListener(
-      "submit",
-      async function(event) {
-
-        event.preventDefault();
-
-
-        if (!supabaseClient) {
-
-          showLoginMessage(
-            "Supabase não está configurado. Verifique o config.js.",
-            "error"
-          );
-
-          return;
-
-        }
-
-
-        const email =
-          document.getElementById(
-            "loginEmail"
-          ).value.trim();
-
-
-        const password =
-          document.getElementById(
-            "loginPassword"
-          ).value;
-
-
-        loginButton.disabled =
-          true;
-
-        loginButton.textContent =
-          "A entrar...";
-
-
-        showLoginMessage(
-          "",
-          ""
-        );
-
-
-        try {
-
-          const {
-            data,
-            error
-          } =
-            await supabaseClient.auth
-              .signInWithPassword({
-                email,
-                password
-              });
-
-
-          if (error) {
-
-            console.error(error);
-
-            showLoginMessage(
-              "E-mail ou palavra-passe incorretos.",
-              "error"
-            );
-
-            return;
-
-          }
-
-
-          currentUser =
-            data.user;
-
-
-          showAdmin();
-
-        } catch (error) {
-
-          console.error(error);
-
-          showLoginMessage(
-            "Ocorreu um erro ao iniciar sessão.",
-            "error"
-          );
-
-        } finally {
-
-          loginButton.disabled =
-            false;
-
-          loginButton.textContent =
-            "Entrar";
-
-        }
-
-      }
-    );
-
-
-
-    /* =====================================
-       MOSTRAR ADMIN
-    ===================================== */
-
-    function showAdmin() {
-
-      loginScreen.style.display =
-        "none";
-
-      adminScreen.style.display =
-        "block";
-
-      loadDashboard();
-
-    }
-
-
-
-    /* =====================================
-       MOSTRAR LOGIN
-    ===================================== */
-
-    function showLogin() {
-
-      loginScreen.style.display =
-        "flex";
-
-      adminScreen.style.display =
-        "none";
-
-      currentUser =
-        null;
-
-    }
-
-
-
-    /* =====================================
-       LOGOUT
-    ===================================== */
-
-    logoutButton.addEventListener(
-      "click",
-      async function() {
-
-        if (!supabaseClient) {
-          return;
-        }
-
-        await supabaseClient.auth.signOut();
-
-        showLogin();
-
-      }
-    );
-
-
-
-    /* =====================================
-       VER SITE
-    ===================================== */
-
-    viewSiteButton.addEventListener(
-      "click",
-      function() {
-
-        window.open(
-          "/",
-          "_blank"
-        );
-
-      }
-    );
-
-
-
-    /* =====================================
-       ATUALIZAR
-    ===================================== */
-
-    refreshButton.addEventListener(
-      "click",
-      async function() {
-
-        refreshButton.disabled =
-          true;
-
-        refreshButton.textContent =
-          "A atualizar...";
-
-
-        await loadDashboard();
-
-
-        refreshButton.disabled =
-          false;
-
-        refreshButton.textContent =
-          "Atualizar";
-
-      }
-    );
-
-
-
-    /* =====================================
-       DASHBOARD
-    ===================================== */
-
-    async function loadDashboard() {
-
-      await Promise.all([
-        loadProducts(),
-        loadOrders()
-      ]);
-
-    }
-
-
-
-    /* =====================================
-       CARREGAR PRODUTOS
-    ===================================== */
-
-    async function loadProducts() {
-
-      productsGrid.innerHTML = `
-        <div
-          class="loading"
-          style="grid-column:1/-1;"
-        >
-          A carregar produtos...
-        </div>
-      `;
-
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .from("products")
-          .select(`
-            id,
-            name,
-            description,
-            price,
-            image_url,
-            product_url,
-            is_active,
-            created_at
-          `)
-          .order(
-            "created_at",
-            {
-              ascending: false
-            }
-          );
-
-
-      if (error) {
-
-        console.error(
-          "Erro produtos:",
-          error
-        );
-
-
-        productsGrid.innerHTML = `
-          <div
-            class="empty"
-            style="grid-column:1/-1;"
-          >
-            Não foi possível carregar os produtos.
-          </div>
-        `;
-
-        return;
-
-      }
-
-
-      products =
-        data || [];
-
-
-      renderProducts();
-
-    }
-
-
-
-    /* =====================================
-       RENDERIZAR PRODUTOS
-    ===================================== */
-
-    function renderProducts() {
-
-      if (
-        products.length === 0
-      ) {
-
-        productsGrid.innerHTML = `
-          <div
-            class="empty"
-            style="grid-column:1/-1;"
-          >
-            Ainda não existem produtos.
-          </div>
-        `;
-
-        return;
-
-      }
-
-
-      productsGrid.innerHTML = "";
-
-
-      products.forEach(
-        product => {
-
-          const card =
-            document.createElement(
-              "div"
-            );
-
-
-          card.className =
-            "product-card";
-
-
-          let imageHTML;
-
-
-          if (
-            product.image_url
-          ) {
-
-            imageHTML = `
-              <div class="product-image">
-
-                <img
-                  src="${escapeHTML(
-                    product.image_url
-                  )}"
-                  alt="${escapeHTML(
-                    product.name
-                  )}"
-                >
-
-              </div>
-            `;
-
-          } else {
-
-            imageHTML = `
-              <div class="product-image">
-
-                <div class="placeholder">
-                  📚
-                </div>
-
-              </div>
-            `;
-
-          }
-
-
-          const statusClass =
-            product.is_active
-              ? "status-active"
-              : "status-inactive";
-
-
-          const statusText =
-            product.is_active
-              ? "Ativo"
-              : "Inativo";
-
-
-          card.innerHTML = `
-
-            ${imageHTML}
-
-            <div class="product-info">
-
-              <h3>
-                ${escapeHTML(
-                  product.name
-                )}
-              </h3>
-
-
-              <div class="product-description">
-
-                ${escapeHTML(
-                  product.description ||
-                  "Sem descrição."
-                )}
-
-              </div>
-
-
-              <div class="product-price">
-
-                ${formatPrice(
-                  product.price
-                )}
-
-              </div>
-
-
-              <span
-                class="product-status ${statusClass}"
-              >
-                ${statusText}
-              </span>
-
-
-              <div class="product-actions">
-
-                <button
-                  class="btn btn-secondary edit-product"
-                >
-                  Editar
-                </button>
-
-
-                <button
-                  class="btn ${
-                    product.is_active
-                      ? "btn-danger"
-                      : "btn-success"
-                  } toggle-product"
-                >
-                  ${
-                    product.is_active
-                      ? "Desativar"
-                      : "Ativar"
-                  }
-                </button>
-
-              </div>
-
-            </div>
-
-          `;
-
-
-          card
-            .querySelector(
-              ".edit-product"
-            )
-            .addEventListener(
-              "click",
-              function() {
-
-                editProduct(
-                  product
-                );
-
-              }
-            );
-
-
-          card
-            .querySelector(
-              ".toggle-product"
-            )
-            .addEventListener(
-              "click",
-              function() {
-
-                toggleProduct(
-                  product
-                );
-
-              }
-            );
-
-
-          productsGrid.appendChild(
-            card
-          );
-
-        }
-      );
-
-    }
-
-
-
-    /* =====================================
-       NOVO PRODUTO
-    ===================================== */
-
-    newProductButton.addEventListener(
-      "click",
-      function() {
-
-        resetProductForm();
-
-        document.getElementById(
-          "productFormTitle"
-        ).textContent =
-          "Novo produto";
-
-
-        productFormContainer.style.display =
-          "block";
-
-
-        productFormContainer.scrollIntoView({
-          behavior: "smooth",
-          block: "center"
-        });
-
-      }
-    );
-
-
-
-    /* =====================================
-       RESET FORM
-    ===================================== */
-
-    function resetProductForm() {
-
-      productForm.reset();
-
-
-      document.getElementById(
-        "productId"
-      ).value =
-        "";
-
-
-      document.getElementById(
-        "productActive"
-      ).checked =
-        true;
-
-
-      document.getElementById(
-        "productMessage"
-      ).className =
-        "message";
-
-
-      document.getElementById(
-        "productMessage"
-      ).textContent =
-        "";
-
-    }
-
-
-
-    /* =====================================
-       CANCELAR
-    ===================================== */
-
-    cancelProductButton.addEventListener(
-      "click",
-      function() {
-
-        productFormContainer.style.display =
-          "none";
-
-        resetProductForm();
-
-      }
-    );
-
-
-
-    /* =====================================
-       EDITAR PRODUTO
-    ===================================== */
-
-    function editProduct(product) {
-
-      document.getElementById(
-        "productFormTitle"
-      ).textContent =
-        "Editar produto";
-
-
-      document.getElementById(
-        "productId"
-      ).value =
-        product.id;
-
-
-      document.getElementById(
-        "productName"
-      ).value =
-        product.name || "";
-
-
-      document.getElementById(
-        "productDescription"
-      ).value =
-        product.description || "";
-
-
-      document.getElementById(
-        "productPrice"
-      ).value =
-        product.price || 0;
-
-
-      document.getElementById(
-        "productImage"
-      ).value =
-        product.image_url || "";
-
-
-      document.getElementById(
-        "productUrl"
-      ).value =
-        product.product_url || "";
-
-
-      document.getElementById(
-        "productActive"
-      ).checked =
-        Boolean(
-          product.is_active
-        );
-
-
-      productFormContainer.style.display =
-        "block";
-
-
-      productFormContainer.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
+    const { data, error } =
+      await supabaseClient.auth.signInWithPassword({
+        email,
+        password
       });
 
+    if (error) {
+
+      message.className = "message error";
+
+      message.textContent =
+        "Erro ao entrar: " + error.message;
+
+      return;
     }
 
+    showAdmin();
+
+  });
 
 
-    /* =====================================
-       GUARDAR PRODUTO
-    ===================================== */
+  // =========================
+  // VERIFICAR SESSÃO
+  // =========================
 
-    productForm.addEventListener(
-      "submit",
-      async function(event) {
+  async function checkSession() {
 
-        event.preventDefault();
+    const { data } =
+      await supabaseClient.auth.getSession();
+
+    if (data.session) {
+
+      showAdmin();
+
+    } else {
+
+      document.getElementById("loginScreen").style.display = "flex";
+
+      document.getElementById("adminContainer").style.display = "none";
+
+    }
+
+  }
 
 
-        const productId =
-          document.getElementById(
-            "productId"
-          ).value;
+  function showAdmin() {
 
+    document.getElementById("loginScreen").style.display = "none";
+
+    document.getElementById("adminContainer").style.display = "block";
+
+    loadDashboard();
+
+  }
+
+
+  // =========================
+  // LOGOUT
+  // =========================
+
+  async function logout() {
+
+    await supabaseClient.auth.signOut();
+
+    location.reload();
+
+  }
+
+
+  // =========================
+  // DASHBOARD
+  // =========================
+
+  async function loadDashboard() {
+
+    await loadStats();
+
+    await loadProducts();
+
+    await loadOrders();
+
+  }
+
+
+  // =========================
+  // ESTATÍSTICAS
+  // =========================
+
+  async function loadStats() {
+
+    const { data, error } =
+      await supabaseClient
+        .from("orders")
+        .select("total,status");
+
+    if (error) {
+
+      console.error(error);
+
+      return;
+
+    }
+
+    const orders = data || [];
+
+    const total =
+      orders.length;
+
+    const pending =
+      orders.filter(order =>
+        order.status === "pending"
+      ).length;
+
+    const paidOrders =
+      orders.filter(order =>
+        order.status === "paid"
+      );
+
+    const revenue =
+      paidOrders.reduce(
+        (sum, order) =>
+          sum + Number(order.total || 0),
+        0
+      );
+
+    document.getElementById("totalOrders").textContent =
+      total;
+
+    document.getElementById("pendingOrders").textContent =
+      pending;
+
+    document.getElementById("paidOrders").textContent =
+      paidOrders.length;
+
+    document.getElementById("totalRevenue").textContent =
+      revenue.toLocaleString("pt-MZ") + " MT";
+
+  }
+
+
+  // =========================
+  // PRODUTOS
+  // =========================
+
+  async function loadProducts() {
+
+    const container =
+      document.getElementById("productsContainer");
+
+    container.innerHTML =
+      '<div class="loading">A carregar produtos...</div>';
+
+    const { data, error } =
+      await supabaseClient
+        .from("products")
+        .select("*")
+        .order("created_at", {
+          ascending: false
+        });
+
+    if (error) {
+
+      console.error(error);
+
+      container.innerHTML =
+        '<div class="empty">Erro ao carregar produtos.</div>';
+
+      return;
+
+    }
+
+    if (!data || data.length === 0) {
+
+      container.innerHTML =
+        '<div class="empty">Ainda não existem produtos.</div>';
+
+      return;
+
+    }
+
+    container.innerHTML = "";
+
+    data.forEach(product => {
+
+      const card =
+        document.createElement("div");
+
+      card.className =
+        "product-card";
+
+      const image =
+        product.image_url
+          ? `
+            <img
+              src="${escapeHtml(product.image_url)}"
+              alt="${escapeHtml(product.name)}"
+            >
+          `
+          : `
+            <div class="product-no-image">
+              Sem imagem
+            </div>
+          `;
+
+      const status =
+        product.is_active
+          ? `<span class="status active">Ativo</span>`
+          : `<span class="status inactive">Inativo</span>`;
+
+      const fileStatus =
+        product.product_url
+          ? `
+            <div class="file-status">
+              📄 Ficheiro configurado
+            </div>
+          `
+          : `
+            <div class="file-status" style="color:#dc2626;">
+              ⚠️ Sem ficheiro
+            </div>
+          `;
+
+      card.innerHTML = `
+
+        <div class="product-image">
+          ${image}
+        </div>
+
+        <div class="product-content">
+
+          ${status}
+
+          <h3>
+            ${escapeHtml(product.name)}
+          </h3>
+
+          <div class="price">
+            ${Number(product.price).toLocaleString("pt-MZ")} MT
+          </div>
+
+          <p>
+            ${escapeHtml(product.description || "")}
+          </p>
+
+          ${fileStatus}
+
+          <div class="product-actions">
+
+            <button
+              class="btn-blue"
+              onclick="editProduct('${product.id}')"
+            >
+              ✏️ Editar
+            </button>
+
+            <button
+              class="${product.is_active ? "btn-red" : "btn-green"}"
+              onclick="toggleProduct('${product.id}', ${product.is_active})"
+            >
+              ${product.is_active ? "Desativar" : "Ativar"}
+            </button>
+
+          </div>
+
+        </div>
+
+      `;
+
+      container.appendChild(card);
+
+    });
+
+  }
+
+
+  // =========================
+  // ESCAPAR HTML
+  // =========================
+
+  function escapeHtml(value) {
+
+    if (value === null || value === undefined) {
+      return "";
+    }
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  // =========================
+  // UPLOAD DO FICHEIRO
+  // =========================
+
+  async function uploadProductFile(file) {
+
+    if (!file) {
+      return null;
+    }
+
+    const uploadStatus =
+      document.getElementById("uploadStatus");
+
+    uploadStatus.textContent =
+      "⏳ A enviar ficheiro...";
+
+    uploadStatus.style.color =
+      "#2563eb";
+
+    const extension =
+      file.name.split(".").pop().toLowerCase();
+
+    const safeName =
+      file.name
+        .replace(/\s+/g, "-")
+        .replace(/[^a-zA-Z0-9._-]/g, "");
+
+    const uniqueName =
+      Date.now() +
+      "-" +
+      Math.random().toString(36).substring(2, 8) +
+      "-" +
+      safeName;
+
+    const filePath =
+      "produtos/" +
+      uniqueName;
+
+    const { data, error } =
+      await supabaseClient
+        .storage
+        .from("produtos")
+        .upload(
+          filePath,
+          file,
+          {
+            cacheControl: "3600",
+            upsert: false
+          }
+        );
+
+    if (error) {
+
+      console.error(error);
+
+      uploadStatus.textContent =
+        "❌ Erro no upload: " + error.message;
+
+      uploadStatus.style.color =
+        "#dc2626";
+
+      throw error;
+
+    }
+
+    uploadStatus.textContent =
+      "✅ Ficheiro enviado com sucesso.";
+
+    uploadStatus.style.color =
+      "#16a34a";
+
+    return data.path;
+
+  }
+
+
+  // =========================
+  // GUARDAR PRODUTO
+  // =========================
+
+  document
+    .getElementById("productForm")
+    .addEventListener("submit", async function(event) {
+
+      event.preventDefault();
+
+      const button =
+        document.getElementById("saveProductButton");
+
+      const message =
+        document.getElementById("productMessage");
+
+      message.className = "message";
+
+      message.textContent = "";
+
+      button.disabled = true;
+
+      button.textContent =
+        "⏳ A guardar...";
+
+      try {
+
+        const id =
+          document.getElementById("productId").value;
 
         const name =
-          document.getElementById(
-            "productName"
-          ).value.trim();
-
-
-        const description =
-          document.getElementById(
-            "productDescription"
-          ).value.trim();
-
+          document.getElementById("productName").value.trim();
 
         const price =
           Number(
-            document.getElementById(
-              "productPrice"
-            ).value
+            document.getElementById("productPrice").value
           );
 
+        const description =
+          document
+            .getElementById("productDescription")
+            .value
+            .trim();
 
-        const imageUrl =
-          document.getElementById(
-            "productImage"
-          ).value.trim();
+        const image_url =
+          document
+            .getElementById("productImage")
+            .value
+            .trim();
+
+        const is_active =
+          document
+            .getElementById("productActive")
+            .checked;
+
+        const file =
+          document.getElementById("productFile").files[0];
+
+        let product_url = null;
 
 
-        const productUrl =
-          document.getElementById(
-            "productUrl"
-          ).value.trim();
+        // Se estiver a editar, manter o ficheiro atual
+        if (id) {
 
+          const { data: existingProduct, error } =
+            await supabaseClient
+              .from("products")
+              .select("product_url")
+              .eq("id", id)
+              .single();
 
-        const isActive =
-          document.getElementById(
-            "productActive"
-          ).checked;
+          if (error) {
+            throw error;
+          }
 
-
-        if (!name) {
-
-          showProductMessage(
-            "Digite o nome do produto.",
-            "error"
-          );
-
-          return;
+          product_url =
+            existingProduct?.product_url || null;
 
         }
 
 
-        if (
-          !Number.isFinite(price) ||
-          price < 0
-        ) {
+        // Se foi escolhido novo ficheiro
+        if (file) {
 
-          showProductMessage(
-            "Digite um preço válido.",
-            "error"
-          );
-
-          return;
+          product_url =
+            await uploadProductFile(file);
 
         }
-
-
-        const saveButton =
-          document.getElementById(
-            "saveProductButton"
-          );
-
-
-        saveButton.disabled =
-          true;
-
-        saveButton.textContent =
-          "A guardar...";
 
 
         const productData = {
 
           name,
-
           description,
-
           price,
-
           image_url:
-            imageUrl || null,
-
-          product_url:
-            productUrl || null,
-
-          is_active:
-            isActive
+            image_url || null,
+          is_active,
+          product_url
 
         };
 
 
-        try {
-
-          let error;
+        let error;
 
 
-          if (productId) {
+        // EDITAR
+        if (id) {
 
-            const result =
-              await supabaseClient
-                .from("products")
-                .update(
-                  productData
-                )
-                .eq(
-                  "id",
-                  productId
-                );
+          const result =
+            await supabaseClient
+              .from("products")
+              .update(productData)
+              .eq("id", id);
 
-
-            error =
-              result.error;
-
-          } else {
-
-            const result =
-              await supabaseClient
-                .from("products")
-                .insert([
-                  productData
-                ]);
-
-
-            error =
-              result.error;
-
-          }
-
-
-          if (error) {
-
-            console.error(
-              error
-            );
-
-
-            showProductMessage(
-              "Não foi possível guardar o produto.",
-              "error"
-            );
-
-            return;
-
-          }
-
-
-          showProductMessage(
-            productId
-              ? "Produto atualizado com sucesso."
-              : "Produto criado com sucesso.",
-            "success"
-          );
-
-
-          await loadProducts();
-
-
-          setTimeout(
-            function() {
-
-              productFormContainer.style.display =
-                "none";
-
-              resetProductForm();
-
-            },
-            700
-          );
-
-
-        } catch (error) {
-
-          console.error(
-            error
-          );
-
-
-          showProductMessage(
-            "Ocorreu um erro ao guardar o produto.",
-            "error"
-          );
-
-        } finally {
-
-          saveButton.disabled =
-            false;
-
-          saveButton.textContent =
-            "Guardar produto";
+          error = result.error;
 
         }
 
-      }
-    );
+        // NOVO
+        else {
+
+          const result =
+            await supabaseClient
+              .from("products")
+              .insert([productData]);
+
+          error = result.error;
+
+        }
 
 
-
-    /* =====================================
-       ATIVAR / DESATIVAR
-    ===================================== */
-
-    async function toggleProduct(product) {
-
-      const newStatus =
-        !product.is_active;
+        if (error) {
+          throw error;
+        }
 
 
-      const action =
-        newStatus
-          ? "ativar"
-          : "desativar";
+        message.className =
+          "message success";
+
+        message.textContent =
+          id
+            ? "Produto atualizado com sucesso!"
+            : "Produto criado com sucesso!";
 
 
-      const confirmed =
-        confirm(
-          `Deseja ${action} o produto "${product.name}"?`
-        );
+        cancelEdit();
+
+        await loadDashboard();
 
 
-      if (!confirmed) {
-        return;
-      }
+      } catch (error) {
 
+        console.error(error);
 
-      const {
-        error
-      } =
-        await supabaseClient
-          .from("products")
-          .update({
-            is_active:
-              newStatus
-          })
-          .eq(
-            "id",
-            product.id
-          );
+        message.className =
+          "message error";
 
+        message.textContent =
+          "Erro: " + error.message;
 
-      if (error) {
+      } finally {
 
-        console.error(
-          error
-        );
+        button.disabled = false;
 
-        alert(
-          "Não foi possível alterar o estado do produto."
-        );
-
-        return;
+        button.textContent =
+          "💾 Guardar produto";
 
       }
 
+    });
 
-      await loadProducts();
+
+  // =========================
+  // EDITAR PRODUTO
+  // =========================
+
+  async function editProduct(id) {
+
+    const { data, error } =
+      await supabaseClient
+        .from("products")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+    if (error) {
+
+      alert(
+        "Erro ao carregar produto: " +
+        error.message
+      );
+
+      return;
 
     }
 
 
+    document.getElementById("productId").value =
+      data.id;
 
-    /* =====================================
-       CARREGAR PEDIDOS
-    ===================================== */
+    document.getElementById("productName").value =
+      data.name || "";
 
-    async function loadOrders() {
+    document.getElementById("productPrice").value =
+      data.price || "";
 
-      ordersContainer.innerHTML = `
-        <div class="loading">
+    document.getElementById("productDescription").value =
+      data.description || "";
+
+    document.getElementById("productImage").value =
+      data.image_url || "";
+
+    document.getElementById("productActive").checked =
+      data.is_active;
+
+
+    const currentFile =
+      document.getElementById("currentFile");
+
+    if (data.product_url) {
+
+      currentFile.style.display =
+        "block";
+
+      currentFile.innerHTML =
+        "📄 Este produto já possui um ficheiro. Escolha outro ficheiro apenas se quiser substituí-lo.";
+
+    } else {
+
+      currentFile.style.display =
+        "none";
+
+    }
+
+
+    document.getElementById("formTitle").textContent =
+      "✏️ Editar produto";
+
+    document.getElementById("cancelButton").style.display =
+      "inline-block";
+
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  }
+
+
+  // =========================
+  // CANCELAR EDIÇÃO
+  // =========================
+
+  function cancelEdit() {
+
+    document.getElementById("productForm").reset();
+
+    document.getElementById("productId").value =
+      "";
+
+    document.getElementById("productActive").checked =
+      true;
+
+    document.getElementById("formTitle").textContent =
+      "➕ Adicionar produto";
+
+    document.getElementById("cancelButton").style.display =
+      "none";
+
+    document.getElementById("currentFile").style.display =
+      "none";
+
+    document.getElementById("uploadStatus").textContent =
+      "";
+
+  }
+
+
+  // =========================
+  // ATIVAR / DESATIVAR
+  // =========================
+
+  async function toggleProduct(id, currentStatus) {
+
+    const action =
+      currentStatus
+        ? "desativar"
+        : "ativar";
+
+    const confirmed =
+      confirm(
+        `Tem certeza que deseja ${action} este produto?`
+      );
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    const { error } =
+      await supabaseClient
+        .from("products")
+        .update({
+          is_active: !currentStatus
+        })
+        .eq("id", id);
+
+
+    if (error) {
+
+      alert(
+        "Erro: " +
+        error.message
+      );
+
+      return;
+
+    }
+
+
+    await loadDashboard();
+
+  }
+
+
+  // =========================
+  // PEDIDOS
+  // =========================
+
+  async function loadOrders() {
+
+    const tbody =
+      document.getElementById("ordersBody");
+
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8" class="loading">
           A carregar pedidos...
-        </div>
+        </td>
+      </tr>
+    `;
+
+
+    const { data, error } =
+      await supabaseClient
+        .from("orders")
+        .select("*")
+        .order("created_at", {
+          ascending: false
+        });
+
+
+    if (error) {
+
+      console.error(error);
+
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" class="empty">
+            Erro ao carregar pedidos.
+          </td>
+        </tr>
       `;
 
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .from("orders")
-          .select(`
-            id,
-            product,
-            customer_name,
-            customer_email,
-            quantity,
-            total,
-            status,
-            payment_reference,
-            paid_at,
-            created_at
-          `)
-          .order(
-            "created_at",
-            {
-              ascending: false
-            }
-          );
-
-
-      if (error) {
-
-        console.error(
-          "Erro pedidos:",
-          error
-        );
-
-
-        ordersContainer.innerHTML = `
-          <div class="empty">
-            Não foi possível carregar os pedidos.
-          </div>
-        `;
-
-        return;
-
-      }
-
-
-      const orders =
-        data || [];
-
-
-      updateStats(
-        orders
-      );
-
-
-      renderOrders(
-        orders
-      );
+      return;
 
     }
 
 
+    if (!data || data.length === 0) {
 
-    /* =====================================
-       ESTATÍSTICAS
-    ===================================== */
-
-    function updateStats(
-      orders
-    ) {
-
-      const total =
-        orders.length;
-
-
-      const pending =
-        orders.filter(
-          order =>
-            String(
-              order.status
-            ).toLowerCase() ===
-            "pending"
-        ).length;
-
-
-      const paid =
-        orders.filter(
-          order =>
-            String(
-              order.status
-            ).toLowerCase() ===
-            "paid"
-        );
-
-
-      const revenue =
-        paid.reduce(
-          (
-            sum,
-            order
-          ) =>
-            sum +
-            Number(
-              order.total || 0
-            ),
-          0
-        );
-
-
-      document.getElementById(
-        "totalOrders"
-      ).textContent =
-        total;
-
-
-      document.getElementById(
-        "pendingOrders"
-      ).textContent =
-        pending;
-
-
-      document.getElementById(
-        "paidOrders"
-      ).textContent =
-        paid.length;
-
-
-      document.getElementById(
-        "totalRevenue"
-      ).textContent =
-        formatPrice(
-          revenue
-        );
-
-    }
-
-
-
-    /* =====================================
-       NOME DO PRODUTO
-    ===================================== */
-
-    function getProductName(
-      productId
-    ) {
-
-      const product =
-        products.find(
-          item =>
-            item.id ===
-            productId
-        );
-
-
-      return product
-        ? product.name
-        : productId || "Produto";
-
-    }
-
-
-
-    /* =====================================
-       STATUS DO PEDIDO
-    ===================================== */
-
-    function getStatusHTML(
-      status
-    ) {
-
-      const normalized =
-        String(
-          status || "pending"
-        ).toLowerCase();
-
-
-      if (
-        normalized ===
-        "pending"
-      ) {
-
-        return `
-          <span
-            class="order-status status-pending"
-          >
-            Pendente
-          </span>
-        `;
-
-      }
-
-
-      if (
-        normalized ===
-        "paid"
-      ) {
-
-        return `
-          <span
-            class="order-status status-paid"
-          >
-            Pago
-          </span>
-        `;
-
-      }
-
-
-      if (
-        normalized ===
-        "cancelled"
-      ) {
-
-        return `
-          <span
-            class="order-status status-cancelled"
-          >
-            Cancelado
-          </span>
-        `;
-
-      }
-
-
-      return `
-        <span
-          class="order-status status-other"
-        >
-          ${escapeHTML(
-            status
-          )}
-        </span>
-      `;
-
-    }
-
-
-
-    /* =====================================
-       RENDERIZAR PEDIDOS
-    ===================================== */
-
-    function renderOrders(
-      orders
-    ) {
-
-      if (
-        orders.length === 0
-      ) {
-
-        ordersContainer.innerHTML = `
-          <div class="empty">
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" class="empty">
             Ainda não existem pedidos.
-          </div>
-        `;
-
-        return;
-
-      }
-
-
-      let html = `
-
-        <table>
-
-          <thead>
-
-            <tr>
-
-              <th>
-                Cliente
-              </th>
-
-              <th>
-                Produto
-              </th>
-
-              <th>
-                Qtd.
-              </th>
-
-              <th>
-                Total
-              </th>
-
-              <th>
-                Estado
-              </th>
-
-              <th>
-                Data
-              </th>
-
-            </tr>
-
-          </thead>
-
-          <tbody>
-
+          </td>
+        </tr>
       `;
 
-
-      orders.forEach(
-        order => {
-
-          const date =
-            order.created_at
-              ? new Date(
-                  order.created_at
-                ).toLocaleString(
-                  "pt-MZ",
-                  {
-                    dateStyle:
-                      "short",
-                    timeStyle:
-                      "short"
-                  }
-                )
-              : "—";
-
-
-          html += `
-
-            <tr>
-
-              <td>
-
-                <div class="customer-name">
-
-                  ${escapeHTML(
-                    order.customer_name
-                  )}
-
-                </div>
-
-                <div class="customer-email">
-
-                  ${escapeHTML(
-                    order.customer_email
-                  )}
-
-                </div>
-
-              </td>
-
-
-              <td>
-
-                ${escapeHTML(
-                  getProductName(
-                    order.product
-                  )
-                )}
-
-              </td>
-
-
-              <td>
-
-                ${Number(
-                  order.quantity || 1
-                )}
-
-              </td>
-
-
-              <td>
-
-                <strong>
-
-                  ${formatPrice(
-                    order.total
-                  )}
-
-                </strong>
-
-              </td>
-
-
-              <td>
-
-                ${getStatusHTML(
-                  order.status
-                )}
-
-              </td>
-
-
-              <td>
-
-                ${date}
-
-              </td>
-
-            </tr>
-
-          `;
-
-        }
-      );
-
-
-      html += `
-
-          </tbody>
-
-        </table>
-
-      `;
-
-
-      ordersContainer.innerHTML =
-        html;
+      return;
 
     }
 
 
+    tbody.innerHTML = "";
 
-    /* =====================================
-       VERIFICAR SESSÃO
-    ===================================== */
 
-    async function checkSession() {
+    data.forEach(order => {
 
-      if (!supabaseClient) {
+      const tr =
+        document.createElement("tr");
 
-        showLoginMessage(
-          "O Supabase não está configurado. Verifique o config.js.",
-          "error"
-        );
 
-        return;
+      let statusClass =
+        "pending";
 
+      if (order.status === "paid") {
+        statusClass = "paid";
       }
-
-
-      const {
-        data
-      } =
-        await supabaseClient.auth
-          .getSession();
-
 
       if (
-        data &&
-        data.session
+        order.status === "cancelled" ||
+        order.status === "canceled"
       ) {
-
-        currentUser =
-          data.session.user;
-
-        showAdmin();
-
-      } else {
-
-        showLogin();
-
+        statusClass = "cancelled";
       }
 
-    }
+
+      const date =
+        order.created_at
+          ? new Date(order.created_at)
+              .toLocaleString("pt-MZ")
+          : "-";
 
 
+      tr.innerHTML = `
 
-    /* =====================================
-       ALTERAÇÃO DE AUTENTICAÇÃO
-    ===================================== */
+        <td>
+          ${escapeHtml(order.customer_name || "-")}
+        </td>
 
-    if (
-      supabaseClient
-    ) {
+        <td>
+          ${escapeHtml(order.customer_email || "-")}
+        </td>
 
-      supabaseClient.auth
-        .onAuthStateChange(
-          function(
-            event,
-            session
-          ) {
+        <td>
+          ${escapeHtml(order.product_name || order.product || "-")}
+        </td>
 
-            if (
-              session
-            ) {
+        <td>
+          ${order.quantity || 1}
+        </td>
 
-              currentUser =
-                session.user;
+        <td>
+          ${Number(order.total || 0).toLocaleString("pt-MZ")} MT
+        </td>
 
-            } else {
+        <td>
+          <span class="order-status ${statusClass}">
+            ${escapeHtml(order.status || "pending")}
+          </span>
+        </td>
 
-              currentUser =
-                null;
+        <td>
+          ${escapeHtml(order.payment_reference || "-")}
+        </td>
 
-            }
+        <td>
+          ${date}
+        </td>
 
-          }
-        );
-
-    }
-
+      `;
 
 
-    /* =====================================
-       INICIAR
-    ===================================== */
+      tbody.appendChild(tr);
 
-    checkSession();
+    });
 
-  </script>
+  }
+
+
+  // =========================
+  // INICIAR
+  // =========================
+
+  checkSession();
+
+</script>
 
 </body>
 </html>
