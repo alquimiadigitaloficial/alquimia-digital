@@ -4,18 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Alquimia Digital — Marketing Digital</title>
+  <title>Alquimia Digital — Produtos Digitais</title>
 
   <meta
     name="description"
-    content="Alquimia Digital — produtos e conhecimentos para aprender e crescer no mundo digital."
+    content="Alquimia Digital — produtos, conteúdos e conhecimentos para o mundo digital."
   >
 
-  <!-- Supabase -->
+  <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
 
   <style>
+
+    /* =========================================
+       RESET
+    ========================================= */
+
     * {
       margin: 0;
       padding: 0;
@@ -23,33 +28,52 @@
     }
 
     :root {
-      --bg: #07111f;
-      --bg2: #0b1728;
-      --card: #101d30;
-      --card2: #14243a;
-      --border: rgba(148, 163, 184, .15);
+      --bg: #050b16;
+      --bg-light: #0b1424;
+      --card: #101b2d;
+      --card-light: #152238;
+      --border: rgba(148, 163, 184, 0.15);
+
       --text: #f8fafc;
       --muted: #94a3b8;
+
       --primary: #2563eb;
-      --primary-light: #60a5fa;
-      --success: #22c55e;
-      --danger: #ef4444;
+      --primary-hover: #1d4ed8;
+
+      --blue-light: #60a5fa;
+
+      --green: #22c55e;
+      --green-dark: #16a34a;
+
+      --red: #ef4444;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
       font-family: Arial, Helvetica, sans-serif;
       background:
-        radial-gradient(circle at top left, rgba(37, 99, 235, .16), transparent 30%),
-        radial-gradient(circle at top right, rgba(124, 58, 237, .12), transparent 30%),
+        radial-gradient(
+          circle at 10% 0%,
+          rgba(37, 99, 235, 0.16),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 90% 10%,
+          rgba(124, 58, 237, 0.13),
+          transparent 30%
+        ),
         var(--bg);
+
       color: var(--text);
       min-height: 100vh;
     }
 
     button,
-    input,
-    textarea {
-      font: inherit;
+    input {
+      font-family: inherit;
     }
 
     button {
@@ -66,47 +90,59 @@
       margin: auto;
     }
 
-    /* =========================
+
+    /* =========================================
        HEADER
-    ========================== */
+    ========================================= */
 
     header {
       position: sticky;
       top: 0;
-      z-index: 50;
-      background: rgba(7, 17, 31, .88);
-      backdrop-filter: blur(15px);
+      z-index: 100;
+
+      background: rgba(5, 11, 22, 0.88);
+      backdrop-filter: blur(16px);
+
       border-bottom: 1px solid var(--border);
     }
 
     .navbar {
       min-height: 72px;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 25px;
+
+      gap: 20px;
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 10px;
+
       font-weight: bold;
       font-size: 20px;
     }
 
     .brand-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
+      width: 40px;
+      height: 40px;
+
       display: grid;
       place-items: center;
-      background: linear-gradient(135deg, #2563eb, #7c3aed);
-      font-size: 19px;
-    }
 
-    .brand-name {
-      color: #fff;
+      border-radius: 12px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #2563eb,
+          #7c3aed
+        );
+
+      box-shadow:
+        0 10px 30px rgba(37, 99, 235, 0.2);
     }
 
     nav {
@@ -118,104 +154,154 @@
     nav a {
       color: #cbd5e1;
       font-size: 14px;
-      transition: .2s;
+
+      transition: 0.2s;
     }
 
     nav a:hover {
-      color: #60a5fa;
+      color: var(--blue-light);
     }
 
     .mobile-menu {
       display: none;
-      border: 1px solid var(--border);
+
       background: var(--card);
       color: white;
-      border-radius: 8px;
+
+      border: 1px solid var(--border);
+      border-radius: 9px;
+
       padding: 9px 12px;
     }
 
-    /* =========================
+
+    /* =========================================
        HERO
-    ========================== */
+    ========================================= */
 
     .hero {
-      padding: 90px 0 75px;
+      padding: 100px 0 80px;
       text-align: center;
     }
 
     .hero-badge {
       display: inline-block;
-      padding: 8px 14px;
+
+      padding: 8px 15px;
+
       border-radius: 30px;
-      background: rgba(37, 99, 235, .12);
-      border: 1px solid rgba(96, 165, 250, .2);
+
+      background: rgba(37, 99, 235, 0.12);
+
+      border: 1px solid rgba(96, 165, 250, 0.2);
+
       color: #93c5fd;
+
       font-size: 13px;
+
       margin-bottom: 22px;
     }
 
     .hero h1 {
-      max-width: 850px;
+      max-width: 900px;
       margin: auto;
-      font-size: clamp(38px, 6vw, 68px);
-      line-height: 1.04;
+
+      font-size: clamp(40px, 6vw, 70px);
+
+      line-height: 1.05;
+
       letter-spacing: -2px;
     }
 
     .gradient-text {
-      background: linear-gradient(90deg, #60a5fa, #a78bfa);
+      background:
+        linear-gradient(
+          90deg,
+          #60a5fa,
+          #a78bfa
+        );
+
       -webkit-background-clip: text;
       background-clip: text;
+
       color: transparent;
     }
 
     .hero p {
       max-width: 680px;
+
       margin: 25px auto 30px;
+
       color: var(--muted);
+
       font-size: 18px;
+
       line-height: 1.7;
     }
 
     .hero-actions {
       display: flex;
       justify-content: center;
+
       gap: 12px;
+
       flex-wrap: wrap;
     }
 
+
+    /* =========================================
+       BUTTONS
+    ========================================= */
+
     .btn {
       border: none;
+
       border-radius: 10px;
+
       padding: 13px 20px;
+
       font-weight: bold;
-      transition: .2s;
+
+      transition: 0.2s;
     }
 
     .btn-primary {
       background: var(--primary);
       color: white;
-      box-shadow: 0 10px 30px rgba(37, 99, 235, .22);
+
+      box-shadow:
+        0 10px 30px rgba(37, 99, 235, 0.22);
     }
 
     .btn-primary:hover {
-      background: #1d4ed8;
+      background: var(--primary-hover);
+
       transform: translateY(-1px);
     }
 
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+
+      transform: none;
+    }
+
     .btn-secondary {
-      background: rgba(148, 163, 184, .08);
+      background: rgba(148, 163, 184, 0.08);
+
       border: 1px solid var(--border);
+
       color: #e2e8f0;
     }
 
     .btn-secondary:hover {
-      background: rgba(148, 163, 184, .13);
+      background: rgba(148, 163, 184, 0.13);
     }
 
-    /* =========================
+
+    /* =========================================
        SECTIONS
-    ========================== */
+    ========================================= */
 
     section {
       padding: 70px 0;
@@ -223,11 +309,13 @@
 
     .section-title {
       text-align: center;
+
       margin-bottom: 40px;
     }
 
     .section-title h2 {
       font-size: 32px;
+
       margin-bottom: 10px;
     }
 
@@ -235,31 +323,45 @@
       color: var(--muted);
     }
 
-    /* =========================
+
+    /* =========================================
        FEATURES
-    ========================== */
+    ========================================= */
 
     .features {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
       gap: 18px;
     }
 
     .feature {
       padding: 25px;
-      background: rgba(16, 29, 48, .75);
+
+      background:
+        rgba(16, 27, 45, 0.75);
+
       border: 1px solid var(--border);
+
       border-radius: 16px;
     }
 
     .feature-icon {
-      width: 45px;
-      height: 45px;
+      width: 46px;
+      height: 46px;
+
       display: grid;
       place-items: center;
-      background: rgba(37, 99, 235, .12);
+
+      background:
+        rgba(37, 99, 235, 0.12);
+
       border-radius: 12px;
+
       margin-bottom: 18px;
+
       font-size: 21px;
     }
 
@@ -269,54 +371,76 @@
 
     .feature p {
       color: var(--muted);
+
       line-height: 1.6;
+
       font-size: 14px;
     }
 
-    /* =========================
+
+    /* =========================================
        PRODUCTS
-    ========================== */
+    ========================================= */
 
     .products-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
       gap: 22px;
     }
 
     .product-card {
       background: var(--card);
+
       border: 1px solid var(--border);
+
       border-radius: 18px;
+
       overflow: hidden;
-      transition: .25s;
+
+      transition: 0.25s;
     }
 
     .product-card:hover {
       transform: translateY(-4px);
-      border-color: rgba(96, 165, 250, .3);
-      box-shadow: 0 20px 50px rgba(0,0,0,.18);
+
+      border-color:
+        rgba(96, 165, 250, 0.3);
+
+      box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.18);
     }
 
     .product-image {
       height: 200px;
+
       background:
-        linear-gradient(135deg, rgba(37, 99, 235, .35), rgba(124, 58, 237, .35)),
+        linear-gradient(
+          135deg,
+          rgba(37, 99, 235, 0.35),
+          rgba(124, 58, 237, 0.35)
+        ),
         #0f172a;
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       overflow: hidden;
     }
 
     .product-image img {
       width: 100%;
       height: 100%;
+
       object-fit: cover;
     }
 
     .product-placeholder {
-      font-size: 48px;
-      opacity: .8;
+      font-size: 50px;
+      opacity: 0.8;
     }
 
     .product-content {
@@ -325,78 +449,240 @@
 
     .product-content h3 {
       font-size: 20px;
+
       margin-bottom: 10px;
     }
 
     .product-description {
       color: var(--muted);
+
       line-height: 1.6;
+
       font-size: 14px;
+
       min-height: 68px;
+
       margin-bottom: 18px;
     }
 
     .product-bottom {
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
+
       gap: 12px;
     }
 
     .product-price {
       font-size: 21px;
+
       font-weight: bold;
-      color: #60a5fa;
+
+      color: var(--blue-light);
+
       white-space: nowrap;
     }
 
     .buy-btn {
       border: none;
+
       border-radius: 9px;
-      padding: 11px 15px;
+
+      padding: 11px 16px;
+
       background: var(--primary);
+
       color: white;
+
       font-weight: bold;
     }
 
     .buy-btn:hover {
-      background: #1d4ed8;
+      background: var(--primary-hover);
     }
 
     .products-message {
       text-align: center;
+
       color: var(--muted);
-      padding: 35px;
+
+      padding: 40px;
+
       grid-column: 1 / -1;
     }
 
-    /* =========================
-       CHECKOUT
-    ========================== */
 
-    .checkout-section {
+    /* =========================================
+       PAYMENT SECTION
+    ========================================= */
+
+    .payment-section {
       display: none;
+
       padding-top: 20px;
     }
 
-    .checkout-card {
-      max-width: 700px;
+    .payment-wrapper {
+      max-width: 760px;
+
       margin: auto;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 30px;
     }
 
-    .checkout-card h2 {
+    .payment-card {
+      background: var(--card);
+
+      border: 1px solid var(--border);
+
+      border-radius: 20px;
+
+      overflow: hidden;
+
+      box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.25);
+    }
+
+    .payment-header {
+      padding: 28px;
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .payment-header h2 {
+      font-size: 28px;
+
       margin-bottom: 8px;
     }
 
-    .checkout-product {
-      color: var(--primary-light);
-      font-weight: bold;
+    .payment-header p {
+      color: var(--muted);
+
+      font-size: 14px;
+    }
+
+    .payment-body {
+      padding: 28px;
+    }
+
+
+    /* =========================================
+       ORDER SUMMARY
+    ========================================= */
+
+    .order-summary {
+      background: var(--bg-light);
+
+      border: 1px solid var(--border);
+
+      border-radius: 14px;
+
+      padding: 20px;
+
       margin-bottom: 25px;
     }
+
+    .summary-row {
+      display: flex;
+
+      justify-content: space-between;
+
+      gap: 20px;
+
+      padding: 9px 0;
+
+      color: #cbd5e1;
+
+      font-size: 14px;
+    }
+
+    .summary-row strong {
+      color: white;
+    }
+
+    .summary-total {
+      border-top: 1px solid var(--border);
+
+      margin-top: 10px;
+
+      padding-top: 16px;
+
+      font-size: 18px;
+    }
+
+    .summary-total strong {
+      color: #60a5fa;
+
+      font-size: 22px;
+    }
+
+
+    /* =========================================
+       PAYMENT METHOD
+    ========================================= */
+
+    .payment-method-title {
+      margin-bottom: 12px;
+
+      font-size: 15px;
+
+      color: #cbd5e1;
+    }
+
+    .mpesa-option {
+      display: flex;
+
+      align-items: center;
+
+      gap: 15px;
+
+      padding: 18px;
+
+      border-radius: 14px;
+
+      border: 1px solid
+        rgba(34, 197, 94, 0.35);
+
+      background:
+        rgba(34, 197, 94, 0.07);
+
+      margin-bottom: 22px;
+    }
+
+    .mpesa-icon {
+      width: 48px;
+      height: 48px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 12px;
+
+      background: var(--green);
+
+      color: white;
+
+      font-weight: bold;
+
+      font-size: 12px;
+    }
+
+    .mpesa-option h3 {
+      font-size: 17px;
+
+      margin-bottom: 4px;
+    }
+
+    .mpesa-option p {
+      color: var(--muted);
+
+      font-size: 13px;
+    }
+
+
+    /* =========================================
+       CUSTOMER FORM
+    ========================================= */
 
     .form-group {
       margin-bottom: 18px;
@@ -404,135 +690,265 @@
 
     .form-group label {
       display: block;
+
       margin-bottom: 8px;
+
       color: #cbd5e1;
+
       font-size: 14px;
     }
 
-    .form-group input,
-    .form-group textarea {
+    .form-group input {
       width: 100%;
+
       border: 1px solid #334155;
-      background: #0b1423;
+
+      background: #091321;
+
       color: white;
+
       border-radius: 10px;
-      padding: 13px;
+
+      padding: 14px;
+
       outline: none;
     }
 
-    .form-group input:focus,
-    .form-group textarea:focus {
+    .form-group input:focus {
       border-color: #3b82f6;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(59, 130, 246, 0.1);
     }
 
-    .checkout-total {
+
+    /* =========================================
+       MPESA NUMBER
+    ========================================= */
+
+    .mpesa-number-box {
       padding: 18px;
-      border-radius: 12px;
-      background: #0b1423;
-      border: 1px solid var(--border);
+
+      border-radius: 14px;
+
+      background:
+        rgba(34, 197, 94, 0.06);
+
+      border: 1px solid
+        rgba(34, 197, 94, 0.16);
+
       margin: 20px 0;
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
     }
 
-    .checkout-total strong {
-      color: #60a5fa;
+    .mpesa-number-box label {
+      display: block;
+
+      margin-bottom: 9px;
+
+      font-size: 14px;
+
+      color: #dbeafe;
     }
 
-    .payment-info {
-      margin: 20px 0;
-      padding: 18px;
-      border-radius: 12px;
-      background: rgba(37, 99, 235, .08);
-      border: 1px solid rgba(96, 165, 250, .16);
-    }
+    .mpesa-number-box small {
+      display: block;
 
-    .payment-info h3 {
-      margin-bottom: 8px;
-    }
+      margin-top: 8px;
 
-    .payment-info p {
       color: var(--muted);
-      font-size: 14px;
-      line-height: 1.6;
-    }
 
-    .checkout-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+      font-size: 12px;
 
-    .checkout-message {
-      margin-top: 15px;
-      font-size: 14px;
       line-height: 1.5;
     }
 
-    .success-message {
-      color: #4ade80;
+
+    /* =========================================
+       PAYMENT STATUS
+    ========================================= */
+
+    .payment-status {
+      display: none;
+
+      text-align: center;
+
+      padding: 35px 20px;
     }
 
-    .error-message {
-      color: #f87171;
+    .status-icon {
+      width: 65px;
+      height: 65px;
+
+      margin: auto auto 18px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 50%;
+
+      background: rgba(37, 99, 235, 0.12);
+
+      font-size: 28px;
     }
 
-    /* =========================
+    .payment-status h3 {
+      font-size: 23px;
+
+      margin-bottom: 10px;
+    }
+
+    .payment-status p {
+      color: var(--muted);
+
+      line-height: 1.6;
+
+      font-size: 14px;
+    }
+
+    .spinner {
+      width: 45px;
+      height: 45px;
+
+      margin: auto auto 20px;
+
+      border: 4px solid
+        rgba(255,255,255,0.12);
+
+      border-top-color:
+        #60a5fa;
+
+      border-radius: 50%;
+
+      animation:
+        spin 0.9s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+
+    /* =========================================
+       MESSAGES
+    ========================================= */
+
+    .message {
+      margin-top: 15px;
+
+      padding: 13px;
+
+      border-radius: 10px;
+
+      font-size: 14px;
+
+      line-height: 1.5;
+
+      display: none;
+    }
+
+    .message.success {
+      display: block;
+
+      color: #86efac;
+
+      background:
+        rgba(34, 197, 94, 0.08);
+
+      border: 1px solid
+        rgba(34, 197, 94, 0.16);
+    }
+
+    .message.error {
+      display: block;
+
+      color: #fca5a5;
+
+      background:
+        rgba(239, 68, 68, 0.08);
+
+      border: 1px solid
+        rgba(239, 68, 68, 0.16);
+    }
+
+
+    /* =========================================
        ABOUT
-    ========================== */
+    ========================================= */
 
     .about-box {
       max-width: 850px;
+
       margin: auto;
+
       text-align: center;
+
       background: var(--card);
+
       border: 1px solid var(--border);
+
       border-radius: 18px;
+
       padding: 35px;
     }
 
     .about-box p {
       color: var(--muted);
+
       line-height: 1.8;
     }
 
-    /* =========================
+
+    /* =========================================
        FOOTER
-    ========================== */
+    ========================================= */
 
     footer {
       border-top: 1px solid var(--border);
+
       padding: 35px 0;
+
       margin-top: 40px;
     }
 
     .footer-content {
       display: flex;
+
       justify-content: space-between;
+
       gap: 20px;
+
       align-items: center;
     }
 
     .footer-content p {
       color: var(--muted);
+
       font-size: 13px;
     }
 
-    /* =========================
+
+    /* =========================================
        MOBILE
-    ========================== */
+    ========================================= */
 
     @media (max-width: 900px) {
+
       .features,
       .products-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+          repeat(2, 1fr);
       }
+
     }
 
     @media (max-width: 650px) {
+
       .container {
-        width: min(100% - 28px, 1180px);
+        width:
+          min(100% - 28px, 1180px);
       }
 
       nav {
@@ -564,59 +980,101 @@
         padding: 50px 0;
       }
 
-      .checkout-card {
+      .payment-body,
+      .payment-header {
         padding: 22px;
       }
 
       .footer-content {
         flex-direction: column;
+
         text-align: center;
       }
 
       .product-bottom {
         align-items: flex-start;
+
         flex-direction: column;
       }
 
       .buy-btn {
         width: 100%;
       }
+
     }
+
   </style>
 </head>
 
+
 <body>
 
-  <!-- HEADER -->
+
+  <!-- =========================================
+       HEADER
+  ========================================== -->
 
   <header>
+
     <div class="container navbar">
 
       <a href="#inicio" class="brand">
-        <span class="brand-icon">✦</span>
-        <span class="brand-name">Alquimia Digital</span>
+
+        <span class="brand-icon">
+          ✦
+        </span>
+
+        <span>
+          Alquimia Digital
+        </span>
+
       </a>
 
+
       <nav>
-        <a href="#inicio">Início</a>
-        <a href="#produtos">Produtos</a>
-        <a href="#sobre">Sobre</a>
-        <a href="#checkout">Comprar</a>
+
+        <a href="#inicio">
+          Início
+        </a>
+
+        <a href="#produtos">
+          Produtos
+        </a>
+
+        <a href="#sobre">
+          Sobre
+        </a>
+
       </nav>
 
-      <button class="mobile-menu" id="mobileMenu">
+
+      <button
+        class="mobile-menu"
+        id="mobileMenu"
+        type="button"
+      >
         ☰
       </button>
 
     </div>
+
   </header>
 
 
-  <!-- HERO -->
+
+  <!-- =========================================
+       MAIN
+  ========================================== -->
 
   <main>
 
-    <section class="hero" id="inicio">
+
+    <!-- HERO -->
+
+    <section
+      class="hero"
+      id="inicio"
+    >
 
       <div class="container">
 
@@ -624,26 +1082,42 @@
           🚀 Conhecimento para o mundo digital
         </div>
 
+
         <h1>
+
           Transforme conhecimento em
+
           <span class="gradient-text">
             resultados digitais
           </span>
+
         </h1>
 
+
         <p>
-          A Alquimia Digital reúne produtos, conteúdos e ferramentas
-          para quem quer aprender, desenvolver competências e crescer
-          no mundo digital.
+
+          A Alquimia Digital reúne produtos,
+          conteúdos e ferramentas para quem
+          quer aprender, desenvolver competências
+          e crescer no mundo digital.
+
         </p>
+
 
         <div class="hero-actions">
 
-          <a href="#produtos" class="btn btn-primary">
+          <a
+            href="#produtos"
+            class="btn btn-primary"
+          >
             Ver produtos
           </a>
 
-          <a href="#sobre" class="btn btn-secondary">
+
+          <a
+            href="#sobre"
+            class="btn btn-secondary"
+          >
             Conhecer a Alquimia
           </a>
 
@@ -654,6 +1128,7 @@
     </section>
 
 
+
     <!-- BENEFÍCIOS -->
 
     <section>
@@ -662,10 +1137,13 @@
 
         <div class="section-title">
 
-          <h2>Por que Alquimia Digital?</h2>
+          <h2>
+            Por que Alquimia Digital?
+          </h2>
 
           <p>
-            Uma experiência simples para aprender e adquirir produtos digitais.
+            Uma experiência simples para
+            adquirir produtos digitais.
           </p>
 
         </div>
@@ -673,17 +1151,21 @@
 
         <div class="features">
 
+
           <div class="feature">
 
             <div class="feature-icon">
               📚
             </div>
 
-            <h3>Conteúdo útil</h3>
+            <h3>
+              Conteúdo útil
+            </h3>
 
             <p>
-              Materiais pensados para ajudar no desenvolvimento
-              de conhecimentos e competências digitais.
+              Materiais pensados para ajudar
+              no desenvolvimento de conhecimentos
+              e competências digitais.
             </p>
 
           </div>
@@ -695,11 +1177,13 @@
               ⚡
             </div>
 
-            <h3>Acesso simples</h3>
+            <h3>
+              Acesso simples
+            </h3>
 
             <p>
-              Escolha um produto, informe os seus dados e faça
-              o pedido de forma rápida e simples.
+              Escolha um produto, informe os
+              seus dados e avance para o pagamento.
             </p>
 
           </div>
@@ -711,20 +1195,24 @@
               🔐
             </div>
 
-            <h3>Processo seguro</h3>
+            <h3>
+              Processo organizado
+            </h3>
 
             <p>
-              Os pedidos são registados de forma organizada
-              para facilitar o acompanhamento da compra.
+              Os pedidos são registados no sistema
+              para facilitar o acompanhamento.
             </p>
 
           </div>
+
 
         </div>
 
       </div>
 
     </section>
+
 
 
     <!-- PRODUTOS -->
@@ -735,10 +1223,12 @@
 
         <div class="section-title">
 
-          <h2>Produtos</h2>
+          <h2>
+            Produtos
+          </h2>
 
           <p>
-            Escolha o conteúdo que deseja adquirir.
+            Escolha o produto que deseja adquirir.
           </p>
 
         </div>
@@ -760,153 +1250,359 @@
     </section>
 
 
-    <!-- CHECKOUT -->
+
+    <!-- =========================================
+         PAGAMENTO
+    ========================================== -->
 
     <section
-      id="checkout"
-      class="checkout-section"
+      id="pagamento"
+      class="payment-section"
     >
 
       <div class="container">
 
-        <div class="checkout-card">
-
-          <h2>Finalizar pedido</h2>
-
-          <div
-            id="checkoutProduct"
-            class="checkout-product"
-          >
-            Nenhum produto selecionado.
-          </div>
+        <div class="payment-wrapper">
 
 
-          <form id="checkoutForm">
-
-            <div class="form-group">
-
-              <label for="customerName">
-                Nome completo
-              </label>
-
-              <input
-                type="text"
-                id="customerName"
-                placeholder="Digite o seu nome"
-                required
-              >
-
-            </div>
+          <div class="payment-card">
 
 
-            <div class="form-group">
+            <!-- CABEÇALHO -->
 
-              <label for="customerEmail">
-                E-mail
-              </label>
+            <div class="payment-header">
 
-              <input
-                type="email"
-                id="customerEmail"
-                placeholder="Digite o seu e-mail"
-                required
-              >
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label for="customerPhone">
-                Número de telefone
-              </label>
-
-              <input
-                type="tel"
-                id="customerPhone"
-                placeholder="Ex.: 84 000 0000"
-                required
-              >
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label for="quantity">
-                Quantidade
-              </label>
-
-              <input
-                type="number"
-                id="quantity"
-                min="1"
-                value="1"
-                required
-              >
-
-            </div>
-
-
-            <div class="checkout-total">
-
-              <span>Total</span>
-
-              <strong id="checkoutTotal">
-                0 MT
-              </strong>
-
-            </div>
-
-
-            <!-- PAGAMENTO -->
-
-            <div class="payment-info">
-
-              <h3>Pagamento</h3>
+              <h2>
+                Pagamento
+              </h2>
 
               <p>
-                O pagamento M-Pesa será integrado nesta etapa.
-                Por enquanto, o pedido será registado como pendente
-                para confirmação posterior.
+                Complete os seus dados para
+                continuar para o pagamento.
               </p>
 
             </div>
 
 
-            <div class="checkout-actions">
+            <!-- FORMULÁRIO -->
 
-              <button
-                type="submit"
-                class="btn btn-primary"
-                id="submitOrderBtn"
+            <div
+              class="payment-body"
+              id="paymentFormArea"
+            >
+
+
+              <!-- RESUMO -->
+
+              <div class="order-summary">
+
+                <div class="summary-row">
+
+                  <span>
+                    Produto
+                  </span>
+
+                  <strong
+                    id="summaryProduct"
+                  >
+                    —
+                  </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                  <span>
+                    Quantidade
+                  </span>
+
+                  <strong
+                    id="summaryQuantity"
+                  >
+                    1
+                  </strong>
+
+                </div>
+
+
+                <div
+                  class="summary-row summary-total"
+                >
+
+                  <span>
+                    Total
+                  </span>
+
+                  <strong
+                    id="summaryTotal"
+                  >
+                    0 MT
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+
+              <!-- MÉTODO -->
+
+              <div class="payment-method-title">
+
+                Método de pagamento
+
+              </div>
+
+
+              <div class="mpesa-option">
+
+                <div class="mpesa-icon">
+                  M-PESA
+                </div>
+
+
+                <div>
+
+                  <h3>
+                    M-Pesa
+                  </h3>
+
+                  <p>
+                    Pagamento móvel
+                  </p>
+
+                </div>
+
+              </div>
+
+
+
+              <!-- DADOS -->
+
+              <div class="form-group">
+
+                <label for="customerName">
+                  Nome completo
+                </label>
+
+                <input
+                  type="text"
+                  id="customerName"
+                  placeholder="Digite o seu nome completo"
+                  autocomplete="name"
+                  required
+                >
+
+              </div>
+
+
+
+              <div class="form-group">
+
+                <label for="customerEmail">
+                  E-mail
+                </label>
+
+                <input
+                  type="email"
+                  id="customerEmail"
+                  placeholder="Digite o seu e-mail"
+                  autocomplete="email"
+                  required
+                >
+
+              </div>
+
+
+
+              <div class="mpesa-number-box">
+
+                <label for="customerPhone">
+
+                  Número M-Pesa
+
+                </label>
+
+
+                <input
+                  type="tel"
+                  id="customerPhone"
+                  placeholder="Ex.: 84 000 0000"
+                  autocomplete="tel"
+                  required
+                >
+
+
+                <small>
+
+                  Utilize o número associado
+                  à sua conta M-Pesa.
+
+                </small>
+
+              </div>
+
+
+
+              <!-- QUANTIDADE -->
+
+              <div class="form-group">
+
+                <label for="quantity">
+
+                  Quantidade
+
+                </label>
+
+
+                <input
+                  type="number"
+                  id="quantity"
+                  min="1"
+                  value="1"
+                  required
+                >
+
+              </div>
+
+
+
+              <!-- AVISO -->
+
+              <div
+                class="message"
+                id="paymentMessage"
+              ></div>
+
+
+
+              <!-- BOTÕES -->
+
+              <div
+                style="
+                  display:flex;
+                  gap:10px;
+                  flex-wrap:wrap;
+                  margin-top:20px;
+                "
               >
-                Continuar para pagamento
-              </button>
+
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  id="payButton"
+                >
+                  Pagar com M-Pesa
+                </button>
+
+
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  id="backButton"
+                >
+                  Voltar
+                </button>
+
+              </div>
+
+
+            </div>
+
+
+
+            <!-- =================================
+                 PROCESSAMENTO
+            ================================== -->
+
+            <div
+              class="payment-status"
+              id="processingStatus"
+            >
+
+              <div class="spinner"></div>
+
+
+              <h3>
+                A processar pagamento...
+              </h3>
+
+
+              <p>
+
+                Estamos a preparar o seu
+                pagamento M-Pesa.
+
+                <br>
+
+                Aguarde alguns instantes.
+
+              </p>
+
+            </div>
+
+
+
+            <!-- =================================
+                 SUCESSO
+            ================================== -->
+
+            <div
+              class="payment-status"
+              id="successStatus"
+            >
+
+              <div
+                class="status-icon"
+                style="
+                  background:rgba(34,197,94,.12);
+                "
+              >
+                ✓
+              </div>
+
+
+              <h3>
+                Pedido registado!
+              </h3>
+
+
+              <p>
+
+                O seu pedido foi registado
+                com sucesso.
+
+                <br><br>
+
+                A confirmação automática do
+                pagamento M-Pesa será ativada
+                quando a integração oficial
+                estiver ligada.
+
+              </p>
+
 
               <button
                 type="button"
-                class="btn btn-secondary"
-                id="cancelCheckoutBtn"
+                class="btn btn-primary"
+                id="successBackButton"
+                style="margin-top:20px;"
               >
-                Voltar
+                Voltar aos produtos
               </button>
 
             </div>
 
 
-            <div
-              id="checkoutMessage"
-              class="checkout-message"
-            ></div>
-
-          </form>
+          </div>
 
         </div>
 
       </div>
 
     </section>
+
 
 
     <!-- SOBRE -->
@@ -917,18 +1613,26 @@
 
         <div class="section-title">
 
-          <h2>Sobre a Alquimia Digital</h2>
+          <h2>
+            Sobre a Alquimia Digital
+          </h2>
 
         </div>
+
 
         <div class="about-box">
 
           <p>
-            A Alquimia Digital é um projeto dedicado ao universo
-            do marketing digital, educação e produtos digitais.
-            O objetivo é disponibilizar conteúdos que possam ajudar
-            pessoas a adquirir conhecimento e desenvolver novas
+
+            A Alquimia Digital é um projeto
+            dedicado ao universo do marketing
+            digital, educação e produtos digitais.
+
+            O objetivo é disponibilizar conteúdos
+            que possam ajudar pessoas a adquirir
+            conhecimento e desenvolver novas
             competências para o ambiente digital.
+
           </p>
 
         </div>
@@ -937,22 +1641,34 @@
 
     </section>
 
+
   </main>
 
 
-  <!-- FOOTER -->
+
+  <!-- =========================================
+       FOOTER
+  ========================================== -->
 
   <footer>
 
     <div class="container footer-content">
 
       <p>
-        © <span id="currentYear"></span> Alquimia Digital.
+
+        ©
+        <span id="currentYear"></span>
+        Alquimia Digital.
         Todos os direitos reservados.
+
       </p>
 
+
       <p>
-        Marketing Digital • Educação • Produtos Digitais
+
+        Marketing Digital • Educação •
+        Produtos Digitais
+
       </p>
 
     </div>
@@ -960,18 +1676,31 @@
   </footer>
 
 
+
+  <!-- =========================================
+       JAVASCRIPT
+  ========================================== -->
+
   <script>
 
     /* =========================================
        SUPABASE
-    ========================================= */
+    ========================================== */
 
-    const supabaseUrl = window.SUPABASE_URL;
-    const supabaseKey = window.SUPABASE_KEY;
+    const supabaseUrl =
+      window.SUPABASE_URL;
+
+    const supabaseKey =
+      window.SUPABASE_KEY;
+
 
     let supabaseClient = null;
 
-    if (supabaseUrl && supabaseKey) {
+
+    if (
+      supabaseUrl &&
+      supabaseKey
+    ) {
 
       supabaseClient =
         window.supabase.createClient(
@@ -982,73 +1711,149 @@
     }
 
 
+
     /* =========================================
        ELEMENTOS
-    ========================================= */
+    ========================================== */
 
     const productsGrid =
-      document.getElementById("productsGrid");
+      document.getElementById(
+        "productsGrid"
+      );
 
-    const checkoutSection =
-      document.getElementById("checkout");
 
-    const checkoutProduct =
-      document.getElementById("checkoutProduct");
+    const paymentSection =
+      document.getElementById(
+        "pagamento"
+      );
 
-    const checkoutTotal =
-      document.getElementById("checkoutTotal");
 
-    const checkoutForm =
-      document.getElementById("checkoutForm");
+    const paymentFormArea =
+      document.getElementById(
+        "paymentFormArea"
+      );
 
-    const checkoutMessage =
-      document.getElementById("checkoutMessage");
 
-    const cancelCheckoutBtn =
-      document.getElementById("cancelCheckoutBtn");
+    const processingStatus =
+      document.getElementById(
+        "processingStatus"
+      );
 
-    const submitOrderBtn =
-      document.getElementById("submitOrderBtn");
+
+    const successStatus =
+      document.getElementById(
+        "successStatus"
+      );
+
+
+    const summaryProduct =
+      document.getElementById(
+        "summaryProduct"
+      );
+
+
+    const summaryQuantity =
+      document.getElementById(
+        "summaryQuantity"
+      );
+
+
+    const summaryTotal =
+      document.getElementById(
+        "summaryTotal"
+      );
+
+
+    const customerName =
+      document.getElementById(
+        "customerName"
+      );
+
+
+    const customerEmail =
+      document.getElementById(
+        "customerEmail"
+      );
+
+
+    const customerPhone =
+      document.getElementById(
+        "customerPhone"
+      );
+
 
     const quantityInput =
-      document.getElementById("quantity");
+      document.getElementById(
+        "quantity"
+      );
 
-    const currentYear =
-      document.getElementById("currentYear");
+
+    const paymentMessage =
+      document.getElementById(
+        "paymentMessage"
+      );
 
 
-    currentYear.textContent =
+    const payButton =
+      document.getElementById(
+        "payButton"
+      );
+
+
+    const backButton =
+      document.getElementById(
+        "backButton"
+      );
+
+
+    const successBackButton =
+      document.getElementById(
+        "successBackButton"
+      );
+
+
+    document.getElementById(
+      "currentYear"
+    ).textContent =
       new Date().getFullYear();
+
 
 
     /* =========================================
        ESTADO
-    ========================================= */
+    ========================================== */
 
     let products = [];
 
     let selectedProduct = null;
 
 
+
     /* =========================================
-       MOEDA
-    ========================================= */
+       FORMATAR PREÇO
+    ========================================== */
 
     function formatPrice(value) {
 
-      const number = Number(value || 0);
+      const number =
+        Number(value || 0);
 
-      return number.toLocaleString("pt-MZ", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }) + " MT";
+
+      return number.toLocaleString(
+        "pt-MZ",
+        {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        }
+      ) + " MT";
 
     }
 
 
+
     /* =========================================
        ESCAPAR HTML
-    ========================================= */
+    ========================================== */
 
     function escapeHTML(value) {
 
@@ -1058,6 +1863,7 @@
       ) {
         return "";
       }
+
 
       return String(value)
         .replace(/&/g, "&amp;")
@@ -1069,9 +1875,10 @@
     }
 
 
+
     /* =========================================
        CARREGAR PRODUTOS
-    ========================================= */
+    ========================================== */
 
     async function loadProducts() {
 
@@ -1086,11 +1893,12 @@
 
         productsGrid.innerHTML = `
           <div class="products-message">
-            Não foi possível ligar ao sistema de produtos.
+            Não foi possível ligar ao sistema.
           </div>
         `;
 
         return;
+
       }
 
 
@@ -1108,10 +1916,16 @@
           is_active,
           created_at
         `)
-        .eq("is_active", true)
-        .order("created_at", {
-          ascending: false
-        });
+        .eq(
+          "is_active",
+          true
+        )
+        .order(
+          "created_at",
+          {
+            ascending: false
+          }
+        );
 
 
       if (error) {
@@ -1120,6 +1934,7 @@
           "Erro ao carregar produtos:",
           error
         );
+
 
         productsGrid.innerHTML = `
           <div class="products-message">
@@ -1130,13 +1945,17 @@
         `;
 
         return;
+
       }
 
 
-      products = data || [];
+      products =
+        data || [];
 
 
-      if (products.length === 0) {
+      if (
+        products.length === 0
+      ) {
 
         productsGrid.innerHTML = `
           <div class="products-message">
@@ -1145,6 +1964,7 @@
         `;
 
         return;
+
       }
 
 
@@ -1153,133 +1973,196 @@
     }
 
 
+
     /* =========================================
-       MOSTRAR PRODUTOS
-    ========================================= */
+       RENDERIZAR PRODUTOS
+    ========================================== */
 
     function renderProducts() {
 
       productsGrid.innerHTML = "";
 
 
-      products.forEach(product => {
+      products.forEach(
+        product => {
 
-        const card =
-          document.createElement("article");
+          const card =
+            document.createElement(
+              "article"
+            );
 
-        card.className =
-          "product-card";
+
+          card.className =
+            "product-card";
 
 
-        const imageHTML =
-          product.image_url
-            ? `
+          let imageHTML;
+
+
+          if (
+            product.image_url
+          ) {
+
+            imageHTML = `
               <div class="product-image">
+
                 <img
-                  src="${escapeHTML(product.image_url)}"
-                  alt="${escapeHTML(product.name)}"
+                  src="${escapeHTML(
+                    product.image_url
+                  )}"
+                  alt="${escapeHTML(
+                    product.name
+                  )}"
                   loading="lazy"
                 >
-              </div>
-            `
-            : `
-              <div class="product-image">
-                <div class="product-placeholder">
-                  📚
-                </div>
+
               </div>
             `;
 
+          } else {
 
-        card.innerHTML = `
+            imageHTML = `
+              <div class="product-image">
 
-          ${imageHTML}
+                <div class="product-placeholder">
+                  📚
+                </div>
 
-          <div class="product-content">
-
-            <h3>
-              ${escapeHTML(product.name)}
-            </h3>
-
-            <p class="product-description">
-              ${escapeHTML(
-                product.description ||
-                "Produto digital da Alquimia Digital."
-              )}
-            </p>
-
-            <div class="product-bottom">
-
-              <div class="product-price">
-                ${formatPrice(product.price)}
               </div>
+            `;
 
-              <button
-                class="buy-btn"
-                type="button"
-              >
-                Comprar
-              </button>
+          }
+
+
+          card.innerHTML = `
+
+            ${imageHTML}
+
+            <div class="product-content">
+
+              <h3>
+                ${escapeHTML(
+                  product.name
+                )}
+              </h3>
+
+
+              <p class="product-description">
+
+                ${escapeHTML(
+                  product.description ||
+                  "Produto digital da Alquimia Digital."
+                )}
+
+              </p>
+
+
+              <div class="product-bottom">
+
+                <div class="product-price">
+
+                  ${formatPrice(
+                    product.price
+                  )}
+
+                </div>
+
+
+                <button
+                  type="button"
+                  class="buy-btn"
+                >
+                  Comprar
+                </button>
+
+              </div>
 
             </div>
 
-          </div>
-
-        `;
+          `;
 
 
-        const buyButton =
-          card.querySelector(".buy-btn");
+          const buyButton =
+            card.querySelector(
+              ".buy-btn"
+            );
 
 
-        buyButton.addEventListener(
-          "click",
-          function() {
+          buyButton.addEventListener(
+            "click",
+            function() {
 
-            openCheckout(product);
+              openPayment(
+                product
+              );
 
-          }
-        );
+            }
+          );
 
 
-        productsGrid.appendChild(card);
+          productsGrid.appendChild(
+            card
+          );
 
-      });
+        }
+      );
 
     }
 
 
+
     /* =========================================
-       ABRIR CHECKOUT
-    ========================================= */
+       ABRIR PAGAMENTO
+    ========================================== */
 
-    function openCheckout(product) {
+    function openPayment(product) {
 
-      selectedProduct = product;
-
-
-      checkoutProduct.textContent =
-        product.name;
+      selectedProduct =
+        product;
 
 
       quantityInput.value = 1;
 
 
-      updateCheckoutTotal();
+      summaryProduct.textContent =
+        product.name;
 
 
-      checkoutMessage.textContent = "";
+      summaryQuantity.textContent =
+        "1";
 
 
-      checkoutMessage.className =
-        "checkout-message";
+      summaryTotal.textContent =
+        formatPrice(
+          product.price
+        );
 
 
-      checkoutSection.style.display =
+      paymentMessage.className =
+        "message";
+
+
+      paymentMessage.textContent =
+        "";
+
+
+      paymentFormArea.style.display =
         "block";
 
 
-      checkoutSection.scrollIntoView({
+      processingStatus.style.display =
+        "none";
+
+
+      successStatus.style.display =
+        "none";
+
+
+      paymentSection.style.display =
+        "block";
+
+
+      paymentSection.scrollIntoView({
         behavior: "smooth",
         block: "start"
       });
@@ -1287,36 +2170,49 @@
     }
 
 
+
     /* =========================================
-       TOTAL
-    ========================================= */
+       ATUALIZAR TOTAL
+    ========================================== */
 
-    function updateCheckoutTotal() {
+    function updateTotal() {
 
-      if (!selectedProduct) {
-
-        checkoutTotal.textContent =
-          "0 MT";
-
+      if (
+        !selectedProduct
+      ) {
         return;
       }
 
 
       let quantity =
-        Number(quantityInput.value || 1);
+        Number(
+          quantityInput.value || 1
+        );
 
 
-      if (quantity < 1) {
+      if (
+        quantity < 1
+      ) {
+
         quantity = 1;
+
+        quantityInput.value =
+          1;
+
       }
 
 
       const total =
-        Number(selectedProduct.price || 0) *
+        Number(
+          selectedProduct.price || 0
+        ) * quantity;
+
+
+      summaryQuantity.textContent =
         quantity;
 
 
-      checkoutTotal.textContent =
+      summaryTotal.textContent =
         formatPrice(total);
 
     }
@@ -1324,25 +2220,51 @@
 
     quantityInput.addEventListener(
       "input",
-      updateCheckoutTotal
+      updateTotal
     );
 
 
-    /* =========================================
-       FECHAR CHECKOUT
-    ========================================= */
 
-    cancelCheckoutBtn.addEventListener(
+    /* =========================================
+       MENSAGEM
+    ========================================== */
+
+    function showMessage(
+      text,
+      type
+    ) {
+
+      paymentMessage.textContent =
+        text;
+
+
+      paymentMessage.className =
+        "message " + type;
+
+    }
+
+
+
+    /* =========================================
+       VOLTAR
+    ========================================== */
+
+    backButton.addEventListener(
       "click",
       function() {
 
-        checkoutSection.style.display =
+        paymentSection.style.display =
           "none";
 
-        selectedProduct = null;
+
+        selectedProduct =
+          null;
+
 
         document
-          .getElementById("produtos")
+          .getElementById(
+            "produtos"
+          )
           .scrollIntoView({
             behavior: "smooth"
           });
@@ -1351,121 +2273,138 @@
     );
 
 
+
     /* =========================================
-       ENVIAR PEDIDO
-    ========================================= */
+       PROCESSAR PAGAMENTO
+    ========================================== */
 
-    checkoutForm.addEventListener(
-      "submit",
-      async function(event) {
+    payButton.addEventListener(
+      "click",
+      async function() {
 
-        event.preventDefault();
+        if (
+          !selectedProduct
+        ) {
 
-
-        if (!selectedProduct) {
-
-          checkoutMessage.textContent =
-            "Selecione um produto primeiro.";
-
-          checkoutMessage.className =
-            "checkout-message error-message";
+          showMessage(
+            "Selecione um produto primeiro.",
+            "error"
+          );
 
           return;
+
         }
 
 
-        if (!supabaseClient) {
-
-          checkoutMessage.textContent =
-            "O sistema não está configurado corretamente.";
-
-          checkoutMessage.className =
-            "checkout-message error-message";
-
-          return;
-        }
+        const name =
+          customerName.value.trim();
 
 
-        const customerName =
-          document
-            .getElementById("customerName")
-            .value
-            .trim();
+        const email =
+          customerEmail.value.trim();
 
 
-        const customerEmail =
-          document
-            .getElementById("customerEmail")
-            .value
-            .trim();
-
-
-        const customerPhone =
-          document
-            .getElementById("customerPhone")
-            .value
-            .trim();
+        const phone =
+          customerPhone.value.trim();
 
 
         const quantity =
           Math.max(
             1,
-            Number(quantityInput.value || 1)
+            Number(
+              quantityInput.value || 1
+            )
           );
 
 
         const total =
-          Number(selectedProduct.price || 0) *
-          quantity;
+          Number(
+            selectedProduct.price || 0
+          ) * quantity;
 
 
-        if (!customerName) {
 
-          checkoutMessage.textContent =
-            "Digite o seu nome.";
+        /* VALIDAÇÕES */
 
-          checkoutMessage.className =
-            "checkout-message error-message";
+        if (!name) {
+
+          showMessage(
+            "Digite o seu nome completo.",
+            "error"
+          );
+
+          customerName.focus();
 
           return;
+
         }
 
 
-        if (!customerEmail) {
+        if (!email) {
 
-          checkoutMessage.textContent =
-            "Digite o seu e-mail.";
+          showMessage(
+            "Digite o seu e-mail.",
+            "error"
+          );
 
-          checkoutMessage.className =
-            "checkout-message error-message";
+          customerEmail.focus();
 
           return;
+
         }
 
 
-        if (!customerPhone) {
+        if (!phone) {
 
-          checkoutMessage.textContent =
-            "Digite o seu número de telefone.";
+          showMessage(
+            "Digite o seu número M-Pesa.",
+            "error"
+          );
 
-          checkoutMessage.className =
-            "checkout-message error-message";
+          customerPhone.focus();
 
           return;
+
         }
 
 
-        submitOrderBtn.disabled = true;
 
-        submitOrderBtn.textContent =
-          "A processar...";
+        if (!supabaseClient) {
+
+          showMessage(
+            "O sistema de pagamento não está configurado.",
+            "error"
+          );
+
+          return;
+
+        }
 
 
-        checkoutMessage.textContent =
-          "A registar o seu pedido...";
 
-        checkoutMessage.className =
-          "checkout-message";
+        /* DESATIVAR BOTÃO */
+
+        payButton.disabled =
+          true;
+
+
+        payButton.textContent =
+          "A preparar pagamento...";
+
+
+        paymentFormArea.style.display =
+          "none";
+
+
+        processingStatus.style.display =
+          "block";
+
+
+        paymentSection.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+
 
 
         try {
@@ -1473,10 +2412,17 @@
           /*
             IMPORTANTE:
 
-            Não usamos .select() depois do insert.
-            Isso mantém o funcionamento da política RLS
-            que já configurámos no Supabase.
+            Nesta fase ainda NÃO chamamos
+            a API real do M-Pesa.
+
+            Primeiro registamos o pedido
+            no Supabase.
+
+            Depois da aprovação da API oficial,
+            esta parte será substituída pelo
+            pedido real de pagamento.
           */
+
 
           const {
             error
@@ -1484,14 +2430,26 @@
             .from("orders")
             .insert([
               {
-                product: selectedProduct.id,
-                customer_name: customerName,
-                customer_email: customerEmail,
-                quantity: quantity,
-                total: total,
-                status: "pending"
+                product:
+                  selectedProduct.id,
+
+                customer_name:
+                  name,
+
+                customer_email:
+                  email,
+
+                quantity:
+                  quantity,
+
+                total:
+                  total,
+
+                status:
+                  "pending"
               }
             ]);
+
 
 
           if (error) {
@@ -1501,51 +2459,79 @@
               error
             );
 
-            checkoutMessage.textContent =
-              "Não foi possível criar o pedido. Tente novamente.";
 
-            checkoutMessage.className =
-              "checkout-message error-message";
+            processingStatus.style.display =
+              "none";
+
+
+            paymentFormArea.style.display =
+              "block";
+
+
+            showMessage(
+              "Não foi possível registar o pedido. Tente novamente.",
+              "error"
+            );
+
 
             return;
+
           }
 
 
-          checkoutMessage.innerHTML = `
-            <strong>
-              Pedido registado com sucesso! ✅
-            </strong>
-            <br><br>
-            O seu pedido foi registado como pendente.
-            A etapa de pagamento M-Pesa será ligada
-            quando a integração estiver disponível.
-          `;
 
-          checkoutMessage.className =
-            "checkout-message success-message";
+          /*
+            Simulação da preparação do pagamento.
+
+            NÃO é uma transação M-Pesa real.
+          */
+
+          await new Promise(
+            resolve =>
+              setTimeout(
+                resolve,
+                1500
+              )
+          );
 
 
-          checkoutForm.reset();
+          processingStatus.style.display =
+            "none";
 
-          quantityInput.value = 1;
+
+          successStatus.style.display =
+            "block";
 
 
         } catch (error) {
 
-          console.error(error);
+          console.error(
+            "Erro:",
+            error
+          );
 
-          checkoutMessage.textContent =
-            "Ocorreu um erro inesperado. Tente novamente.";
 
-          checkoutMessage.className =
-            "checkout-message error-message";
+          processingStatus.style.display =
+            "none";
+
+
+          paymentFormArea.style.display =
+            "block";
+
+
+          showMessage(
+            "Ocorreu um erro. Tente novamente.",
+            "error"
+          );
 
         } finally {
 
-          submitOrderBtn.disabled = false;
+          payButton.disabled =
+            false;
 
-          submitOrderBtn.textContent =
-            "Continuar para pagamento";
+
+          payButton.textContent =
+            "Pagar com M-Pesa";
 
         }
 
@@ -1553,12 +2539,65 @@
     );
 
 
+
+    /* =========================================
+       VOLTAR APÓS SUCESSO
+    ========================================== */
+
+    successBackButton.addEventListener(
+      "click",
+      function() {
+
+        paymentSection.style.display =
+          "none";
+
+
+        successStatus.style.display =
+          "none";
+
+
+        paymentFormArea.style.display =
+          "block";
+
+
+        selectedProduct =
+          null;
+
+
+        customerName.value =
+          "";
+
+        customerEmail.value =
+          "";
+
+        customerPhone.value =
+          "";
+
+        quantityInput.value =
+          1;
+
+
+        document
+          .getElementById(
+            "produtos"
+          )
+          .scrollIntoView({
+            behavior: "smooth"
+          });
+
+      }
+    );
+
+
+
     /* =========================================
        MENU MOBILE
-    ========================================= */
+    ========================================== */
 
     const mobileMenu =
-      document.getElementById("mobileMenu");
+      document.getElementById(
+        "mobileMenu"
+      );
 
 
     mobileMenu.addEventListener(
@@ -1566,54 +2605,67 @@
       function() {
 
         const nav =
-          document.querySelector("nav");
+          document.querySelector(
+            "nav"
+          );
 
 
         if (
-          nav.style.display === "flex"
+          nav.style.display ===
+          "flex"
         ) {
 
           nav.style.display =
             "";
 
-        } else {
-
-          nav.style.display =
-            "flex";
-
-          nav.style.position =
-            "absolute";
-
-          nav.style.top =
-            "72px";
-
-          nav.style.left =
-            "0";
-
-          nav.style.right =
-            "0";
-
-          nav.style.padding =
-            "20px";
-
-          nav.style.background =
-            "#07111f";
-
-          nav.style.flexDirection =
-            "column";
-
-          nav.style.borderBottom =
-            "1px solid rgba(148,163,184,.15)";
+          return;
 
         }
+
+
+        nav.style.display =
+          "flex";
+
+
+        nav.style.position =
+          "absolute";
+
+
+        nav.style.top =
+          "72px";
+
+
+        nav.style.left =
+          "0";
+
+
+        nav.style.right =
+          "0";
+
+
+        nav.style.padding =
+          "20px";
+
+
+        nav.style.background =
+          "#050b16";
+
+
+        nav.style.flexDirection =
+          "column";
+
+
+        nav.style.borderBottom =
+          "1px solid rgba(148,163,184,.15)";
 
       }
     );
 
 
+
     /* =========================================
-       INICIAR SITE
-    ========================================= */
+       INICIAR
+    ========================================== */
 
     loadProducts();
 
