@@ -4,7 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Alquimia Digital — Painel Administrativo</title>
+  <title>Alquimia Digital — Marketing Digital</title>
+
+  <meta
+    name="description"
+    content="Alquimia Digital — produtos e conhecimentos para aprender e crescer no mundo digital."
+  >
 
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -17,55 +22,380 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --bg: #07111f;
+      --bg2: #0b1728;
+      --card: #101d30;
+      --card2: #14243a;
+      --border: rgba(148, 163, 184, .15);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --primary: #2563eb;
+      --primary-light: #60a5fa;
+      --success: #22c55e;
+      --danger: #ef4444;
+    }
+
     body {
       font-family: Arial, Helvetica, sans-serif;
-      background: #0b1120;
-      color: #f8fafc;
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, .16), transparent 30%),
+        radial-gradient(circle at top right, rgba(124, 58, 237, .12), transparent 30%),
+        var(--bg);
+      color: var(--text);
       min-height: 100vh;
     }
 
-    .hidden {
-      display: none !important;
+    button,
+    input,
+    textarea {
+      font: inherit;
     }
 
-    /* LOGIN */
+    button {
+      cursor: pointer;
+    }
 
-    #loginPage {
-      min-height: 100vh;
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 40px));
+      margin: auto;
+    }
+
+    /* =========================
+       HEADER
+    ========================== */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(7, 17, 31, .88);
+      backdrop-filter: blur(15px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .navbar {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      font-size: 19px;
+    }
+
+    .brand-name {
+      color: #fff;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+    }
+
+    nav a {
+      color: #cbd5e1;
+      font-size: 14px;
+      transition: .2s;
+    }
+
+    nav a:hover {
+      color: #60a5fa;
+    }
+
+    .mobile-menu {
+      display: none;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: white;
+      border-radius: 8px;
+      padding: 9px 12px;
+    }
+
+    /* =========================
+       HERO
+    ========================== */
+
+    .hero {
+      padding: 90px 0 75px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 30px;
+      background: rgba(37, 99, 235, .12);
+      border: 1px solid rgba(96, 165, 250, .2);
+      color: #93c5fd;
+      font-size: 13px;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      max-width: 850px;
+      margin: auto;
+      font-size: clamp(38px, 6vw, 68px);
+      line-height: 1.04;
+      letter-spacing: -2px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      max-width: 680px;
+      margin: 25px auto 30px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 10px;
+      padding: 13px 20px;
+      font-weight: bold;
+      transition: .2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 10px 30px rgba(37, 99, 235, .22);
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(148, 163, 184, .08);
+      border: 1px solid var(--border);
+      color: #e2e8f0;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(148, 163, 184, .13);
+    }
+
+    /* =========================
+       SECTIONS
+    ========================== */
+
+    section {
+      padding: 70px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .section-title h2 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .section-title p {
+      color: var(--muted);
+    }
+
+    /* =========================
+       FEATURES
+    ========================== */
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .feature {
+      padding: 25px;
+      background: rgba(16, 29, 48, .75);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+
+    .feature-icon {
+      width: 45px;
+      height: 45px;
+      display: grid;
+      place-items: center;
+      background: rgba(37, 99, 235, .12);
+      border-radius: 12px;
+      margin-bottom: 18px;
+      font-size: 21px;
+    }
+
+    .feature h3 {
+      margin-bottom: 10px;
+    }
+
+    .feature p {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    /* =========================
+       PRODUCTS
+    ========================== */
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .product-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      transition: .25s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(96, 165, 250, .3);
+      box-shadow: 0 20px 50px rgba(0,0,0,.18);
+    }
+
+    .product-image {
+      height: 200px;
+      background:
+        linear-gradient(135deg, rgba(37, 99, 235, .35), rgba(124, 58, 237, .35)),
+        #0f172a;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
-      background:
-        radial-gradient(circle at top left, rgba(37, 99, 235, .25), transparent 35%),
-        radial-gradient(circle at bottom right, rgba(124, 58, 237, .2), transparent 35%),
-        #0b1120;
+      overflow: hidden;
     }
 
-    .login-box {
+    .product-image img {
       width: 100%;
-      max-width: 420px;
-      background: #111827;
-      border: 1px solid #263244;
-      border-radius: 20px;
-      padding: 35px;
-      box-shadow: 0 25px 70px rgba(0,0,0,.4);
+      height: 100%;
+      object-fit: cover;
     }
 
-    .logo {
-      text-align: center;
-      margin-bottom: 30px;
+    .product-placeholder {
+      font-size: 48px;
+      opacity: .8;
     }
 
-    .logo h1 {
-      font-size: 28px;
+    .product-content {
+      padding: 22px;
+    }
+
+    .product-content h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .product-description {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+      min-height: 68px;
+      margin-bottom: 18px;
+    }
+
+    .product-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .product-price {
+      font-size: 21px;
+      font-weight: bold;
       color: #60a5fa;
+      white-space: nowrap;
+    }
+
+    .buy-btn {
+      border: none;
+      border-radius: 9px;
+      padding: 11px 15px;
+      background: var(--primary);
+      color: white;
+      font-weight: bold;
+    }
+
+    .buy-btn:hover {
+      background: #1d4ed8;
+    }
+
+    .products-message {
+      text-align: center;
+      color: var(--muted);
+      padding: 35px;
+      grid-column: 1 / -1;
+    }
+
+    /* =========================
+       CHECKOUT
+    ========================== */
+
+    .checkout-section {
+      display: none;
+      padding-top: 20px;
+    }
+
+    .checkout-card {
+      max-width: 700px;
+      margin: auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 30px;
+    }
+
+    .checkout-card h2 {
       margin-bottom: 8px;
     }
 
-    .logo p {
-      color: #94a3b8;
-      font-size: 14px;
+    .checkout-product {
+      color: var(--primary-light);
+      font-weight: bold;
+      margin-bottom: 25px;
     }
 
     .form-group {
@@ -79,325 +409,187 @@
       font-size: 14px;
     }
 
-    .form-group input {
+    .form-group input,
+    .form-group textarea {
       width: 100%;
-      padding: 14px;
-      border-radius: 10px;
       border: 1px solid #334155;
-      background: #0f172a;
+      background: #0b1423;
       color: white;
+      border-radius: 10px;
+      padding: 13px;
       outline: none;
-      font-size: 15px;
     }
 
-    .form-group input:focus {
+    .form-group input:focus,
+    .form-group textarea:focus {
       border-color: #3b82f6;
     }
 
-    .login-btn {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      background: #2563eb;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: .2s;
-    }
-
-    .login-btn:hover {
-      background: #1d4ed8;
-    }
-
-    #loginMessage {
-      margin-top: 15px;
-      text-align: center;
-      font-size: 14px;
-      color: #f87171;
-    }
-
-    /* DASHBOARD */
-
-    #dashboard {
-      min-height: 100vh;
-    }
-
-    .topbar {
-      height: 72px;
-      background: #111827;
-      border-bottom: 1px solid #263244;
+    .checkout-total {
+      padding: 18px;
+      border-radius: 12px;
+      background: #0b1423;
+      border: 1px solid var(--border);
+      margin: 20px 0;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 0 30px;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      gap: 15px;
     }
 
-    .topbar-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .topbar-brand h1 {
-      font-size: 20px;
+    .checkout-total strong {
       color: #60a5fa;
     }
 
-    .admin-badge {
-      font-size: 11px;
-      background: #1e3a8a;
-      color: #93c5fd;
-      padding: 5px 9px;
-      border-radius: 20px;
+    .payment-info {
+      margin: 20px 0;
+      padding: 18px;
+      border-radius: 12px;
+      background: rgba(37, 99, 235, .08);
+      border: 1px solid rgba(96, 165, 250, .16);
     }
 
-    .topbar-actions {
+    .payment-info h3 {
+      margin-bottom: 8px;
+    }
+
+    .payment-info p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .checkout-actions {
       display: flex;
       gap: 10px;
+      flex-wrap: wrap;
     }
 
-    .btn {
-      border: none;
-      border-radius: 8px;
-      padding: 10px 14px;
-      cursor: pointer;
-      font-weight: bold;
-      color: white;
-    }
-
-    .refresh-btn {
-      background: #1e40af;
-    }
-
-    .logout-btn {
-      background: #7f1d1d;
-    }
-
-    .main {
-      padding: 30px;
-      max-width: 1400px;
-      margin: auto;
-    }
-
-    .welcome {
-      margin-bottom: 25px;
-    }
-
-    .welcome h2 {
-      font-size: 28px;
-      margin-bottom: 7px;
-    }
-
-    .welcome p {
-      color: #94a3b8;
-    }
-
-    /* STATS */
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-      margin-bottom: 30px;
-    }
-
-    .stat-card {
-      background: #111827;
-      border: 1px solid #263244;
-      border-radius: 15px;
-      padding: 22px;
-    }
-
-    .stat-card .label {
-      color: #94a3b8;
+    .checkout-message {
+      margin-top: 15px;
       font-size: 14px;
-      margin-bottom: 10px;
+      line-height: 1.5;
     }
 
-    .stat-card .value {
-      font-size: 28px;
-      font-weight: bold;
-    }
-
-    .blue {
-      color: #60a5fa;
-    }
-
-    .yellow {
-      color: #facc15;
-    }
-
-    .green {
+    .success-message {
       color: #4ade80;
     }
 
-    .purple {
-      color: #c084fc;
+    .error-message {
+      color: #f87171;
     }
 
-    /* ORDERS */
+    /* =========================
+       ABOUT
+    ========================== */
 
-    .section {
-      background: #111827;
-      border: 1px solid #263244;
-      border-radius: 15px;
-      overflow: hidden;
+    .about-box {
+      max-width: 850px;
+      margin: auto;
+      text-align: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 35px;
     }
 
-    .section-header {
-      padding: 20px 22px;
-      border-bottom: 1px solid #263244;
+    .about-box p {
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 35px 0;
+      margin-top: 40px;
+    }
+
+    .footer-content {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      gap: 20px;
+      align-items: center;
     }
 
-    .section-header h3 {
-      font-size: 19px;
-    }
-
-    .orders-count {
-      color: #94a3b8;
+    .footer-content p {
+      color: var(--muted);
       font-size: 13px;
     }
 
-    .table-container {
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 850px;
-    }
-
-    th {
-      text-align: left;
-      padding: 15px;
-      color: #94a3b8;
-      font-size: 12px;
-      text-transform: uppercase;
-      border-bottom: 1px solid #263244;
-      background: #0f172a;
-    }
-
-    td {
-      padding: 15px;
-      border-bottom: 1px solid #1e293b;
-      font-size: 14px;
-    }
-
-    tr:hover {
-      background: #172033;
-    }
-
-    .customer-name {
-      font-weight: bold;
-      color: white;
-    }
-
-    .customer-email {
-      color: #94a3b8;
-      font-size: 12px;
-      margin-top: 4px;
-    }
-
-    .status {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-
-    .status-pending {
-      background: rgba(234,179,8,.15);
-      color: #facc15;
-    }
-
-    .status-paid {
-      background: rgba(34,197,94,.15);
-      color: #4ade80;
-    }
-
-    .status-cancelled {
-      background: rgba(239,68,68,.15);
-      color: #f87171;
-    }
-
-    .status-other {
-      background: rgba(148,163,184,.15);
-      color: #cbd5e1;
-    }
-
-    .empty {
-      padding: 50px;
-      text-align: center;
-      color: #64748b;
-    }
+    /* =========================
+       LOADING
+    ========================== */
 
     .loading {
+      text-align: center;
       padding: 40px;
-      text-align: center;
-      color: #94a3b8;
+      color: var(--muted);
     }
 
-    .error {
-      padding: 25px;
-      text-align: center;
-      color: #f87171;
-    }
-
-    /* MOBILE */
+    /* =========================
+       MOBILE
+    ========================== */
 
     @media (max-width: 900px) {
-      .stats-grid {
+      .features,
+      .products-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
-    @media (max-width: 600px) {
-      .topbar {
-        padding: 0 15px;
+    @media (max-width: 650px) {
+      .container {
+        width: min(100% - 28px, 1180px);
       }
 
-      .topbar-brand h1 {
-        font-size: 16px;
-      }
-
-      .admin-badge {
+      nav {
         display: none;
       }
 
-      .topbar-actions .btn {
-        padding: 8px 10px;
-        font-size: 12px;
+      .mobile-menu {
+        display: block;
       }
 
-      .main {
-        padding: 20px 15px;
-      }
-
-      .welcome h2 {
-        font-size: 23px;
-      }
-
-      .stats-grid {
+      .features,
+      .products-grid {
         grid-template-columns: 1fr;
       }
 
-      .stat-card .value {
-        font-size: 24px;
+      .hero {
+        padding: 65px 0 50px;
       }
 
-      .login-box {
-        padding: 25px 20px;
+      .hero h1 {
+        letter-spacing: -1px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      section {
+        padding: 50px 0;
+      }
+
+      .checkout-card {
+        padding: 22px;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .product-bottom {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .buy-btn {
+        width: 100%;
       }
     }
   </style>
@@ -406,292 +598,472 @@
 <body>
 
   <!-- =========================
-       LOGIN
+       HEADER
   ========================== -->
 
-  <div id="loginPage">
+  <header>
+    <div class="container navbar">
 
-    <div class="login-box">
+      <a href="#" class="brand">
+        <span class="brand-icon">✦</span>
+        <span class="brand-name">Alquimia Digital</span>
+      </a>
 
-      <div class="logo">
-        <h1>Alquimia Digital</h1>
-        <p>Painel Administrativo</p>
-      </div>
+      <nav>
+        <a href="#inicio">Início</a>
+        <a href="#produtos">Produtos</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#checkout">Comprar</a>
+      </nav>
 
-      <form id="loginForm">
-
-        <div class="form-group">
-          <label for="email">E-mail</label>
-
-          <input
-            type="email"
-            id="email"
-            placeholder="Digite o seu e-mail"
-            required
-          >
-        </div>
-
-        <div class="form-group">
-          <label for="password">Palavra-passe</label>
-
-          <input
-            type="password"
-            id="password"
-            placeholder="Digite a sua palavra-passe"
-            required
-          >
-        </div>
-
-        <button type="submit" class="login-btn">
-          Entrar no painel
-        </button>
-
-        <div id="loginMessage"></div>
-
-      </form>
+      <button class="mobile-menu" id="mobileMenu">
+        ☰
+      </button>
 
     </div>
-
-  </div>
+  </header>
 
 
   <!-- =========================
-       DASHBOARD
+       HERO
   ========================== -->
 
-  <div id="dashboard" class="hidden">
+  <main>
 
-    <header class="topbar">
+    <section class="hero" id="inicio">
 
-      <div class="topbar-brand">
-        <h1>Alquimia Digital</h1>
-        <span class="admin-badge">ADMIN</span>
-      </div>
+      <div class="container">
 
-      <div class="topbar-actions">
+        <div class="hero-badge">
+          🚀 Conhecimento para o mundo digital
+        </div>
 
-        <button
-          class="btn refresh-btn"
-          id="refreshBtn"
-        >
-          Atualizar
-        </button>
-
-        <button
-          class="btn logout-btn"
-          id="logoutBtn"
-        >
-          Sair
-        </button>
-
-      </div>
-
-    </header>
-
-
-    <main class="main">
-
-      <div class="welcome">
-
-        <h2>Dashboard</h2>
+        <h1>
+          Transforme conhecimento em
+          <span class="gradient-text">
+            resultados digitais
+          </span>
+        </h1>
 
         <p>
-          Acompanhe as vendas e pedidos realizados no seu site.
+          A Alquimia Digital reúne produtos, conteúdos e ferramentas
+          para quem quer aprender, desenvolver competências e crescer
+          no mundo digital.
         </p>
 
-      </div>
+        <div class="hero-actions">
 
+          <a href="#produtos" class="btn btn-primary">
+            Ver produtos
+          </a>
 
-      <!-- ESTATÍSTICAS -->
-
-      <div class="stats-grid">
-
-        <div class="stat-card">
-
-          <div class="label">
-            Total de pedidos
-          </div>
-
-          <div
-            class="value blue"
-            id="totalOrders"
-          >
-            0
-          </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-          <div class="label">
-            Pedidos pendentes
-          </div>
-
-          <div
-            class="value yellow"
-            id="pendingOrders"
-          >
-            0
-          </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-          <div class="label">
-            Pedidos pagos
-          </div>
-
-          <div
-            class="value green"
-            id="paidOrders"
-          >
-            0
-          </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-          <div class="label">
-            Receita total
-          </div>
-
-          <div
-            class="value purple"
-            id="totalRevenue"
-          >
-            0 MT
-          </div>
+          <a href="#sobre" class="btn btn-secondary">
+            Conhecer a Alquimia
+          </a>
 
         </div>
 
       </div>
 
+    </section>
 
-      <!-- PEDIDOS -->
 
-      <section class="section">
+    <!-- =========================
+         BENEFÍCIOS
+    ========================== -->
 
-        <div class="section-header">
+    <section>
 
-          <h3>Pedidos recentes</h3>
+      <div class="container">
 
-          <span
-            class="orders-count"
-            id="ordersCount"
-          >
-            0 pedidos
-          </span>
+        <div class="section-title">
+
+          <h2>Por que Alquimia Digital?</h2>
+
+          <p>
+            Uma experiência simples para aprender e adquirir produtos digitais.
+          </p>
+
+        </div>
+
+
+        <div class="features">
+
+          <div class="feature">
+
+            <div class="feature-icon">
+              📚
+            </div>
+
+            <h3>Conteúdo útil</h3>
+
+            <p>
+              Materiais pensados para ajudar no desenvolvimento
+              de conhecimentos e competências digitais.
+            </p>
+
+          </div>
+
+
+          <div class="feature">
+
+            <div class="feature-icon">
+              ⚡
+            </div>
+
+            <h3>Acesso simples</h3>
+
+            <p>
+              Escolha um produto, informe os seus dados e faça
+              o pedido de forma rápida e simples.
+            </p>
+
+          </div>
+
+
+          <div class="feature">
+
+            <div class="feature-icon">
+              🔐
+            </div>
+
+            <h3>Processo seguro</h3>
+
+            <p>
+              Os pedidos são registados de forma organizada
+              para facilitar o acompanhamento da compra.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         PRODUTOS
+    ========================== -->
+
+    <section id="produtos">
+
+      <div class="container">
+
+        <div class="section-title">
+
+          <h2>Produtos</h2>
+
+          <p>
+            Escolha o conteúdo que deseja adquirir.
+          </p>
 
         </div>
 
 
         <div
-          id="ordersContainer"
-          class="table-container"
+          id="productsGrid"
+          class="products-grid"
         >
 
-          <div class="loading">
-            A carregar pedidos...
+          <div class="products-message">
+            A carregar produtos...
           </div>
 
         </div>
 
-      </section>
+      </div>
 
-    </main>
+    </section>
 
-  </div>
+
+    <!-- =========================
+         CHECKOUT
+    ========================== -->
+
+    <section
+      id="checkout"
+      class="checkout-section"
+    >
+
+      <div class="container">
+
+        <div class="checkout-card">
+
+          <h2>Finalizar pedido</h2>
+
+          <div
+            id="checkoutProduct"
+            class="checkout-product"
+          >
+            Nenhum produto selecionado.
+          </div>
+
+
+          <form id="checkoutForm">
+
+            <div class="form-group">
+
+              <label for="customerName">
+                Nome completo
+              </label>
+
+              <input
+                type="text"
+                id="customerName"
+                placeholder="Digite o seu nome"
+                required
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="customerEmail">
+                E-mail
+              </label>
+
+              <input
+                type="email"
+                id="customerEmail"
+                placeholder="Digite o seu e-mail"
+                required
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="customerPhone">
+                Número de telefone
+              </label>
+
+              <input
+                type="tel"
+                id="customerPhone"
+                placeholder="Ex.: 84 000 0000"
+                required
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="quantity">
+                Quantidade
+              </label>
+
+              <input
+                type="number"
+                id="quantity"
+                min="1"
+                value="1"
+                required
+              >
+
+            </div>
+
+
+            <div class="checkout-total">
+
+              <span>Total</span>
+
+              <strong id="checkoutTotal">
+                0 MT
+              </strong>
+
+            </div>
+
+
+            <!--
+              FUTURA INTEGRAÇÃO M-PESA
+
+              Nesta fase o pedido será registado como
+              "pending".
+
+              Quando as credenciais oficiais da API M-Pesa
+              estiverem disponíveis, ligaremos aqui o
+              pagamento automático.
+            -->
+
+            <div class="payment-info">
+
+              <h3>Pagamento</h3>
+
+              <p>
+                O pedido será registado e ficará pendente
+                enquanto a confirmação do pagamento é realizada.
+              </p>
+
+            </div>
+
+
+            <div class="checkout-actions">
+
+              <button
+                type="submit"
+                class="btn btn-primary"
+                id="submitOrderBtn"
+              >
+                Confirmar pedido
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-secondary"
+                id="cancelCheckoutBtn"
+              >
+                Voltar
+              </button>
+
+            </div>
+
+
+            <div
+              id="checkoutMessage"
+              class="checkout-message"
+            ></div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         SOBRE
+    ========================== -->
+
+    <section id="sobre">
+
+      <div class="container">
+
+        <div class="section-title">
+
+          <h2>Sobre a Alquimia Digital</h2>
+
+        </div>
+
+        <div class="about-box">
+
+          <p>
+            A Alquimia Digital é um projeto dedicado ao universo
+            do marketing digital, educação e produtos digitais.
+            O objetivo é disponibilizar conteúdos que possam ajudar
+            pessoas a adquirir conhecimento e desenvolver novas
+            competências para o ambiente digital.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
+  <footer>
+
+    <div class="container footer-content">
+
+      <p>
+        © <span id="currentYear"></span> Alquimia Digital.
+        Todos os direitos reservados.
+      </p>
+
+      <p>
+        Marketing Digital • Educação • Produtos Digitais
+      </p>
+
+    </div>
+
+  </footer>
 
 
   <script>
 
     /* =========================================
-       CONFIGURAÇÃO SUPABASE
+       SUPABASE
     ========================================= */
 
     const supabaseUrl = window.SUPABASE_URL;
     const supabaseKey = window.SUPABASE_KEY;
 
-    if (!supabaseUrl || !supabaseKey) {
+    let supabaseClient = null;
 
-      document.body.innerHTML = `
-        <div style="
-          min-height:100vh;
-          display:flex;
-          align-items:center;
-          justify-content:center;
-          background:#0b1120;
-          color:white;
-          font-family:Arial;
-          padding:20px;
-          text-align:center;
-        ">
-          <div>
-            <h2 style="color:#f87171;margin-bottom:15px;">
-              Erro de configuração
-            </h2>
+    if (supabaseUrl && supabaseKey) {
 
-            <p style="color:#94a3b8;">
-              Não foi possível encontrar o SUPABASE_URL ou SUPABASE_KEY.
-            </p>
-
-            <p style="color:#94a3b8;margin-top:10px;">
-              Verifique o arquivo config.js.
-            </p>
-          </div>
-        </div>
-      `;
-
-      throw new Error("Configuração do Supabase não encontrada.");
+      supabaseClient =
+        window.supabase.createClient(
+          supabaseUrl,
+          supabaseKey
+        );
 
     }
-
-
-    const supabaseClient = window.supabase.createClient(
-      supabaseUrl,
-      supabaseKey
-    );
 
 
     /* =========================================
        ELEMENTOS
     ========================================= */
 
-    const loginPage = document.getElementById("loginPage");
-    const dashboard = document.getElementById("dashboard");
+    const productsGrid =
+      document.getElementById("productsGrid");
 
-    const loginForm = document.getElementById("loginForm");
-    const loginMessage = document.getElementById("loginMessage");
+    const checkoutSection =
+      document.getElementById("checkout");
 
-    const logoutBtn = document.getElementById("logoutBtn");
-    const refreshBtn = document.getElementById("refreshBtn");
+    const checkoutProduct =
+      document.getElementById("checkoutProduct");
 
-    const totalOrdersElement =
-      document.getElementById("totalOrders");
+    const checkoutTotal =
+      document.getElementById("checkoutTotal");
 
-    const pendingOrdersElement =
-      document.getElementById("pendingOrders");
+    const checkoutForm =
+      document.getElementById("checkoutForm");
 
-    const paidOrdersElement =
-      document.getElementById("paidOrders");
+    const checkoutMessage =
+      document.getElementById("checkoutMessage");
 
-    const totalRevenueElement =
-      document.getElementById("totalRevenue");
+    const cancelCheckoutBtn =
+      document.getElementById("cancelCheckoutBtn");
 
-    const ordersContainer =
-      document.getElementById("ordersContainer");
+    const submitOrderBtn =
+      document.getElementById("submitOrderBtn");
 
-    const ordersCount =
-      document.getElementById("ordersCount");
+    const quantityInput =
+      document.getElementById("quantity");
+
+    const currentYear =
+      document.getElementById("currentYear");
+
+
+    currentYear.textContent =
+      new Date().getFullYear();
 
 
     /* =========================================
-       FORMATAR MOEDA
+       ESTADO
+    ========================================= */
+
+    let products = [];
+
+    let selectedProduct = null;
+
+
+    /* =========================================
+       MOEDA
     ========================================= */
 
     function formatPrice(value) {
@@ -712,7 +1084,10 @@
 
     function escapeHTML(value) {
 
-      if (value === null || value === undefined) {
+      if (
+        value === null ||
+        value === undefined
+      ) {
         return "";
       }
 
@@ -727,211 +1102,45 @@
 
 
     /* =========================================
-       DATA
+       CARREGAR PRODUTOS
     ========================================= */
 
-    function formatDate(dateValue) {
+    async function loadProducts() {
 
-      if (!dateValue) {
-        return "-";
-      }
-
-      const date = new Date(dateValue);
-
-      if (Number.isNaN(date.getTime())) {
-        return "-";
-      }
-
-      return date.toLocaleString("pt-MZ", {
-        dateStyle: "short",
-        timeStyle: "short"
-      });
-
-    }
+      productsGrid.innerHTML = `
+        <div class="products-message">
+          A carregar produtos...
+        </div>
+      `;
 
 
-    /* =========================================
-       STATUS
-    ========================================= */
+      if (!supabaseClient) {
 
-    function getStatusClass(status) {
-
-      const value = String(status || "").toLowerCase();
-
-      if (
-        value === "pending" ||
-        value === "pendente"
-      ) {
-        return "status-pending";
-      }
-
-      if (
-        value === "paid" ||
-        value === "pago"
-      ) {
-        return "status-paid";
-      }
-
-      if (
-        value === "cancelled" ||
-        value === "cancelado"
-      ) {
-        return "status-cancelled";
-      }
-
-      return "status-other";
-
-    }
-
-
-    function getStatusText(status) {
-
-      const value = String(status || "").toLowerCase();
-
-      if (value === "pending") {
-        return "Pendente";
-      }
-
-      if (value === "paid") {
-        return "Pago";
-      }
-
-      if (value === "cancelled") {
-        return "Cancelado";
-      }
-
-      return status || "Sem status";
-
-    }
-
-
-    /* =========================================
-       LOGIN
-    ========================================= */
-
-    loginForm.addEventListener("submit", async function(event) {
-
-      event.preventDefault();
-
-      loginMessage.textContent = "A entrar...";
-      loginMessage.style.color = "#94a3b8";
-
-      const email =
-        document.getElementById("email").value.trim();
-
-      const password =
-        document.getElementById("password").value;
-
-
-      const { data, error } =
-        await supabaseClient.auth.signInWithPassword({
-          email,
-          password
-        });
-
-
-      if (error) {
-
-        console.error(error);
-
-        loginMessage.textContent =
-          "E-mail ou palavra-passe incorretos.";
-
-        loginMessage.style.color = "#f87171";
+        productsGrid.innerHTML = `
+          <div class="products-message">
+            Não foi possível ligar ao sistema de produtos.
+          </div>
+        `;
 
         return;
       }
 
 
-      if (data && data.session) {
-
-        showDashboard();
-
-      }
-
-    });
-
-
-    /* =========================================
-       MOSTRAR DASHBOARD
-    ========================================= */
-
-    function showDashboard() {
-
-      loginPage.classList.add("hidden");
-
-      dashboard.classList.remove("hidden");
-
-      loadDashboard();
-
-    }
-
-
-    /* =========================================
-       MOSTRAR LOGIN
-    ========================================= */
-
-    function showLogin() {
-
-      dashboard.classList.add("hidden");
-
-      loginPage.classList.remove("hidden");
-
-    }
-
-
-    /* =========================================
-       VERIFICAR SESSÃO
-    ========================================= */
-
-    async function checkSession() {
-
       const {
-        data: { session }
-      } = await supabaseClient.auth.getSession();
-
-
-      if (session) {
-
-        showDashboard();
-
-      } else {
-
-        showLogin();
-
-      }
-
-    }
-
-
-    /* =========================================
-       CARREGAR DASHBOARD
-    ========================================= */
-
-    async function loadDashboard() {
-
-      ordersContainer.innerHTML = `
-        <div class="loading">
-          A carregar pedidos...
-        </div>
-      `;
-
-
-      const {
-        data: orders,
+        data,
         error
       } = await supabaseClient
-        .from("orders")
+        .from("products")
         .select(`
           id,
-          product,
-          customer_name,
-          customer_email,
-          quantity,
-          total,
-          status,
+          name,
+          description,
+          price,
+          image_url,
+          is_active,
           created_at
         `)
+        .eq("is_active", true)
         .order("created_at", {
           ascending: false
         });
@@ -939,13 +1148,16 @@
 
       if (error) {
 
-        console.error(error);
+        console.error(
+          "Erro ao carregar produtos:",
+          error
+        );
 
-        ordersContainer.innerHTML = `
-          <div class="error">
-            Não foi possível carregar os pedidos.
-            <br><br>
-            Verifique as permissões da tabela orders no Supabase.
+        productsGrid.innerHTML = `
+          <div class="products-message">
+            Não foi possível carregar os produtos.
+            <br>
+            Tente atualizar a página.
           </div>
         `;
 
@@ -953,84 +1165,14 @@
       }
 
 
-      const orderList = orders || [];
+      products = data || [];
 
 
-      /* ESTATÍSTICAS */
+      if (products.length === 0) {
 
-      const totalOrders = orderList.length;
-
-
-      const pendingOrders =
-        orderList.filter(order => {
-
-          const status =
-            String(order.status || "").toLowerCase();
-
-          return (
-            status === "pending" ||
-            status === "pendente"
-          );
-
-        }).length;
-
-
-      const paidOrders =
-        orderList.filter(order => {
-
-          const status =
-            String(order.status || "").toLowerCase();
-
-          return (
-            status === "paid" ||
-            status === "pago"
-          );
-
-        }).length;
-
-
-      const totalRevenue =
-        orderList.reduce((sum, order) => {
-
-          const status =
-            String(order.status || "").toLowerCase();
-
-          /*
-            Aqui contamos como receita
-            todos os pedidos registrados.
-          */
-
-          return sum + Number(order.total || 0);
-
-        }, 0);
-
-
-      totalOrdersElement.textContent =
-        totalOrders;
-
-      pendingOrdersElement.textContent =
-        pendingOrders;
-
-      paidOrdersElement.textContent =
-        paidOrders;
-
-      totalRevenueElement.textContent =
-        formatPrice(totalRevenue);
-
-
-      ordersCount.textContent =
-        `${totalOrders} ${
-          totalOrders === 1 ? "pedido" : "pedidos"
-        }`;
-
-
-      /* TABELA */
-
-      if (orderList.length === 0) {
-
-        ordersContainer.innerHTML = `
-          <div class="empty">
-            Ainda não existem pedidos.
+        productsGrid.innerHTML = `
+          <div class="products-message">
+            Ainda não existem produtos disponíveis.
           </div>
         `;
 
@@ -1038,198 +1180,459 @@
       }
 
 
-      /* PRODUTOS */
-
-      const productIds = [
-        ...new Set(
-          orderList
-            .map(order => order.product)
-            .filter(Boolean)
-        )
-      ];
-
-
-      let productsMap = {};
-
-
-      if (productIds.length > 0) {
-
-        const {
-          data: products,
-          error: productsError
-        } = await supabaseClient
-          .from("products")
-          .select("id,name")
-          .in("id", productIds);
-
-
-        if (!productsError && products) {
-
-          products.forEach(product => {
-
-            productsMap[product.id] =
-              product.name;
-
-          });
-
-        }
-
-      }
-
-
-      /* CONSTRUIR TABELA */
-
-      let html = `
-
-        <table>
-
-          <thead>
-
-            <tr>
-
-              <th>Cliente</th>
-
-              <th>Produto</th>
-
-              <th>Quantidade</th>
-
-              <th>Total</th>
-
-              <th>Status</th>
-
-              <th>Data</th>
-
-            </tr>
-
-          </thead>
-
-          <tbody>
-      `;
-
-
-      orderList.forEach(order => {
-
-        const productName =
-          productsMap[order.product] ||
-          "Produto";
-
-
-        const statusClass =
-          getStatusClass(order.status);
-
-
-        const statusText =
-          getStatusText(order.status);
-
-
-        html += `
-
-          <tr>
-
-            <td>
-
-              <div class="customer-name">
-                ${escapeHTML(order.customer_name)}
-              </div>
-
-              <div class="customer-email">
-                ${escapeHTML(order.customer_email)}
-              </div>
-
-            </td>
-
-
-            <td>
-              ${escapeHTML(productName)}
-            </td>
-
-
-            <td>
-              ${Number(order.quantity || 0)}
-            </td>
-
-
-            <td>
-              <strong>
-                ${formatPrice(order.total)}
-              </strong>
-            </td>
-
-
-            <td>
-
-              <span class="status ${statusClass}">
-                ${escapeHTML(statusText)}
-              </span>
-
-            </td>
-
-
-            <td>
-              ${formatDate(order.created_at)}
-            </td>
-
-          </tr>
-
-        `;
-
-      });
-
-
-      html += `
-
-          </tbody>
-
-        </table>
-
-      `;
-
-
-      ordersContainer.innerHTML = html;
+      renderProducts();
 
     }
 
 
     /* =========================================
-       ATUALIZAR
+       MOSTRAR PRODUTOS
     ========================================= */
 
-    refreshBtn.addEventListener(
-      "click",
-      loadDashboard
+    function renderProducts() {
+
+      productsGrid.innerHTML = "";
+
+
+      products.forEach(product => {
+
+        const card =
+          document.createElement("article");
+
+        card.className =
+          "product-card";
+
+
+        const imageHTML =
+          product.image_url
+            ? `
+              <div class="product-image">
+                <img
+                  src="${escapeHTML(product.image_url)}"
+                  alt="${escapeHTML(product.name)}"
+                  loading="lazy"
+                >
+              </div>
+            `
+            : `
+              <div class="product-image">
+                <div class="product-placeholder">
+                  📚
+                </div>
+              </div>
+            `;
+
+
+        card.innerHTML = `
+
+          ${imageHTML}
+
+          <div class="product-content">
+
+            <h3>
+              ${escapeHTML(product.name)}
+            </h3>
+
+            <p class="product-description">
+              ${escapeHTML(product.description || "Produto digital da Alquimia Digital.")}
+            </p>
+
+            <div class="product-bottom">
+
+              <div class="product-price">
+                ${formatPrice(product.price)}
+              </div>
+
+              <button
+                class="buy-btn"
+                type="button"
+                data-product-id="${escapeHTML(product.id)}"
+              >
+                Comprar
+              </button>
+
+            </div>
+
+          </div>
+
+        `;
+
+
+        const buyButton =
+          card.querySelector(".buy-btn");
+
+
+        buyButton.addEventListener(
+          "click",
+          function() {
+
+            openCheckout(product);
+
+          }
+        );
+
+
+        productsGrid.appendChild(card);
+
+      });
+
+    }
+
+
+    /* =========================================
+       ABRIR CHECKOUT
+    ========================================= */
+
+    function openCheckout(product) {
+
+      selectedProduct = product;
+
+
+      checkoutProduct.textContent =
+        product.name;
+
+
+      quantityInput.value = 1;
+
+
+      updateCheckoutTotal();
+
+
+      checkoutMessage.textContent = "";
+
+
+      checkoutMessage.className =
+        "checkout-message";
+
+
+      checkoutSection.style.display =
+        "block";
+
+
+      checkoutSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+    }
+
+
+    /* =========================================
+       TOTAL
+    ========================================= */
+
+    function updateCheckoutTotal() {
+
+      if (!selectedProduct) {
+
+        checkoutTotal.textContent =
+          "0 MT";
+
+        return;
+      }
+
+
+      let quantity =
+        Number(quantityInput.value || 1);
+
+
+      if (quantity < 1) {
+        quantity = 1;
+      }
+
+
+      const total =
+        Number(selectedProduct.price || 0) *
+        quantity;
+
+
+      checkoutTotal.textContent =
+        formatPrice(total);
+
+    }
+
+
+    quantityInput.addEventListener(
+      "input",
+      updateCheckoutTotal
     );
 
 
     /* =========================================
-       LOGOUT
+       FECHAR CHECKOUT
     ========================================= */
 
-    logoutBtn.addEventListener(
+    cancelCheckoutBtn.addEventListener(
       "click",
-      async function() {
+      function() {
 
-        await supabaseClient.auth.signOut();
+        checkoutSection.style.display =
+          "none";
 
-        showLogin();
+        selectedProduct = null;
+
+        document
+          .getElementById("produtos")
+          .scrollIntoView({
+            behavior: "smooth"
+          });
 
       }
     );
 
 
     /* =========================================
-       ALTERAÇÃO DE AUTENTICAÇÃO
+       ENVIAR PEDIDO
     ========================================= */
 
-    supabaseClient.auth.onAuthStateChange(
-      function(event, session) {
+    checkoutForm.addEventListener(
+      "submit",
+      async function(event) {
 
-        if (session) {
+        event.preventDefault();
 
-          showDashboard();
+
+        if (!selectedProduct) {
+
+          checkoutMessage.textContent =
+            "Selecione um produto primeiro.";
+
+          checkoutMessage.className =
+            "checkout-message error-message";
+
+          return;
+        }
+
+
+        if (!supabaseClient) {
+
+          checkoutMessage.textContent =
+            "O sistema não está configurado corretamente.";
+
+          checkoutMessage.className =
+            "checkout-message error-message";
+
+          return;
+        }
+
+
+        const customerName =
+          document
+            .getElementById("customerName")
+            .value
+            .trim();
+
+
+        const customerEmail =
+          document
+            .getElementById("customerEmail")
+            .value
+            .trim();
+
+
+        const customerPhone =
+          document
+            .getElementById("customerPhone")
+            .value
+            .trim();
+
+
+        const quantity =
+          Math.max(
+            1,
+            Number(quantityInput.value || 1)
+          );
+
+
+        const total =
+          Number(selectedProduct.price || 0) *
+          quantity;
+
+
+        if (!customerName) {
+
+          checkoutMessage.textContent =
+            "Digite o seu nome.";
+
+          checkoutMessage.className =
+            "checkout-message error-message";
+
+          return;
+        }
+
+
+        if (!customerEmail) {
+
+          checkoutMessage.textContent =
+            "Digite o seu e-mail.";
+
+          checkoutMessage.className =
+            "checkout-message error-message";
+
+          return;
+        }
+
+
+        if (!customerPhone) {
+
+          checkoutMessage.textContent =
+            "Digite o seu número de telefone.";
+
+          checkoutMessage.className =
+            "checkout-message error-message";
+
+          return;
+        }
+
+
+        submitOrderBtn.disabled = true;
+
+        submitOrderBtn.textContent =
+          "A processar...";
+
+
+        checkoutMessage.textContent =
+          "A registar o seu pedido...";
+
+        checkoutMessage.className =
+          "checkout-message";
+
+
+        try {
+
+          /*
+            O campo "product" guarda o ID do produto.
+
+            O pedido fica "pending" porque a integração
+            automática do M-Pesa será ligada posteriormente.
+          */
+
+          const {
+            error
+          } = await supabaseClient
+            .from("orders")
+            .insert([
+              {
+                product: selectedProduct.id,
+                customer_name: customerName,
+                customer_email: customerEmail,
+                quantity: quantity,
+                total: total,
+                status: "pending"
+              }
+            ]);
+
+
+          if (error) {
+
+            console.error(
+              "Erro ao criar pedido:",
+              error
+            );
+
+            checkoutMessage.textContent =
+              "Não foi possível criar o pedido. Tente novamente.";
+
+            checkoutMessage.className =
+              "checkout-message error-message";
+
+            return;
+          }
+
+
+          checkoutMessage.innerHTML = `
+            <strong>
+              Pedido realizado com sucesso! ✅
+            </strong>
+            <br><br>
+            O seu pedido foi registado.
+            O pagamento M-Pesa será integrado nesta etapa
+            quando as credenciais da API estiverem disponíveis.
+          `;
+
+          checkoutMessage.className =
+            "checkout-message success-message";
+
+
+          checkoutForm.reset();
+
+          quantityInput.value = 1;
+
+
+        } catch (error) {
+
+          console.error(error);
+
+          checkoutMessage.textContent =
+            "Ocorreu um erro inesperado. Tente novamente.";
+
+          checkoutMessage.className =
+            "checkout-message error-message";
+
+        } finally {
+
+          submitOrderBtn.disabled = false;
+
+          submitOrderBtn.textContent =
+            "Confirmar pedido";
+
+        }
+
+      }
+    );
+
+
+    /* =========================================
+       MENU MOBILE
+    ========================================= */
+
+    const mobileMenu =
+      document.getElementById("mobileMenu");
+
+
+    mobileMenu.addEventListener(
+      "click",
+      function() {
+
+        const nav =
+          document.querySelector("nav");
+
+
+        if (
+          nav.style.display === "flex"
+        ) {
+
+          nav.style.display =
+            "";
 
         } else {
 
-          showLogin();
+          nav.style.display =
+            "flex";
+
+          nav.style.position =
+            "absolute";
+
+          nav.style.top =
+            "72px";
+
+          nav.style.left =
+            "0";
+
+          nav.style.right =
+            "0";
+
+          nav.style.padding =
+            "20px";
+
+          nav.style.background =
+            "#07111f";
+
+          nav.style.flexDirection =
+            "column";
+
+          nav.style.borderBottom =
+            "1px solid rgba(148,163,184,.15)";
 
         }
 
@@ -1241,7 +1644,7 @@
        INICIAR
     ========================================= */
 
-    checkSession();
+    loadProducts();
 
   </script>
 
