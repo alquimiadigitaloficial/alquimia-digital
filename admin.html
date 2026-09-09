@@ -4,698 +4,1080 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Alquimia Digital — Administração</title>
+  <title>Alquimia Digital — Painel Administrativo</title>
 
-  <script src="config.js"></script>
+  <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
 
   <style>
+
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #050b16;
+      --bg2: #0b1424;
+      --card: #101b2d;
+      --card2: #152238;
+      --border: rgba(148, 163, 184, .15);
+
+      --text: #f8fafc;
+      --muted: #94a3b8;
+
+      --blue: #2563eb;
+      --blue-hover: #1d4ed8;
+
+      --green: #22c55e;
+      --yellow: #f59e0b;
+      --red: #ef4444;
     }
 
     body {
       font-family: Arial, Helvetica, sans-serif;
-      background: #07111f;
-      color: #fff;
+      background:
+        radial-gradient(
+          circle at 10% 0%,
+          rgba(37, 99, 235, .14),
+          transparent 30%
+        ),
+        var(--bg);
+
+      color: var(--text);
       min-height: 100vh;
     }
 
     button,
     input,
-    textarea,
-    select {
+    textarea {
       font-family: inherit;
     }
 
-    .hidden {
-      display: none !important;
+    button {
+      cursor: pointer;
     }
 
-    /* LOGIN */
+    /* =====================================
+       LOGIN
+    ===================================== */
 
     #loginScreen {
       min-height: 100vh;
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       padding: 20px;
-      background:
-        radial-gradient(circle at top, #12345c 0%, #07111f 45%, #030812 100%);
     }
 
-    .login-box {
-      width: 100%;
-      max-width: 420px;
-      background: #0d1b2d;
-      border: 1px solid #203653;
-      border-radius: 18px;
+    .login-card {
+      width: min(430px, 100%);
+
+      background: var(--card);
+
+      border: 1px solid var(--border);
+
+      border-radius: 20px;
+
       padding: 35px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+
+      box-shadow:
+        0 30px 80px rgba(0,0,0,.35);
     }
 
-    .logo {
+    .login-logo {
+      width: 60px;
+      height: 60px;
+
+      display: grid;
+      place-items: center;
+
+      margin: 0 auto 18px;
+
+      border-radius: 17px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #2563eb,
+          #7c3aed
+        );
+
+      font-size: 27px;
+    }
+
+    .login-card h1 {
       text-align: center;
-      margin-bottom: 30px;
-    }
 
-    .logo h1 {
-      font-size: 28px;
-      color: #4da3ff;
       margin-bottom: 8px;
     }
 
-    .logo p {
-      color: #9fb1c7;
+    .login-subtitle {
+      text-align: center;
+
+      color: var(--muted);
+
       font-size: 14px;
+
+      margin-bottom: 28px;
     }
 
     .form-group {
       margin-bottom: 18px;
     }
 
-    label {
+    .form-group label {
       display: block;
-      margin-bottom: 8px;
-      color: #cbd8e8;
+
+      color: #cbd5e1;
+
       font-size: 14px;
-      font-weight: bold;
+
+      margin-bottom: 8px;
     }
 
     input,
-    textarea,
-    select {
+    textarea {
       width: 100%;
-      border: 1px solid #29415f;
-      background: #081525;
+
+      background: #091321;
+
       color: white;
+
+      border: 1px solid #334155;
+
       border-radius: 10px;
+
       padding: 13px;
+
       outline: none;
-      font-size: 14px;
     }
 
     textarea {
       min-height: 100px;
+
       resize: vertical;
     }
 
     input:focus,
-    textarea:focus,
-    select:focus {
-      border-color: #4da3ff;
+    textarea:focus {
+      border-color: #3b82f6;
+
+      box-shadow:
+        0 0 0 3px rgba(59,130,246,.1);
     }
 
     .btn {
       border: none;
-      border-radius: 10px;
-      padding: 12px 18px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.2s;
-    }
 
-    .btn:hover {
-      transform: translateY(-1px);
-      opacity: 0.92;
+      border-radius: 10px;
+
+      padding: 12px 17px;
+
+      font-weight: bold;
+
+      transition: .2s;
     }
 
     .btn-primary {
-      background: #1677ff;
+      background: var(--blue);
+
       color: white;
     }
 
-    .btn-success {
-      background: #159957;
-      color: white;
+    .btn-primary:hover {
+      background: var(--blue-hover);
     }
 
-    .btn-warning {
-      background: #d99500;
+    .btn-secondary {
+      background: rgba(148,163,184,.08);
+
+      border: 1px solid var(--border);
+
       color: white;
     }
 
     .btn-danger {
-      background: #c93c3c;
-      color: white;
+      background: rgba(239,68,68,.12);
+
+      border: 1px solid rgba(239,68,68,.25);
+
+      color: #fca5a5;
     }
 
-    .btn-secondary {
-      background: #263b55;
-      color: white;
+    .btn-success {
+      background: rgba(34,197,94,.12);
+
+      border: 1px solid rgba(34,197,94,.25);
+
+      color: #86efac;
     }
 
-    .btn-full {
-      width: 100%;
+    .btn:disabled {
+      opacity: .5;
+
+      cursor: not-allowed;
     }
 
-    #loginMessage {
+    .message {
+      display: none;
+
+      padding: 12px;
+
+      border-radius: 9px;
+
       margin-top: 15px;
-      text-align: center;
+
       font-size: 14px;
-      color: #ff7272;
+
+      line-height: 1.5;
     }
 
-    /* DASHBOARD */
+    .message.error {
+      display: block;
 
-    #dashboard {
-      min-height: 100vh;
+      background: rgba(239,68,68,.08);
+
+      border: 1px solid rgba(239,68,68,.2);
+
+      color: #fca5a5;
+    }
+
+    .message.success {
+      display: block;
+
+      background: rgba(34,197,94,.08);
+
+      border: 1px solid rgba(34,197,94,.2);
+
+      color: #86efac;
+    }
+
+
+    /* =====================================
+       ADMIN
+    ===================================== */
+
+    #adminScreen {
+      display: none;
     }
 
     header {
-      background: #0a1728;
-      border-bottom: 1px solid #203653;
-      padding: 18px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
       position: sticky;
+
       top: 0;
-      z-index: 10;
+
+      z-index: 100;
+
+      background: rgba(5,11,22,.9);
+
+      backdrop-filter: blur(15px);
+
+      border-bottom: 1px solid var(--border);
     }
 
-    header h1 {
-      font-size: 22px;
-      color: #4da3ff;
-    }
+    .header-inner {
+      width: min(1250px, calc(100% - 30px));
 
-    header p {
-      color: #91a5bd;
-      font-size: 12px;
-      margin-top: 4px;
-    }
+      min-height: 70px;
 
-    .header-buttons {
-      display: flex;
-      gap: 10px;
-    }
-
-    main {
-      max-width: 1400px;
       margin: auto;
-      padding: 30px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 15px;
     }
 
-    .section-title {
-      margin-bottom: 20px;
+    .brand {
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      font-weight: bold;
     }
 
-    .section-title h2 {
-      font-size: 25px;
-      margin-bottom: 6px;
+    .brand-icon {
+      width: 39px;
+      height: 39px;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius: 11px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #2563eb,
+          #7c3aed
+        );
     }
 
-    .section-title p {
-      color: #91a5bd;
+    .header-actions {
+      display: flex;
+
+      gap: 8px;
+
+      flex-wrap: wrap;
     }
 
-    /* STATS */
+    .admin-container {
+      width: min(1250px, calc(100% - 30px));
+
+      margin: auto;
+
+      padding: 35px 0 60px;
+    }
+
+    .welcome {
+      margin-bottom: 28px;
+    }
+
+    .welcome h1 {
+      font-size: 30px;
+
+      margin-bottom: 7px;
+    }
+
+    .welcome p {
+      color: var(--muted);
+
+      font-size: 14px;
+    }
+
+
+    /* =====================================
+       STATS
+    ===================================== */
 
     .stats {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-      margin-bottom: 35px;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 16px;
+
+      margin-bottom: 30px;
     }
 
     .stat-card {
-      background: #0d1b2d;
-      border: 1px solid #203653;
+      background: var(--card);
+
+      border: 1px solid var(--border);
+
       border-radius: 15px;
-      padding: 22px;
+
+      padding: 21px;
     }
 
-    .stat-card span {
-      display: block;
-      color: #91a5bd;
+    .stat-label {
+      color: var(--muted);
+
       font-size: 13px;
+
       margin-bottom: 10px;
     }
 
-    .stat-card strong {
-      font-size: 28px;
-      color: white;
+    .stat-value {
+      font-size: 27px;
+
+      font-weight: bold;
     }
 
-    /* PRODUCTS */
+    .stat-icon {
+      font-size: 20px;
 
-    .product-section {
-      background: #0d1b2d;
-      border: 1px solid #203653;
-      border-radius: 15px;
-      padding: 25px;
-      margin-bottom: 35px;
+      margin-bottom: 12px;
     }
 
-    .product-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
+
+    /* =====================================
+       SECTIONS
+    ===================================== */
+
+    .section {
+      background: var(--card);
+
+      border: 1px solid var(--border);
+
+      border-radius: 17px;
+
       margin-bottom: 25px;
+
+      overflow: hidden;
     }
 
-    .product-top h2 {
-      font-size: 21px;
+    .section-header {
+      padding: 21px;
+
+      border-bottom: 1px solid var(--border);
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 15px;
+
+      flex-wrap: wrap;
     }
 
-    .product-top p {
-      color: #91a5bd;
+    .section-header h2 {
+      font-size: 19px;
+    }
+
+    .section-header p {
+      color: var(--muted);
+
       font-size: 13px;
+
       margin-top: 5px;
     }
 
-    .product-form {
-      background: #081525;
-      border: 1px solid #1e344e;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 25px;
+    .section-body {
+      padding: 21px;
     }
 
-    .product-form h3 {
+
+    /* =====================================
+       PRODUCT FORM
+    ===================================== */
+
+    #productFormContainer {
+      display: none;
+
+      background: var(--bg2);
+
+      border: 1px solid var(--border);
+
+      border-radius: 14px;
+
+      padding: 20px;
+
+      margin-bottom: 22px;
+    }
+
+    .form-title {
+      font-size: 18px;
+
       margin-bottom: 18px;
-      color: #4da3ff;
     }
 
     .form-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
+
+      grid-template-columns:
+        repeat(2, 1fr);
+
+      gap: 16px;
     }
 
-    .form-grid .full {
+    .full {
       grid-column: 1 / -1;
     }
 
-    .checkbox-group {
+    .form-actions {
       display: flex;
-      align-items: center;
+
       gap: 10px;
-      margin: 5px 0;
+
+      flex-wrap: wrap;
+
+      margin-top: 5px;
     }
 
-    .checkbox-group input {
-      width: auto;
-    }
 
-    .checkbox-group label {
-      margin: 0;
-    }
-
-    .form-buttons {
-      display: flex;
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    /* PRODUCT CARDS */
+    /* =====================================
+       PRODUCTS
+    ===================================== */
 
     .products-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 17px;
     }
 
     .product-card {
-      background: #081525;
-      border: 1px solid #1e344e;
+      background: var(--bg2);
+
+      border: 1px solid var(--border);
+
       border-radius: 14px;
+
       overflow: hidden;
     }
 
     .product-image {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      background: #122238;
-      display: block;
+      height: 150px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(37,99,235,.3),
+          rgba(124,58,237,.3)
+        );
     }
 
-    .no-image {
-      height: 180px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #6f8299;
-      font-size: 14px;
-      background: #122238;
+    .product-image img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+    }
+
+    .placeholder {
+      font-size: 40px;
     }
 
     .product-info {
-      padding: 18px;
+      padding: 17px;
     }
 
     .product-info h3 {
       font-size: 17px;
+
       margin-bottom: 8px;
     }
 
     .product-description {
-      color: #91a5bd;
+      color: var(--muted);
+
       font-size: 13px;
+
       line-height: 1.5;
-      min-height: 40px;
-      margin-bottom: 14px;
+
+      min-height: 57px;
+
+      margin-bottom: 12px;
     }
 
     .product-price {
-      color: #4da3ff;
-      font-size: 20px;
+      color: #60a5fa;
+
+      font-size: 18px;
+
       font-weight: bold;
-      margin-bottom: 12px;
+
+      margin-bottom: 10px;
     }
 
     .product-status {
       display: inline-block;
+
       padding: 5px 9px;
+
       border-radius: 20px;
+
       font-size: 11px;
-      font-weight: bold;
-      margin-bottom: 15px;
+
+      margin-bottom: 14px;
     }
 
-    .active {
-      background: rgba(21, 153, 87, 0.15);
-      color: #48d597;
+    .status-active {
+      background: rgba(34,197,94,.1);
+
+      color: #86efac;
     }
 
-    .inactive {
-      background: rgba(201, 60, 60, 0.15);
-      color: #ff7272;
+    .status-inactive {
+      background: rgba(239,68,68,.1);
+
+      color: #fca5a5;
     }
 
     .product-actions {
       display: flex;
-      gap: 8px;
+
+      gap: 7px;
+
+      flex-wrap: wrap;
     }
 
     .product-actions button {
-      flex: 1;
       font-size: 12px;
-      padding: 10px 7px;
+
+      padding: 9px 11px;
     }
 
-    /* ORDERS */
 
-    .orders-section {
-      background: #0d1b2d;
-      border: 1px solid #203653;
-      border-radius: 15px;
-      padding: 25px;
-    }
+    /* =====================================
+       ORDERS
+    ===================================== */
 
-    .orders-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
+    .table-wrapper {
+      width: 100%;
 
-    .orders-header h2 {
-      font-size: 21px;
-    }
-
-    .table-container {
       overflow-x: auto;
     }
 
     table {
       width: 100%;
-      border-collapse: collapse;
-      min-width: 850px;
-    }
 
-    th,
-    td {
-      padding: 14px 12px;
-      text-align: left;
-      border-bottom: 1px solid #1d3047;
-      font-size: 13px;
+      border-collapse: collapse;
+
+      min-width: 800px;
     }
 
     th {
-      color: #8ea5bf;
+      text-align: left;
+
+      color: #94a3b8;
+
       font-size: 12px;
-      text-transform: uppercase;
+
+      font-weight: normal;
+
+      padding: 13px;
+
+      border-bottom: 1px solid var(--border);
     }
 
     td {
-      color: #dce7f3;
+      padding: 14px 13px;
+
+      border-bottom: 1px solid var(--border);
+
+      font-size: 13px;
+
+      vertical-align: middle;
     }
 
-    .status {
-      display: inline-block;
-      padding: 6px 9px;
-      border-radius: 20px;
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .customer-name {
+      font-weight: bold;
+
+      margin-bottom: 4px;
+    }
+
+    .customer-email {
+      color: var(--muted);
+
       font-size: 11px;
+    }
+
+    .order-status {
+      display: inline-block;
+
+      padding: 6px 10px;
+
+      border-radius: 20px;
+
+      font-size: 11px;
+
       font-weight: bold;
     }
 
     .status-pending {
-      background: rgba(217, 149, 0, 0.15);
-      color: #ffc94d;
+      color: #fcd34d;
+
+      background: rgba(245,158,11,.1);
     }
 
     .status-paid {
-      background: rgba(21, 153, 87, 0.15);
-      color: #48d597;
+      color: #86efac;
+
+      background: rgba(34,197,94,.1);
     }
 
     .status-cancelled {
-      background: rgba(201, 60, 60, 0.15);
-      color: #ff7272;
+      color: #fca5a5;
+
+      background: rgba(239,68,68,.1);
     }
 
-    .status-default {
-      background: #263b55;
-      color: #b9c9da;
-    }
+    .status-other {
+      color: #cbd5e1;
 
-    .message {
-      padding: 14px;
-      border-radius: 10px;
-      margin-bottom: 15px;
-      font-size: 14px;
-    }
-
-    .message-success {
-      background: rgba(21, 153, 87, 0.12);
-      border: 1px solid rgba(21, 153, 87, 0.3);
-      color: #62e3a5;
-    }
-
-    .message-error {
-      background: rgba(201, 60, 60, 0.12);
-      border: 1px solid rgba(201, 60, 60, 0.3);
-      color: #ff8585;
+      background: rgba(148,163,184,.1);
     }
 
     .empty {
+      padding: 40px;
+
       text-align: center;
-      padding: 35px;
-      color: #72869e;
+
+      color: var(--muted);
     }
 
-    /* RESPONSIVE */
+    .loading {
+      padding: 35px;
+
+      text-align: center;
+
+      color: var(--muted);
+    }
+
+
+    /* =====================================
+       FOOTER
+    ===================================== */
+
+    .admin-footer {
+      text-align: center;
+
+      color: var(--muted);
+
+      font-size: 12px;
+
+      padding-top: 15px;
+    }
+
+
+    /* =====================================
+       RESPONSIVE
+    ===================================== */
 
     @media (max-width: 1000px) {
+
       .stats {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+          repeat(2, 1fr);
       }
 
       .products-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+          repeat(2, 1fr);
       }
+
     }
 
-    @media (max-width: 700px) {
-      header {
-        padding: 15px;
-        flex-direction: column;
-        align-items: flex-start;
-      }
+    @media (max-width: 650px) {
 
-      main {
-        padding: 18px;
-      }
-
-      .stats {
-        grid-template-columns: 1fr;
-      }
-
-      .products-grid {
-        grid-template-columns: 1fr;
-      }
-
+      .stats,
+      .products-grid,
       .form-grid {
         grid-template-columns: 1fr;
       }
 
-      .form-grid .full {
+      .full {
         grid-column: auto;
       }
 
-      .product-top,
-      .orders-header {
-        flex-direction: column;
+      .header-inner {
+        align-items: flex-start;
+
+        padding: 12px 0;
+      }
+
+      .welcome h1 {
+        font-size: 25px;
+      }
+
+      .section-header {
         align-items: flex-start;
       }
 
-      .header-buttons {
-        width: 100%;
+      .login-card {
+        padding: 25px;
       }
 
-      .header-buttons button {
-        flex: 1;
-      }
     }
+
   </style>
 </head>
 
+
 <body>
 
-  <!-- =========================
+
+  <!-- =====================================
        LOGIN
-  ========================== -->
+  ===================================== -->
 
-  <section id="loginScreen">
+  <div id="loginScreen">
 
-    <div class="login-box">
+    <div class="login-card">
 
-      <div class="logo">
-        <h1>Alquimia Digital</h1>
-        <p>Painel administrativo</p>
+      <div class="login-logo">
+        ✦
       </div>
+
+      <h1>
+        Alquimia Digital
+      </h1>
+
+      <p class="login-subtitle">
+        Painel Administrativo
+      </p>
+
 
       <form id="loginForm">
 
         <div class="form-group">
-          <label for="email">E-mail</label>
+
+          <label for="loginEmail">
+            E-mail
+          </label>
+
           <input
             type="email"
-            id="email"
+            id="loginEmail"
             placeholder="Digite o seu e-mail"
+            autocomplete="email"
             required
           >
+
         </div>
 
+
         <div class="form-group">
-          <label for="password">Palavra-passe</label>
+
+          <label for="loginPassword">
+            Palavra-passe
+          </label>
+
           <input
             type="password"
-            id="password"
+            id="loginPassword"
             placeholder="Digite a sua palavra-passe"
+            autocomplete="current-password"
             required
           >
+
         </div>
+
 
         <button
           type="submit"
-          class="btn btn-primary btn-full"
+          class="btn btn-primary"
           id="loginButton"
+          style="width:100%;"
         >
           Entrar
         </button>
 
-        <div id="loginMessage"></div>
+
+        <div
+          id="loginMessage"
+          class="message"
+        ></div>
 
       </form>
 
     </div>
 
-  </section>
+  </div>
 
 
-  <!-- =========================
-       DASHBOARD
-  ========================== -->
 
-  <section id="dashboard" class="hidden">
+  <!-- =====================================
+       ADMIN
+  ===================================== -->
+
+  <div id="adminScreen">
+
+
+    <!-- HEADER -->
 
     <header>
 
-      <div>
-        <h1>Alquimia Digital</h1>
-        <p>Painel de administração</p>
-      </div>
+      <div class="header-inner">
 
-      <div class="header-buttons">
+        <div class="brand">
 
-        <button
-          class="btn btn-secondary"
-          onclick="loadDashboard()"
-        >
-          Atualizar
-        </button>
+          <div class="brand-icon">
+            ✦
+          </div>
 
-        <button
-          class="btn btn-danger"
-          onclick="logout()"
-        >
-          Sair
-        </button>
+          <span>
+            Alquimia Digital
+          </span>
+
+        </div>
+
+
+        <div class="header-actions">
+
+          <button
+            class="btn btn-secondary"
+            id="viewSiteButton"
+          >
+            Ver site
+          </button>
+
+
+          <button
+            class="btn btn-secondary"
+            id="refreshButton"
+          >
+            Atualizar
+          </button>
+
+
+          <button
+            class="btn btn-danger"
+            id="logoutButton"
+          >
+            Sair
+          </button>
+
+        </div>
 
       </div>
 
     </header>
 
 
-    <main>
 
-      <!-- =========================
-           ESTATÍSTICAS
-      ========================== -->
+    <main class="admin-container">
 
-      <div class="section-title">
-        <h2>Visão geral</h2>
-        <p>Acompanhe os produtos e as vendas do seu negócio.</p>
+
+      <!-- WELCOME -->
+
+      <div class="welcome">
+
+        <h1>
+          Painel Administrativo
+        </h1>
+
+        <p>
+          Gerencie produtos, pedidos e vendas da Alquimia Digital.
+        </p>
+
       </div>
+
+
+
+      <!-- =================================
+           ESTATÍSTICAS
+      ================================== -->
 
       <div class="stats">
 
-        <div class="stat-card">
-          <span>Total de vendas</span>
-          <strong id="totalOrders">0</strong>
-        </div>
 
         <div class="stat-card">
-          <span>Pedidos pendentes</span>
-          <strong id="pendingOrders">0</strong>
+
+          <div class="stat-icon">
+            🛒
+          </div>
+
+          <div class="stat-label">
+            Total de pedidos
+          </div>
+
+          <div
+            class="stat-value"
+            id="totalOrders"
+          >
+            0
+          </div>
+
         </div>
 
-        <div class="stat-card">
-          <span>Pedidos pagos</span>
-          <strong id="paidOrders">0</strong>
-        </div>
 
         <div class="stat-card">
-          <span>Receita total</span>
-          <strong id="totalRevenue">0 MT</strong>
+
+          <div class="stat-icon">
+            ⏳
+          </div>
+
+          <div class="stat-label">
+            Pedidos pendentes
+          </div>
+
+          <div
+            class="stat-value"
+            id="pendingOrders"
+          >
+            0
+          </div>
+
         </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-icon">
+            ✅
+          </div>
+
+          <div class="stat-label">
+            Pedidos pagos
+          </div>
+
+          <div
+            class="stat-value"
+            id="paidOrders"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-icon">
+            💰
+          </div>
+
+          <div class="stat-label">
+            Receita confirmada
+          </div>
+
+          <div
+            class="stat-value"
+            id="totalRevenue"
+          >
+            0 MT
+          </div>
+
+        </div>
+
 
       </div>
 
 
-      <!-- =========================
+
+      <!-- =================================
            PRODUTOS
-      ========================== -->
+      ================================== -->
 
-      <section class="product-section">
+      <section class="section">
 
-        <div class="product-top">
+        <div class="section-header">
 
           <div>
-            <h2>Gestão de produtos</h2>
-            <p>Adicione, edite e controle os produtos publicados no site.</p>
+
+            <h2>
+              📦 Produtos
+            </h2>
+
+            <p>
+              Adicione e gerencie os produtos disponíveis no site.
+            </p>
+
           </div>
+
 
           <button
             class="btn btn-primary"
-            onclick="newProduct()"
+            id="newProductButton"
           >
             + Novo produto
           </button>
@@ -703,345 +1085,690 @@
         </div>
 
 
-        <!-- FORMULÁRIO -->
+        <div class="section-body">
 
-        <div
-          id="productFormContainer"
-          class="product-form hidden"
-        >
 
-          <h3 id="productFormTitle">
-            Adicionar produto
-          </h3>
+          <!-- FORM -->
 
-          <form id="productForm">
+          <div id="productFormContainer">
 
-            <input
-              type="hidden"
-              id="productId"
+            <div
+              class="form-title"
+              id="productFormTitle"
             >
-
-            <div class="form-grid">
-
-              <div class="form-group">
-                <label for="productName">
-                  Nome do produto
-                </label>
-
-                <input
-                  type="text"
-                  id="productName"
-                  placeholder="Ex.: Curso de Marketing Digital"
-                  required
-                >
-              </div>
-
-
-              <div class="form-group">
-                <label for="productPrice">
-                  Preço (MT)
-                </label>
-
-                <input
-                  type="number"
-                  id="productPrice"
-                  placeholder="199"
-                  min="0"
-                  step="0.01"
-                  required
-                >
-              </div>
-
-
-              <div class="form-group full">
-
-                <label for="productDescription">
-                  Descrição
-                </label>
-
-                <textarea
-                  id="productDescription"
-                  placeholder="Descreva o produto..."
-                  required
-                ></textarea>
-
-              </div>
-
-
-              <div class="form-group full">
-
-                <label for="productImage">
-                  URL da imagem
-                </label>
-
-                <input
-                  type="url"
-                  id="productImage"
-                  placeholder="https://exemplo.com/imagem.jpg"
-                >
-
-              </div>
-
-
-              <div class="checkbox-group">
-
-                <input
-                  type="checkbox"
-                  id="productActive"
-                  checked
-                >
-
-                <label for="productActive">
-                  Produto ativo/publicado
-                </label>
-
-              </div>
-
+              Novo produto
             </div>
 
 
-            <div id="productMessage"></div>
+            <form id="productForm">
 
 
-            <div class="form-buttons">
-
-              <button
-                type="submit"
-                class="btn btn-success"
+              <input
+                type="hidden"
+                id="productId"
               >
-                Guardar produto
-              </button>
-
-              <button
-                type="button"
-                class="btn btn-secondary"
-                onclick="cancelProductForm()"
-              >
-                Cancelar
-              </button>
-
-            </div>
-
-          </form>
-
-        </div>
 
 
-        <!-- LISTA DE PRODUTOS -->
+              <div class="form-grid">
 
-        <div id="productsGrid" class="products-grid">
 
-          <div class="empty">
-            A carregar produtos...
+                <div class="form-group">
+
+                  <label for="productName">
+                    Nome do produto *
+                  </label>
+
+                  <input
+                    type="text"
+                    id="productName"
+                    placeholder="Ex.: Curso de Marketing Digital"
+                    required
+                  >
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label for="productPrice">
+                    Preço em MT *
+                  </label>
+
+                  <input
+                    type="number"
+                    id="productPrice"
+                    min="0"
+                    step="0.01"
+                    placeholder="199"
+                    required
+                  >
+
+                </div>
+
+
+                <div class="form-group full">
+
+                  <label for="productDescription">
+                    Descrição *
+                  </label>
+
+                  <textarea
+                    id="productDescription"
+                    placeholder="Descreva o produto..."
+                    required
+                  ></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label for="productImage">
+                    URL da imagem
+                  </label>
+
+                  <input
+                    type="url"
+                    id="productImage"
+                    placeholder="https://..."
+                  >
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label for="productUrl">
+                    Link de entrega do produto
+                  </label>
+
+                  <input
+                    type="url"
+                    id="productUrl"
+                    placeholder="https://..."
+                  >
+
+                  <small
+                    style="
+                      display:block;
+                      color:#94a3b8;
+                      font-size:11px;
+                      margin-top:7px;
+                    "
+                  >
+                    Link para o PDF ou ficheiro que será entregue ao cliente.
+                  </small>
+
+                </div>
+
+
+                <div class="form-group full">
+
+                  <label
+                    style="
+                      display:flex;
+                      align-items:center;
+                      gap:9px;
+                      cursor:pointer;
+                    "
+                  >
+
+                    <input
+                      type="checkbox"
+                      id="productActive"
+                      checked
+                      style="
+                        width:auto;
+                      "
+                    >
+
+                    Produto ativo no site
+
+                  </label>
+
+                </div>
+
+
+                <div class="form-actions full">
+
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    id="saveProductButton"
+                  >
+                    Guardar produto
+                  </button>
+
+
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="cancelProductButton"
+                  >
+                    Cancelar
+                  </button>
+
+                </div>
+
+
+              </div>
+
+
+              <div
+                id="productMessage"
+                class="message"
+              ></div>
+
+            </form>
+
           </div>
+
+
+
+          <!-- PRODUCT LIST -->
+
+          <div
+            id="productsGrid"
+            class="products-grid"
+          >
+
+            <div
+              class="loading"
+              style="grid-column:1/-1;"
+            >
+              A carregar produtos...
+            </div>
+
+          </div>
+
 
         </div>
 
       </section>
 
 
-      <!-- =========================
-           VENDAS
-      ========================== -->
 
-      <section class="orders-section">
+      <!-- =================================
+           PEDIDOS
+      ================================== -->
 
-        <div class="orders-header">
+      <section class="section">
+
+        <div class="section-header">
 
           <div>
-            <h2>Vendas recentes</h2>
-          </div>
 
-          <button
-            class="btn btn-secondary"
-            onclick="loadOrders()"
-          >
-            Atualizar vendas
-          </button>
+            <h2>
+              🛒 Pedidos
+            </h2>
+
+            <p>
+              Pedidos realizados através do site.
+            </p>
+
+          </div>
 
         </div>
 
 
-        <div class="table-container">
+        <div class="section-body">
 
-          <table>
+          <div
+            class="table-wrapper"
+            id="ordersContainer"
+          >
 
-            <thead>
+            <div class="loading">
+              A carregar pedidos...
+            </div>
 
-              <tr>
-                <th>Cliente</th>
-                <th>E-mail</th>
-                <th>Produto</th>
-                <th>Qtd.</th>
-                <th>Total</th>
-                <th>Status</th>
-                <th>Data</th>
-              </tr>
-
-            </thead>
-
-            <tbody id="ordersTable">
-
-              <tr>
-                <td colspan="7" class="empty">
-                  A carregar vendas...
-                </td>
-              </tr>
-
-            </tbody>
-
-          </table>
+          </div>
 
         </div>
 
       </section>
+
+
+
+      <div class="admin-footer">
+
+        Alquimia Digital — Painel Administrativo
+
+      </div>
+
 
     </main>
 
-  </section>
+  </div>
 
+
+
+  <!-- =====================================
+       JAVASCRIPT
+  ===================================== -->
 
   <script>
 
-    /* =========================================
-       SUPABASE
-    ========================================== */
+    /* =====================================
+       CONFIGURAÇÃO
+    ===================================== */
 
-    const supabaseClient = window.supabase.createClient(
-      window.SUPABASE_URL,
-      window.SUPABASE_KEY
+    const supabaseUrl =
+      window.SUPABASE_URL;
+
+    const supabaseKey =
+      window.SUPABASE_KEY;
+
+
+    let supabaseClient = null;
+
+
+    if (
+      supabaseUrl &&
+      supabaseKey
+    ) {
+
+      supabaseClient =
+        window.supabase.createClient(
+          supabaseUrl,
+          supabaseKey
+        );
+
+    }
+
+
+    let currentUser = null;
+
+    let products = [];
+
+
+
+    /* =====================================
+       ELEMENTOS
+    ===================================== */
+
+    const loginScreen =
+      document.getElementById(
+        "loginScreen"
+      );
+
+    const adminScreen =
+      document.getElementById(
+        "adminScreen"
+      );
+
+    const loginForm =
+      document.getElementById(
+        "loginForm"
+      );
+
+    const loginButton =
+      document.getElementById(
+        "loginButton"
+      );
+
+    const loginMessage =
+      document.getElementById(
+        "loginMessage"
+      );
+
+    const logoutButton =
+      document.getElementById(
+        "logoutButton"
+      );
+
+    const refreshButton =
+      document.getElementById(
+        "refreshButton"
+      );
+
+    const viewSiteButton =
+      document.getElementById(
+        "viewSiteButton"
+      );
+
+    const newProductButton =
+      document.getElementById(
+        "newProductButton"
+      );
+
+    const cancelProductButton =
+      document.getElementById(
+        "cancelProductButton"
+      );
+
+    const productFormContainer =
+      document.getElementById(
+        "productFormContainer"
+      );
+
+    const productForm =
+      document.getElementById(
+        "productForm"
+      );
+
+    const productsGrid =
+      document.getElementById(
+        "productsGrid"
+      );
+
+    const ordersContainer =
+      document.getElementById(
+        "ordersContainer"
+      );
+
+
+
+    /* =====================================
+       FORMATAR PREÇO
+    ===================================== */
+
+    function formatPrice(value) {
+
+      return Number(
+        value || 0
+      ).toLocaleString(
+        "pt-MZ",
+        {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        }
+      ) + " MT";
+
+    }
+
+
+
+    /* =====================================
+       ESCAPAR HTML
+    ===================================== */
+
+    function escapeHTML(value) {
+
+      if (
+        value === null ||
+        value === undefined
+      ) {
+        return "";
+      }
+
+      return String(value)
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+
+
+    /* =====================================
+       MENSAGENS
+    ===================================== */
+
+    function showLoginMessage(
+      text,
+      type
+    ) {
+
+      loginMessage.textContent =
+        text;
+
+      loginMessage.className =
+        "message " + type;
+
+    }
+
+
+    function showProductMessage(
+      text,
+      type
+    ) {
+
+      const message =
+        document.getElementById(
+          "productMessage"
+        );
+
+      message.textContent =
+        text;
+
+      message.className =
+        "message " + type;
+
+    }
+
+
+
+    /* =====================================
+       LOGIN
+    ===================================== */
+
+    loginForm.addEventListener(
+      "submit",
+      async function(event) {
+
+        event.preventDefault();
+
+
+        if (!supabaseClient) {
+
+          showLoginMessage(
+            "Supabase não está configurado. Verifique o config.js.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        const email =
+          document.getElementById(
+            "loginEmail"
+          ).value.trim();
+
+
+        const password =
+          document.getElementById(
+            "loginPassword"
+          ).value;
+
+
+        loginButton.disabled =
+          true;
+
+        loginButton.textContent =
+          "A entrar...";
+
+
+        showLoginMessage(
+          "",
+          ""
+        );
+
+
+        try {
+
+          const {
+            data,
+            error
+          } =
+            await supabaseClient.auth
+              .signInWithPassword({
+                email,
+                password
+              });
+
+
+          if (error) {
+
+            console.error(error);
+
+            showLoginMessage(
+              "E-mail ou palavra-passe incorretos.",
+              "error"
+            );
+
+            return;
+
+          }
+
+
+          currentUser =
+            data.user;
+
+
+          showAdmin();
+
+        } catch (error) {
+
+          console.error(error);
+
+          showLoginMessage(
+            "Ocorreu um erro ao iniciar sessão.",
+            "error"
+          );
+
+        } finally {
+
+          loginButton.disabled =
+            false;
+
+          loginButton.textContent =
+            "Entrar";
+
+        }
+
+      }
     );
 
 
-    /* =========================================
-       ELEMENTOS
-    ========================================== */
 
-    const loginScreen = document.getElementById("loginScreen");
-    const dashboard = document.getElementById("dashboard");
+    /* =====================================
+       MOSTRAR ADMIN
+    ===================================== */
 
-    const loginForm = document.getElementById("loginForm");
-    const loginMessage = document.getElementById("loginMessage");
-    const loginButton = document.getElementById("loginButton");
+    function showAdmin() {
 
-    const productFormContainer =
-      document.getElementById("productFormContainer");
+      loginScreen.style.display =
+        "none";
 
-    const productForm =
-      document.getElementById("productForm");
+      adminScreen.style.display =
+        "block";
 
-    const productMessage =
-      document.getElementById("productMessage");
-
-    const productsGrid =
-      document.getElementById("productsGrid");
-
-    const ordersTable =
-      document.getElementById("ordersTable");
-
-
-    /* =========================================
-       LOGIN
-    ========================================== */
-
-    loginForm.addEventListener("submit", async function(event) {
-
-      event.preventDefault();
-
-      const email =
-        document.getElementById("email").value.trim();
-
-      const password =
-        document.getElementById("password").value;
-
-      loginMessage.textContent = "";
-      loginButton.disabled = true;
-      loginButton.textContent = "A entrar...";
-
-      const { error } =
-        await supabaseClient.auth.signInWithPassword({
-          email: email,
-          password: password
-        });
-
-      if (error) {
-
-        loginMessage.textContent =
-          "E-mail ou palavra-passe incorretos.";
-
-        console.error(error);
-
-        loginButton.disabled = false;
-        loginButton.textContent = "Entrar";
-
-        return;
-      }
-
-      await showDashboard();
-
-      loginButton.disabled = false;
-      loginButton.textContent = "Entrar";
-
-    });
-
-
-    /* =========================================
-       VERIFICAR SESSÃO
-    ========================================== */
-
-    async function checkSession() {
-
-      const {
-        data: { session }
-      } = await supabaseClient.auth.getSession();
-
-      if (session) {
-
-        await showDashboard();
-
-      } else {
-
-        loginScreen.classList.remove("hidden");
-        dashboard.classList.add("hidden");
-
-      }
+      loadDashboard();
 
     }
 
 
-    /* =========================================
-       MOSTRAR DASHBOARD
-    ========================================== */
 
-    async function showDashboard() {
+    /* =====================================
+       MOSTRAR LOGIN
+    ===================================== */
 
-      loginScreen.classList.add("hidden");
-      dashboard.classList.remove("hidden");
+    function showLogin() {
 
-      await loadDashboard();
+      loginScreen.style.display =
+        "flex";
+
+      adminScreen.style.display =
+        "none";
+
+      currentUser =
+        null;
 
     }
 
 
-    /* =========================================
+
+    /* =====================================
        LOGOUT
-    ========================================== */
+    ===================================== */
 
-    async function logout() {
+    logoutButton.addEventListener(
+      "click",
+      async function() {
 
-      await supabaseClient.auth.signOut();
+        if (!supabaseClient) {
+          return;
+        }
 
-      dashboard.classList.add("hidden");
-      loginScreen.classList.remove("hidden");
+        await supabaseClient.auth.signOut();
 
-      loginForm.reset();
+        showLogin();
 
-    }
+      }
+    );
 
 
-    /* =========================================
+
+    /* =====================================
+       VER SITE
+    ===================================== */
+
+    viewSiteButton.addEventListener(
+      "click",
+      function() {
+
+        window.open(
+          "/",
+          "_blank"
+        );
+
+      }
+    );
+
+
+
+    /* =====================================
+       ATUALIZAR
+    ===================================== */
+
+    refreshButton.addEventListener(
+      "click",
+      async function() {
+
+        refreshButton.disabled =
+          true;
+
+        refreshButton.textContent =
+          "A atualizar...";
+
+
+        await loadDashboard();
+
+
+        refreshButton.disabled =
+          false;
+
+        refreshButton.textContent =
+          "Atualizar";
+
+      }
+    );
+
+
+
+    /* =====================================
        DASHBOARD
-    ========================================== */
+    ===================================== */
 
     async function loadDashboard() {
 
@@ -1053,404 +1780,662 @@
     }
 
 
-    /* =========================================
-       PRODUTOS
-    ========================================== */
+
+    /* =====================================
+       CARREGAR PRODUTOS
+    ===================================== */
 
     async function loadProducts() {
 
-      productsGrid.innerHTML =
-        '<div class="empty">A carregar produtos...</div>';
+      productsGrid.innerHTML = `
+        <div
+          class="loading"
+          style="grid-column:1/-1;"
+        >
+          A carregar produtos...
+        </div>
+      `;
+
 
       const {
         data,
         error
-      } = await supabaseClient
-        .from("products")
-        .select(
-          "id,name,description,price,image_url,is_active,created_at"
-        )
-        .order("created_at", {
-          ascending: false
-        });
+      } =
+        await supabaseClient
+          .from("products")
+          .select(`
+            id,
+            name,
+            description,
+            price,
+            image_url,
+            product_url,
+            is_active,
+            created_at
+          `)
+          .order(
+            "created_at",
+            {
+              ascending: false
+            }
+          );
 
 
       if (error) {
 
-        console.error(error);
+        console.error(
+          "Erro produtos:",
+          error
+        );
 
-        productsGrid.innerHTML =
-          '<div class="empty">Não foi possível carregar os produtos.</div>';
+
+        productsGrid.innerHTML = `
+          <div
+            class="empty"
+            style="grid-column:1/-1;"
+          >
+            Não foi possível carregar os produtos.
+          </div>
+        `;
 
         return;
+
       }
 
 
-      if (!data || data.length === 0) {
+      products =
+        data || [];
 
-        productsGrid.innerHTML =
-          '<div class="empty">Ainda não existem produtos.</div>';
+
+      renderProducts();
+
+    }
+
+
+
+    /* =====================================
+       RENDERIZAR PRODUTOS
+    ===================================== */
+
+    function renderProducts() {
+
+      if (
+        products.length === 0
+      ) {
+
+        productsGrid.innerHTML = `
+          <div
+            class="empty"
+            style="grid-column:1/-1;"
+          >
+            Ainda não existem produtos.
+          </div>
+        `;
 
         return;
+
       }
 
 
       productsGrid.innerHTML = "";
 
 
-      data.forEach(function(product) {
+      products.forEach(
+        product => {
 
-        const card =
-          document.createElement("div");
+          const card =
+            document.createElement(
+              "div"
+            );
 
-        card.className = "product-card";
+
+          card.className =
+            "product-card";
 
 
-        let imageHTML = "";
+          let imageHTML;
 
-        if (product.image_url) {
 
-          imageHTML = `
-            <img
-              class="product-image"
-              src="${escapeHTML(product.image_url)}"
-              alt="${escapeHTML(product.name)}"
-              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-            >
-            <div class="no-image" style="display:none;">
-              Imagem indisponível
+          if (
+            product.image_url
+          ) {
+
+            imageHTML = `
+              <div class="product-image">
+
+                <img
+                  src="${escapeHTML(
+                    product.image_url
+                  )}"
+                  alt="${escapeHTML(
+                    product.name
+                  )}"
+                >
+
+              </div>
+            `;
+
+          } else {
+
+            imageHTML = `
+              <div class="product-image">
+
+                <div class="placeholder">
+                  📚
+                </div>
+
+              </div>
+            `;
+
+          }
+
+
+          const statusClass =
+            product.is_active
+              ? "status-active"
+              : "status-inactive";
+
+
+          const statusText =
+            product.is_active
+              ? "Ativo"
+              : "Inativo";
+
+
+          card.innerHTML = `
+
+            ${imageHTML}
+
+            <div class="product-info">
+
+              <h3>
+                ${escapeHTML(
+                  product.name
+                )}
+              </h3>
+
+
+              <div class="product-description">
+
+                ${escapeHTML(
+                  product.description ||
+                  "Sem descrição."
+                )}
+
+              </div>
+
+
+              <div class="product-price">
+
+                ${formatPrice(
+                  product.price
+                )}
+
+              </div>
+
+
+              <span
+                class="product-status ${statusClass}"
+              >
+                ${statusText}
+              </span>
+
+
+              <div class="product-actions">
+
+                <button
+                  class="btn btn-secondary edit-product"
+                >
+                  Editar
+                </button>
+
+
+                <button
+                  class="btn ${
+                    product.is_active
+                      ? "btn-danger"
+                      : "btn-success"
+                  } toggle-product"
+                >
+                  ${
+                    product.is_active
+                      ? "Desativar"
+                      : "Ativar"
+                  }
+                </button>
+
+              </div>
+
             </div>
+
           `;
 
-        } else {
 
-          imageHTML = `
-            <div class="no-image">
-              Sem imagem
-            </div>
-          `;
+          card
+            .querySelector(
+              ".edit-product"
+            )
+            .addEventListener(
+              "click",
+              function() {
+
+                editProduct(
+                  product
+                );
+
+              }
+            );
+
+
+          card
+            .querySelector(
+              ".toggle-product"
+            )
+            .addEventListener(
+              "click",
+              function() {
+
+                toggleProduct(
+                  product
+                );
+
+              }
+            );
+
+
+          productsGrid.appendChild(
+            card
+          );
+
+        }
+      );
+
+    }
+
+
+
+    /* =====================================
+       NOVO PRODUTO
+    ===================================== */
+
+    newProductButton.addEventListener(
+      "click",
+      function() {
+
+        resetProductForm();
+
+        document.getElementById(
+          "productFormTitle"
+        ).textContent =
+          "Novo produto";
+
+
+        productFormContainer.style.display =
+          "block";
+
+
+        productFormContainer.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+
+      }
+    );
+
+
+
+    /* =====================================
+       RESET FORM
+    ===================================== */
+
+    function resetProductForm() {
+
+      productForm.reset();
+
+
+      document.getElementById(
+        "productId"
+      ).value =
+        "";
+
+
+      document.getElementById(
+        "productActive"
+      ).checked =
+        true;
+
+
+      document.getElementById(
+        "productMessage"
+      ).className =
+        "message";
+
+
+      document.getElementById(
+        "productMessage"
+      ).textContent =
+        "";
+
+    }
+
+
+
+    /* =====================================
+       CANCELAR
+    ===================================== */
+
+    cancelProductButton.addEventListener(
+      "click",
+      function() {
+
+        productFormContainer.style.display =
+          "none";
+
+        resetProductForm();
+
+      }
+    );
+
+
+
+    /* =====================================
+       EDITAR PRODUTO
+    ===================================== */
+
+    function editProduct(product) {
+
+      document.getElementById(
+        "productFormTitle"
+      ).textContent =
+        "Editar produto";
+
+
+      document.getElementById(
+        "productId"
+      ).value =
+        product.id;
+
+
+      document.getElementById(
+        "productName"
+      ).value =
+        product.name || "";
+
+
+      document.getElementById(
+        "productDescription"
+      ).value =
+        product.description || "";
+
+
+      document.getElementById(
+        "productPrice"
+      ).value =
+        product.price || 0;
+
+
+      document.getElementById(
+        "productImage"
+      ).value =
+        product.image_url || "";
+
+
+      document.getElementById(
+        "productUrl"
+      ).value =
+        product.product_url || "";
+
+
+      document.getElementById(
+        "productActive"
+      ).checked =
+        Boolean(
+          product.is_active
+        );
+
+
+      productFormContainer.style.display =
+        "block";
+
+
+      productFormContainer.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+
+    }
+
+
+
+    /* =====================================
+       GUARDAR PRODUTO
+    ===================================== */
+
+    productForm.addEventListener(
+      "submit",
+      async function(event) {
+
+        event.preventDefault();
+
+
+        const productId =
+          document.getElementById(
+            "productId"
+          ).value;
+
+
+        const name =
+          document.getElementById(
+            "productName"
+          ).value.trim();
+
+
+        const description =
+          document.getElementById(
+            "productDescription"
+          ).value.trim();
+
+
+        const price =
+          Number(
+            document.getElementById(
+              "productPrice"
+            ).value
+          );
+
+
+        const imageUrl =
+          document.getElementById(
+            "productImage"
+          ).value.trim();
+
+
+        const productUrl =
+          document.getElementById(
+            "productUrl"
+          ).value.trim();
+
+
+        const isActive =
+          document.getElementById(
+            "productActive"
+          ).checked;
+
+
+        if (!name) {
+
+          showProductMessage(
+            "Digite o nome do produto.",
+            "error"
+          );
+
+          return;
 
         }
 
 
-        const statusClass =
-          product.is_active
-            ? "active"
-            : "inactive";
+        if (
+          !Number.isFinite(price) ||
+          price < 0
+        ) {
 
-        const statusText =
-          product.is_active
-            ? "ATIVO"
-            : "INATIVO";
+          showProductMessage(
+            "Digite um preço válido.",
+            "error"
+          );
 
+          return;
 
-        card.innerHTML = `
+        }
 
-          ${imageHTML}
 
-          <div class="product-info">
+        const saveButton =
+          document.getElementById(
+            "saveProductButton"
+          );
 
-            <h3>
-              ${escapeHTML(product.name)}
-            </h3>
 
-            <div class="product-description">
-              ${escapeHTML(product.description || "")}
-            </div>
+        saveButton.disabled =
+          true;
 
-            <div class="product-price">
-              ${formatMoney(product.price)} MT
-            </div>
+        saveButton.textContent =
+          "A guardar...";
 
-            <span class="product-status ${statusClass}">
-              ${statusText}
-            </span>
 
-            <div class="product-actions">
+        const productData = {
 
-              <button
-                class="btn btn-warning"
-                onclick="editProduct('${product.id}')"
-              >
-                Editar
-              </button>
+          name,
 
-              <button
-                class="btn ${product.is_active ? "btn-danger" : "btn-success"}"
-                onclick="toggleProduct('${product.id}', ${product.is_active})"
-              >
-                ${product.is_active ? "Desativar" : "Ativar"}
-              </button>
+          description,
 
-            </div>
+          price,
 
-          </div>
-        `;
+          image_url:
+            imageUrl || null,
 
+          product_url:
+            productUrl || null,
 
-        productsGrid.appendChild(card);
+          is_active:
+            isActive
 
-      });
+        };
 
-    }
 
+        try {
 
-    /* =========================================
-       NOVO PRODUTO
-    ========================================== */
+          let error;
 
-    function newProduct() {
 
-      productForm.reset();
+          if (productId) {
 
-      document.getElementById("productId").value = "";
+            const result =
+              await supabaseClient
+                .from("products")
+                .update(
+                  productData
+                )
+                .eq(
+                  "id",
+                  productId
+                );
 
-      document.getElementById("productActive").checked = true;
 
-      document.getElementById("productFormTitle").textContent =
-        "Adicionar produto";
+            error =
+              result.error;
 
-      productMessage.innerHTML = "";
+          } else {
 
-      productFormContainer.classList.remove("hidden");
+            const result =
+              await supabaseClient
+                .from("products")
+                .insert([
+                  productData
+                ]);
 
-      window.scrollTo({
-        top: productFormContainer.offsetTop - 100,
-        behavior: "smooth"
-      });
 
-    }
+            error =
+              result.error;
 
+          }
 
-    /* =========================================
-       CANCELAR FORMULÁRIO
-    ========================================== */
 
-    function cancelProductForm() {
+          if (error) {
 
-      productForm.reset();
+            console.error(
+              error
+            );
 
-      productFormContainer.classList.add("hidden");
 
-      productMessage.innerHTML = "";
+            showProductMessage(
+              "Não foi possível guardar o produto.",
+              "error"
+            );
 
-    }
+            return;
 
+          }
 
-    /* =========================================
-       GUARDAR PRODUTO
-    ========================================== */
 
-    productForm.addEventListener("submit", async function(event) {
+          showProductMessage(
+            productId
+              ? "Produto atualizado com sucesso."
+              : "Produto criado com sucesso.",
+            "success"
+          );
 
-      event.preventDefault();
 
+          await loadProducts();
 
-      const id =
-        document.getElementById("productId").value;
 
-      const name =
-        document.getElementById("productName").value.trim();
+          setTimeout(
+            function() {
 
-      const description =
-        document.getElementById("productDescription").value.trim();
+              productFormContainer.style.display =
+                "none";
 
-      const price =
-        Number(document.getElementById("productPrice").value);
+              resetProductForm();
 
-      const image_url =
-        document.getElementById("productImage").value.trim();
+            },
+            700
+          );
 
-      const is_active =
-        document.getElementById("productActive").checked;
 
+        } catch (error) {
 
-      if (!name) {
+          console.error(
+            error
+          );
 
-        showProductMessage(
-          "Digite o nome do produto.",
-          "error"
-        );
 
-        return;
-      }
+          showProductMessage(
+            "Ocorreu um erro ao guardar o produto.",
+            "error"
+          );
 
+        } finally {
 
-      if (isNaN(price) || price < 0) {
+          saveButton.disabled =
+            false;
 
-        showProductMessage(
-          "Digite um preço válido.",
-          "error"
-        );
+          saveButton.textContent =
+            "Guardar produto";
 
-        return;
-      }
-
-
-      const productData = {
-
-        name: name,
-
-        description: description,
-
-        price: price,
-
-        image_url:
-          image_url || null,
-
-        is_active: is_active
-
-      };
-
-
-      const submitButton =
-        productForm.querySelector(
-          'button[type="submit"]'
-        );
-
-      submitButton.disabled = true;
-      submitButton.textContent = "A guardar...";
-
-
-      let result;
-
-
-      if (id) {
-
-        result =
-          await supabaseClient
-            .from("products")
-            .update(productData)
-            .eq("id", id);
-
-      } else {
-
-        result =
-          await supabaseClient
-            .from("products")
-            .insert([productData]);
+        }
 
       }
+    );
 
 
-      if (result.error) {
 
-        console.error(result.error);
-
-        showProductMessage(
-          "Erro ao guardar produto: " +
-          result.error.message,
-          "error"
-        );
-
-        submitButton.disabled = false;
-        submitButton.textContent =
-          "Guardar produto";
-
-        return;
-      }
-
-
-      showProductMessage(
-        id
-          ? "Produto atualizado com sucesso!"
-          : "Produto criado com sucesso!",
-        "success"
-      );
-
-
-      submitButton.disabled = false;
-      submitButton.textContent =
-        "Guardar produto";
-
-
-      setTimeout(async function() {
-
-        productFormContainer.classList.add("hidden");
-
-        productForm.reset();
-
-        await loadProducts();
-
-      }, 800);
-
-    });
-
-
-    /* =========================================
-       EDITAR PRODUTO
-    ========================================== */
-
-    async function editProduct(id) {
-
-      const {
-        data,
-        error
-      } = await supabaseClient
-        .from("products")
-        .select(
-          "id,name,description,price,image_url,is_active"
-        )
-        .eq("id", id)
-        .single();
-
-
-      if (error) {
-
-        alert(
-          "Não foi possível carregar o produto."
-        );
-
-        console.error(error);
-
-        return;
-      }
-
-
-      document.getElementById("productId").value =
-        data.id;
-
-      document.getElementById("productName").value =
-        data.name || "";
-
-      document.getElementById("productDescription").value =
-        data.description || "";
-
-      document.getElementById("productPrice").value =
-        data.price || "";
-
-      document.getElementById("productImage").value =
-        data.image_url || "";
-
-      document.getElementById("productActive").checked =
-        data.is_active;
-
-
-      document.getElementById("productFormTitle").textContent =
-        "Editar produto";
-
-
-      productMessage.innerHTML = "";
-
-      productFormContainer.classList.remove("hidden");
-
-
-      window.scrollTo({
-        top: productFormContainer.offsetTop - 100,
-        behavior: "smooth"
-      });
-
-    }
-
-
-    /* =========================================
+    /* =====================================
        ATIVAR / DESATIVAR
-    ========================================== */
+    ===================================== */
 
-    async function toggleProduct(id, currentStatus) {
+    async function toggleProduct(product) {
 
       const newStatus =
-        !currentStatus;
+        !product.is_active;
 
 
       const action =
@@ -1461,7 +2446,7 @@
 
       const confirmed =
         confirm(
-          `Tem certeza que deseja ${action} este produto?`
+          `Deseja ${action} o produto "${product.name}"?`
         );
 
 
@@ -1472,23 +2457,31 @@
 
       const {
         error
-      } = await supabaseClient
-        .from("products")
-        .update({
-          is_active: newStatus
-        })
-        .eq("id", id);
+      } =
+        await supabaseClient
+          .from("products")
+          .update({
+            is_active:
+              newStatus
+          })
+          .eq(
+            "id",
+            product.id
+          );
 
 
       if (error) {
 
-        alert(
-          "Não foi possível atualizar o produto."
+        console.error(
+          error
         );
 
-        console.error(error);
+        alert(
+          "Não foi possível alterar o estado do produto."
+        );
 
         return;
+
       }
 
 
@@ -1497,381 +2490,521 @@
     }
 
 
-    /* =========================================
-       MENSAGEM DO PRODUTO
-    ========================================== */
 
-    function showProductMessage(
-      message,
-      type
-    ) {
-
-      productMessage.innerHTML = `
-        <div class="message ${
-          type === "success"
-            ? "message-success"
-            : "message-error"
-        }">
-          ${escapeHTML(message)}
-        </div>
-      `;
-
-    }
-
-
-    /* =========================================
-       VENDAS
-    ========================================== */
+    /* =====================================
+       CARREGAR PEDIDOS
+    ===================================== */
 
     async function loadOrders() {
 
-      ordersTable.innerHTML = `
-        <tr>
-          <td colspan="7" class="empty">
-            A carregar vendas...
-          </td>
-        </tr>
+      ordersContainer.innerHTML = `
+        <div class="loading">
+          A carregar pedidos...
+        </div>
       `;
 
 
       const {
-        data: orders,
+        data,
         error
-      } = await supabaseClient
-        .from("orders")
-        .select(
-          "id,product,customer_name,customer_email,quantity,total,status,created_at"
-        )
-        .order("created_at", {
-          ascending: false
-        });
+      } =
+        await supabaseClient
+          .from("orders")
+          .select(`
+            id,
+            product,
+            customer_name,
+            customer_email,
+            quantity,
+            total,
+            status,
+            payment_reference,
+            paid_at,
+            created_at
+          `)
+          .order(
+            "created_at",
+            {
+              ascending: false
+            }
+          );
 
 
       if (error) {
 
-        console.error(error);
+        console.error(
+          "Erro pedidos:",
+          error
+        );
 
-        ordersTable.innerHTML = `
-          <tr>
-            <td colspan="7" class="empty">
-              Não foi possível carregar as vendas.
-            </td>
-          </tr>
+
+        ordersContainer.innerHTML = `
+          <div class="empty">
+            Não foi possível carregar os pedidos.
+          </div>
         `;
 
         return;
-      }
-
-
-      const {
-        data: products
-      } = await supabaseClient
-        .from("products")
-        .select("id,name");
-
-
-      const productMap = {};
-
-
-      if (products) {
-
-        products.forEach(function(product) {
-
-          productMap[product.id] =
-            product.name;
-
-        });
 
       }
 
 
-      updateStatistics(orders || []);
+      const orders =
+        data || [];
 
 
-      if (!orders || orders.length === 0) {
-
-        ordersTable.innerHTML = `
-          <tr>
-            <td colspan="7" class="empty">
-              Ainda não existem vendas.
-            </td>
-          </tr>
-        `;
-
-        return;
-      }
+      updateStats(
+        orders
+      );
 
 
-      ordersTable.innerHTML = "";
-
-
-      orders.forEach(function(order) {
-
-        const row =
-          document.createElement("tr");
-
-
-        const status =
-          String(order.status || "pending")
-            .toLowerCase();
-
-
-        let statusClass =
-          "status-default";
-
-
-        if (status === "pending") {
-          statusClass = "status-pending";
-        }
-
-        if (status === "paid") {
-          statusClass = "status-paid";
-        }
-
-        if (
-          status === "cancelled" ||
-          status === "canceled"
-        ) {
-          statusClass = "status-cancelled";
-        }
-
-
-        const statusText =
-          translateStatus(status);
-
-
-        const date =
-          formatDate(order.created_at);
-
-
-        row.innerHTML = `
-
-          <td>
-            ${escapeHTML(
-              order.customer_name || "—"
-            )}
-          </td>
-
-          <td>
-            ${escapeHTML(
-              order.customer_email || "—"
-            )}
-          </td>
-
-          <td>
-            ${
-              escapeHTML(
-                productMap[order.product] ||
-                order.product ||
-                "Produto"
-              )
-            }
-          </td>
-
-          <td>
-            ${order.quantity || 1}
-          </td>
-
-          <td>
-            ${formatMoney(order.total)} MT
-          </td>
-
-          <td>
-            <span class="status ${statusClass}">
-              ${statusText}
-            </span>
-          </td>
-
-          <td>
-            ${date}
-          </td>
-
-        `;
-
-
-        ordersTable.appendChild(row);
-
-      });
+      renderOrders(
+        orders
+      );
 
     }
 
 
-    /* =========================================
-       ESTATÍSTICAS
-    ========================================== */
 
-    function updateStatistics(orders) {
+    /* =====================================
+       ESTATÍSTICAS
+    ===================================== */
+
+    function updateStats(
+      orders
+    ) {
 
       const total =
         orders.length;
 
 
       const pending =
-        orders.filter(function(order) {
-
-          return String(order.status || "")
-            .toLowerCase() === "pending";
-
-        }).length;
-
-
-      const paidOrders =
-        orders.filter(function(order) {
-
-          return String(order.status || "")
-            .toLowerCase() === "paid";
-
-        });
+        orders.filter(
+          order =>
+            String(
+              order.status
+            ).toLowerCase() ===
+            "pending"
+        ).length;
 
 
       const paid =
-        paidOrders.length;
+        orders.filter(
+          order =>
+            String(
+              order.status
+            ).toLowerCase() ===
+            "paid"
+        );
 
 
       const revenue =
-        paidOrders.reduce(
-          function(sum, order) {
-
-            return sum +
-              Number(order.total || 0);
-
-          },
+        paid.reduce(
+          (
+            sum,
+            order
+          ) =>
+            sum +
+            Number(
+              order.total || 0
+            ),
           0
         );
 
 
       document.getElementById(
         "totalOrders"
-      ).textContent = total;
+      ).textContent =
+        total;
 
 
       document.getElementById(
         "pendingOrders"
-      ).textContent = pending;
+      ).textContent =
+        pending;
 
 
       document.getElementById(
         "paidOrders"
-      ).textContent = paid;
+      ).textContent =
+        paid.length;
 
 
       document.getElementById(
         "totalRevenue"
       ).textContent =
-        formatMoney(revenue) + " MT";
+        formatPrice(
+          revenue
+        );
 
     }
 
 
-    /* =========================================
-       FORMATAÇÃO
-    ========================================== */
 
-    function formatMoney(value) {
+    /* =====================================
+       NOME DO PRODUTO
+    ===================================== */
 
-      return Number(value || 0)
-        .toLocaleString(
-          "pt-MZ",
-          {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 2
+    function getProductName(
+      productId
+    ) {
+
+      const product =
+        products.find(
+          item =>
+            item.id ===
+            productId
+        );
+
+
+      return product
+        ? product.name
+        : productId || "Produto";
+
+    }
+
+
+
+    /* =====================================
+       STATUS DO PEDIDO
+    ===================================== */
+
+    function getStatusHTML(
+      status
+    ) {
+
+      const normalized =
+        String(
+          status || "pending"
+        ).toLowerCase();
+
+
+      if (
+        normalized ===
+        "pending"
+      ) {
+
+        return `
+          <span
+            class="order-status status-pending"
+          >
+            Pendente
+          </span>
+        `;
+
+      }
+
+
+      if (
+        normalized ===
+        "paid"
+      ) {
+
+        return `
+          <span
+            class="order-status status-paid"
+          >
+            Pago
+          </span>
+        `;
+
+      }
+
+
+      if (
+        normalized ===
+        "cancelled"
+      ) {
+
+        return `
+          <span
+            class="order-status status-cancelled"
+          >
+            Cancelado
+          </span>
+        `;
+
+      }
+
+
+      return `
+        <span
+          class="order-status status-other"
+        >
+          ${escapeHTML(
+            status
+          )}
+        </span>
+      `;
+
+    }
+
+
+
+    /* =====================================
+       RENDERIZAR PEDIDOS
+    ===================================== */
+
+    function renderOrders(
+      orders
+    ) {
+
+      if (
+        orders.length === 0
+      ) {
+
+        ordersContainer.innerHTML = `
+          <div class="empty">
+            Ainda não existem pedidos.
+          </div>
+        `;
+
+        return;
+
+      }
+
+
+      let html = `
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>
+                Cliente
+              </th>
+
+              <th>
+                Produto
+              </th>
+
+              <th>
+                Qtd.
+              </th>
+
+              <th>
+                Total
+              </th>
+
+              <th>
+                Estado
+              </th>
+
+              <th>
+                Data
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+      `;
+
+
+      orders.forEach(
+        order => {
+
+          const date =
+            order.created_at
+              ? new Date(
+                  order.created_at
+                ).toLocaleString(
+                  "pt-MZ",
+                  {
+                    dateStyle:
+                      "short",
+                    timeStyle:
+                      "short"
+                  }
+                )
+              : "—";
+
+
+          html += `
+
+            <tr>
+
+              <td>
+
+                <div class="customer-name">
+
+                  ${escapeHTML(
+                    order.customer_name
+                  )}
+
+                </div>
+
+                <div class="customer-email">
+
+                  ${escapeHTML(
+                    order.customer_email
+                  )}
+
+                </div>
+
+              </td>
+
+
+              <td>
+
+                ${escapeHTML(
+                  getProductName(
+                    order.product
+                  )
+                )}
+
+              </td>
+
+
+              <td>
+
+                ${Number(
+                  order.quantity || 1
+                )}
+
+              </td>
+
+
+              <td>
+
+                <strong>
+
+                  ${formatPrice(
+                    order.total
+                  )}
+
+                </strong>
+
+              </td>
+
+
+              <td>
+
+                ${getStatusHTML(
+                  order.status
+                )}
+
+              </td>
+
+
+              <td>
+
+                ${date}
+
+              </td>
+
+            </tr>
+
+          `;
+
+        }
+      );
+
+
+      html += `
+
+          </tbody>
+
+        </table>
+
+      `;
+
+
+      ordersContainer.innerHTML =
+        html;
+
+    }
+
+
+
+    /* =====================================
+       VERIFICAR SESSÃO
+    ===================================== */
+
+    async function checkSession() {
+
+      if (!supabaseClient) {
+
+        showLoginMessage(
+          "O Supabase não está configurado. Verifique o config.js.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      const {
+        data
+      } =
+        await supabaseClient.auth
+          .getSession();
+
+
+      if (
+        data &&
+        data.session
+      ) {
+
+        currentUser =
+          data.session.user;
+
+        showAdmin();
+
+      } else {
+
+        showLogin();
+
+      }
+
+    }
+
+
+
+    /* =====================================
+       ALTERAÇÃO DE AUTENTICAÇÃO
+    ===================================== */
+
+    if (
+      supabaseClient
+    ) {
+
+      supabaseClient.auth
+        .onAuthStateChange(
+          function(
+            event,
+            session
+          ) {
+
+            if (
+              session
+            ) {
+
+              currentUser =
+                session.user;
+
+            } else {
+
+              currentUser =
+                null;
+
+            }
+
           }
         );
 
     }
 
 
-    function formatDate(value) {
 
-      if (!value) {
-        return "—";
-      }
-
-
-      const date =
-        new Date(value);
-
-
-      if (isNaN(date.getTime())) {
-        return "—";
-      }
-
-
-      return date.toLocaleString(
-        "pt-MZ",
-        {
-          dateStyle: "short",
-          timeStyle: "short"
-        }
-      );
-
-    }
-
-
-    function translateStatus(status) {
-
-      const statuses = {
-
-        pending: "Pendente",
-
-        paid: "Pago",
-
-        cancelled: "Cancelado",
-
-        canceled: "Cancelado"
-
-      };
-
-
-      return statuses[status] ||
-        status ||
-        "Desconhecido";
-
-    }
-
-
-    /* =========================================
-       SEGURANÇA DE TEXTO
-    ========================================== */
-
-    function escapeHTML(value) {
-
-      return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-    }
-
-
-    /* =========================================
-       OBSERVAR AUTENTICAÇÃO
-    ========================================== */
-
-    supabaseClient.auth.onAuthStateChange(
-      async function(event, session) {
-
-        if (session) {
-
-          loginScreen.classList.add("hidden");
-          dashboard.classList.remove("hidden");
-
-        } else {
-
-          dashboard.classList.add("hidden");
-          loginScreen.classList.remove("hidden");
-
-        }
-
-      }
-    );
-
-
-    /* =========================================
+    /* =====================================
        INICIAR
-    ========================================== */
+    ===================================== */
 
     checkSession();
 
