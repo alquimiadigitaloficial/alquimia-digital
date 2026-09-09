@@ -1,5 +1,3 @@
-// api/delivery.js
-
 import { createClient } from "@supabase/supabase-js";
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -23,80 +21,47 @@ const supabaseAdmin = createClient(
   }
 );
 
-
-// ========================================
-// CONFIGURAÇÕES
-// ========================================
-
-// Tempo durante o qual o link ficará disponível.
-// 30 minutos.
 const LINK_EXPIRATION_SECONDS = 60 * 30;
 
-
-// ========================================
-// FUNÇÃO PRINCIPAL
-// ========================================
-
 export default async function handler(req, res) {
-
-  // Permitir apenas GET
   if (req.method !== "GET") {
-
     return res.status(405).json({
       success: false,
       error: "Método não permitido."
     });
-
   }
 
-
   try {
-
-    // ========================================
-    // OBTER TOKEN
-    // ========================================
-
-    const token =
-      req.query?.token;
-
+    const token = req.query?.token;
 
     if (!token || typeof token !== "string") {
-
       return res.status(400).json({
         success: false,
         error: "Token de entrega não informado."
       });
-
     }
 
-
-    // ========================================
-    // PROCURAR PEDIDO
-    // ========================================
-
+    // Procurar o pedido pelo token
     const {
       data: order,
       error: orderError
-    } =
-      await supabaseAdmin
-        .from("orders")
-        .select(`
-          id,
-          product,
-          customer_name,
-          customer_email,
-          quantity,
-          total,
-          status,
-          delivery_token,
-          delivery_expires_at
-        `)
-        .eq("delivery_token", token)
-        .maybeSingle();
-
+    } = await supabaseAdmin
+      .from("orders")
+      .select(`
+        id,
+        product,
+        customer_name,
+        customer_email,
+        quantity,
+        total,
+        status,
+        delivery_token,
+        delivery_expires_at
+      `)
+      .eq("delivery_token", token)
+      .maybeSingle();
 
     if (orderError) {
-
       console.error(
         "Erro ao procurar pedido:",
         orderError
@@ -106,90 +71,60 @@ export default async function handler(req, res) {
         success: false,
         error: "Não foi possível verificar o pedido."
       });
-
     }
 
-
     if (!order) {
-
       return res.status(404).json({
         success: false,
         error: "Link de entrega inválido ou inexistente."
       });
-
     }
 
-
-    // ========================================
-    // VERIFICAR PAGAMENTO
-    // ========================================
-
+    // Verificar pagamento
     if (order.status !== "paid") {
-
       return res.status(403).json({
         success: false,
         error: "O pagamento deste pedido ainda não foi confirmado."
       });
-
     }
 
-
-    // ========================================
-    // VERIFICAR EXPIRAÇÃO
-    // ========================================
-
+    // Verificar validade do token
     if (order.delivery_expires_at) {
-
       const expiration =
         new Date(order.delivery_expires_at);
 
-      const now =
-        new Date();
-
+      const now = new Date();
 
       if (now >= expiration) {
-
         return res.status(410).json({
           success: false,
           error: "Este link de entrega expirou."
         });
-
       }
-
     }
 
-
-    // ========================================
-    // VERIFICAR PRODUTO
-    // ========================================
-
     if (!order.product) {
-
       return res.status(400).json({
         success: false,
         error: "Este pedido não possui um produto associado."
       });
-
     }
 
-
+    // Procurar o produto
     const {
       data: product,
       error: productError
-    } =
-      await supabaseAdmin
-        .from("products")
-        .select(`
-          id,
-          name,
-          product_url
-        `)
-        .eq("id", order.product)
-        .maybeSingle();
-
+    } = await supabaseAdmin
+      .from("products")
+      .select(`
+        id,
+        name,
+        product_url
+      `)
+      .eq("id", order.product)
+      .maybeSingle();
 
     if (productError) {
-
       console.error(
         "Erro ao procurar produto:",
         productError
@@ -199,79 +134,74 @@ export default async function handler(req, res) {
         success: false,
         error: "Não foi possível localizar o produto."
       });
-
     }
 
-
     if (!product) {
-
       return res.status(404).json({
         success: false,
         error: "Produto não encontrado."
       });
-
     }
-
-
-    // ========================================
-    // VERIFICAR FICHEIRO
-    // ========================================
 
     if (!product.product_url) {
-
       return res.status(404).json({
         success: false,
-        error: "Este produto ainda não possui um ficheiro para entrega."
+        error:
+          "Este produto ainda não possui um ficheiro para entrega."
       });
-
     }
 
+    /*
+     * O campo product_url pode estar armazenado como:
+     *
+     * produtos/HORARIOS.xlsx
+     *
+     * ou:
+     *
+     * HORARIOS.xlsx
+     *
+     * O bucket utilizado é "produtos".
+     */
 
-    // ========================================
-    // LIMPAR CAMINHO
-    // ========================================
+    let filePath = String(product.product_url).trim();
 
-    let filePath =
-      product.product_url;
+    // Remover barras iniciais
+    filePath = filePath.replace(/^\/+/, "");
 
+    /*
+     * IMPORTANTE:
+     *
+     * Se product_url começa com "produtos/",
+     * NÃO removemos essa parte.
+     *
+     * O caminho correto no Storage é:
+     *
+     * produtos/HORARIOS.xlsx
+     */
 
-    // Se tiver sido guardado como:
-    // produtos/nome.pdf
-    //
-    // retiramos "produtos/" porque
-    // já estamos dentro do bucket "produtos".
+    console.log(
+      "Bucket:",
+      "produtos"
+    );
 
-    if (
-      filePath.startsWith("produtos/")
-    ) {
+    console.log(
+      "Caminho do ficheiro:",
+      filePath
+    );
 
-      filePath =
-        filePath.substring(
-          "produtos/".length
-        );
-
-    }
-
-
-    // ========================================
-    // CRIAR LINK TEMPORÁRIO
-    // ========================================
-
+    // Criar link temporário
     const {
       data: signedUrlData,
       error: signedUrlError
-    } =
-      await supabaseAdmin
-        .storage
-        .from("produtos")
-        .createSignedUrl(
-          filePath,
-          LINK_EXPIRATION_SECONDS
-        );
-
+    } = await supabaseAdmin
+      .storage
+      .from("produtos")
+      .createSignedUrl(
+        filePath,
+        LINK_EXPIRATION_SECONDS
+      );
 
     if (signedUrlError) {
-
       console.error(
         "Erro ao criar link:",
         signedUrlError
@@ -279,34 +209,30 @@ export default async function handler(req, res) {
 
       return res.status(500).json({
         success: false,
-        error: "Não foi possível gerar o acesso ao ficheiro."
+        error:
+          "Não foi possível gerar o acesso ao ficheiro."
       });
-
     }
-
 
     if (!signedUrlData?.signedUrl) {
-
       return res.status(500).json({
         success: false,
-        error: "O link temporário não foi criado."
+        error:
+          "O link temporário não foi criado."
       });
-
     }
 
+    console.log(
+      "Link temporário criado com sucesso."
+    );
 
-    // ========================================
-    // REDIRECIONAR PARA O PDF
-    // ========================================
-
+    // Redirecionar para o ficheiro
     return res.redirect(
       302,
       signedUrlData.signedUrl
     );
 
-
   } catch (error) {
-
     console.error(
       "Erro inesperado:",
       error
@@ -316,7 +242,5 @@ export default async function handler(req, res) {
       success: false,
       error: "Erro interno do servidor."
     });
-
   }
-
 }
