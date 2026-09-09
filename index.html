@@ -520,16 +520,6 @@
     }
 
     /* =========================
-       LOADING
-    ========================== */
-
-    .loading {
-      text-align: center;
-      padding: 40px;
-      color: var(--muted);
-    }
-
-    /* =========================
        MOBILE
     ========================== */
 
@@ -597,14 +587,12 @@
 
 <body>
 
-  <!-- =========================
-       HEADER
-  ========================== -->
+  <!-- HEADER -->
 
   <header>
     <div class="container navbar">
 
-      <a href="#" class="brand">
+      <a href="#inicio" class="brand">
         <span class="brand-icon">✦</span>
         <span class="brand-name">Alquimia Digital</span>
       </a>
@@ -624,9 +612,7 @@
   </header>
 
 
-  <!-- =========================
-       HERO
-  ========================== -->
+  <!-- HERO -->
 
   <main>
 
@@ -668,9 +654,7 @@
     </section>
 
 
-    <!-- =========================
-         BENEFÍCIOS
-    ========================== -->
+    <!-- BENEFÍCIOS -->
 
     <section>
 
@@ -743,9 +727,7 @@
     </section>
 
 
-    <!-- =========================
-         PRODUTOS
-    ========================== -->
+    <!-- PRODUTOS -->
 
     <section id="produtos">
 
@@ -778,9 +760,7 @@
     </section>
 
 
-    <!-- =========================
-         CHECKOUT
-    ========================== -->
+    <!-- CHECKOUT -->
 
     <section
       id="checkout"
@@ -879,24 +859,16 @@
             </div>
 
 
-            <!--
-              FUTURA INTEGRAÇÃO M-PESA
-
-              Nesta fase o pedido será registado como
-              "pending".
-
-              Quando as credenciais oficiais da API M-Pesa
-              estiverem disponíveis, ligaremos aqui o
-              pagamento automático.
-            -->
+            <!-- PAGAMENTO -->
 
             <div class="payment-info">
 
               <h3>Pagamento</h3>
 
               <p>
-                O pedido será registado e ficará pendente
-                enquanto a confirmação do pagamento é realizada.
+                O pagamento M-Pesa será integrado nesta etapa.
+                Por enquanto, o pedido será registado como pendente
+                para confirmação posterior.
               </p>
 
             </div>
@@ -909,7 +881,7 @@
                 class="btn btn-primary"
                 id="submitOrderBtn"
               >
-                Confirmar pedido
+                Continuar para pagamento
               </button>
 
               <button
@@ -937,9 +909,7 @@
     </section>
 
 
-    <!-- =========================
-         SOBRE
-    ========================== -->
+    <!-- SOBRE -->
 
     <section id="sobre">
 
@@ -970,9 +940,7 @@
   </main>
 
 
-  <!-- =========================
-       FOOTER
-  ========================== -->
+  <!-- FOOTER -->
 
   <footer>
 
@@ -1234,7 +1202,10 @@
             </h3>
 
             <p class="product-description">
-              ${escapeHTML(product.description || "Produto digital da Alquimia Digital.")}
+              ${escapeHTML(
+                product.description ||
+                "Produto digital da Alquimia Digital."
+              )}
             </p>
 
             <div class="product-bottom">
@@ -1246,7 +1217,6 @@
               <button
                 class="buy-btn"
                 type="button"
-                data-product-id="${escapeHTML(product.id)}"
               >
                 Comprar
               </button>
@@ -1501,10 +1471,11 @@
         try {
 
           /*
-            O campo "product" guarda o ID do produto.
+            IMPORTANTE:
 
-            O pedido fica "pending" porque a integração
-            automática do M-Pesa será ligada posteriormente.
+            Não usamos .select() depois do insert.
+            Isso mantém o funcionamento da política RLS
+            que já configurámos no Supabase.
           */
 
           const {
@@ -1542,12 +1513,12 @@
 
           checkoutMessage.innerHTML = `
             <strong>
-              Pedido realizado com sucesso! ✅
+              Pedido registado com sucesso! ✅
             </strong>
             <br><br>
-            O seu pedido foi registado.
-            O pagamento M-Pesa será integrado nesta etapa
-            quando as credenciais da API estiverem disponíveis.
+            O seu pedido foi registado como pendente.
+            A etapa de pagamento M-Pesa será ligada
+            quando a integração estiver disponível.
           `;
 
           checkoutMessage.className =
@@ -1574,7 +1545,7 @@
           submitOrderBtn.disabled = false;
 
           submitOrderBtn.textContent =
-            "Confirmar pedido";
+            "Continuar para pagamento";
 
         }
 
@@ -1641,7 +1612,7 @@
 
 
     /* =========================================
-       INICIAR
+       INICIAR SITE
     ========================================= */
 
     loadProducts();
